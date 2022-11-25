@@ -62,6 +62,7 @@ export type LabelsReducerPayloadType = {
   name?: string;
   count?: number;
   fetchLabels?: Labels;
+  // MAYBE MAKE AN ENUM HERE
   case?: "name" | "count";
 };
 
