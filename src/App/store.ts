@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import todoReducer, { fetchTodosThunk } from "../Reducers/TodoSlice";
-import labelReducer, { fetchLabelsThunk } from "../Reducers/LabelSlice";
+import todoReducer, { fetchTodosThunk } from "../Reducerss/todoSlice";
+import labelReducer, { fetchLabelsThunk } from "../Reducerss/labelSlice";
 
 const todoAppStore = configureStore({
   reducer: {

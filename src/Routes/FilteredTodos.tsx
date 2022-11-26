@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTodoContext } from "../Contexts/TodoContext";
 import { Label } from "../Utils/types";
-import LabeledTodos from "./Dashboard/LabeledTodos";
+import LabeledTodos from "../Components/Dashboard/LabeledTodos";
 
 // USED AS A ROUTE
 const FilteredTodos = () => {

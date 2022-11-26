@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .container {
+    width: 95vw;
+    margin: 0 auto;
+    padding-inline: 2rem;
+  }
+
+  .big-button {
+    @apply flex items-center gap-1 p-2 rounded-sm text-lg font-medium text-stone-100 bg-orange-400;
+  }
+
+  .navbar-tooltip {
+    @apply absolute left-[154%] top-2/4 -translate-y-1/2 p-2 w-max rounded-md bg-zinc-900 text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-md shadow-zinc-900;
+  }
+
+  .label-tooltip {
+    @apply absolute left-[154%] top-2/4 -translate-y-1/2 px-2 py-1  w-max rounded-md bg-stone-600 text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-sm shadow-zinc-800;
+  }
+
+  .todo-actions-tooltip {
+    @apply absolute left-1/2 top-[110%] -translate-x-1/2 px-2 py-1 w-max rounded-md bg-zinc-500  text-stone-50 font-medium scale-0 group-hover:scale-100 shadow-md;
+  }
+
+  .form-title {
+    padding: 1rem 1.5rem;
+    @apply text-stone-100 text-5xl font-bold text-center;
+  }
+
+  .form-label {
+    @apply text-lg font-medium text-stone-100 self-start;
+    @apply after:content-['*'] after:ml-0.5 after:text-red-500;
+  }
+
+  .form-input {
+    border: 2px solid theme("colors.stone.900");
+    @apply outline-none bg-stone-800 caret-stone-100 text-stone-200 w-full rounded px-2 py-1;
+    @apply focus:border-blue-500;
+  }
+
+  .link {
+    @apply text-lg text-stone-200 underline font-bold;
+    @apply hover:hover:text-stone-400;
+  }
+
+  .button {
+    border: 2px solid theme("colors.slate.900");
+    padding: 0.25rem 0.5rem;
+    @apply bg-neutral-200 font-semibold rounded-md border-slate-900 text-slate-900 cursor-pointer;
+    @apply disabled:cursor-not-allowed disabled:bg-neutral-600  hover:bg-neutral-400 active:bg-neutral-500;
+  }
+
+  .todo-action-button {
+    @apply p-2 rounded-full hover:bg-neutral-700 active:bg-neutral-500;
+  }
+
+  .form-info-message {
+    @apply bg-amber-200 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1;
+  }
+
+  .form-error-message {
+    @apply bg-red-500 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1;
+  }
+
+  .form-success-message {
+    @apply bg-green-500 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1;
+  }
+
+  .todo-form-input {
+    border: 2px solid theme("colors.stone.900");
+    @apply py-1 px-3 rounded-md outline-none;
+    @apply focus:border-blue-500 placeholder:text-stone-400 text-stone-100 bg-neutral-900 caret-stone-100;
+  }
+
+  .todo {
+    @apply bg-neutral-800 text-stone-300 border border-neutral-400 rounded-md flex flex-col items-start justify-between p-3 basis-1/5 gap-4;
+  }
+
+  .todo-title {
+    @apply text-xl font-bold text-stone-100 break-all text-ellipsis overflow-hidden w-[150px] whitespace-nowrap;
+  }
+
+  .todo-p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-width: 160px;
+
+    @apply overflow-hidden text-lg break-words mb-1;
+  }
+
+  .backdrop {
+    @apply absolute top-0 left-0 h-full w-full flex items-center justify-center bg-neutral-800 bg-opacity-70 backdrop-blur-sm z-50;
+  }
+
+  .detailed-todo-p {
+    @apply max-w-2xl overflow-scroll scrollbar-none break-all;
+  }
+
+  .todo-container {
+    @apply w-full flex flex-wrap items-start justify-start gap-2;
+  }
+
+  .section-small-header {
+    @apply text-sm font-semibold text-stone-400 ml-2 mb-2;
+  }
+
+  .section-global-container {
+    @apply flex flex-col w-full h-full items-start justify-start ml-5;
+  }
+
+  .route-container {
+    @apply w-full h-full flex flex-wrap gap-2 justify-start mt-8;
+  }
+
+  .label-text {
+    @apply font-bold text-xl text-stone-300 flex-1;
+  }
+
+  .label-item {
+    @apply p-2 flex gap-2 items-center justify-between w-full rounded-md;
+  }
+
+  .label-button {
+    @apply rounded-sm hover:bg-neutral-700 active:bg-neutral-400 p-2;
+  }
+}
