@@ -35,11 +35,11 @@ export default function AuthContext({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
   const [profilePic, setProfilePic] = useState<string | undefined>();
 
-  useEffect(() => {
-    if (currentUser?.photoURL !== null) setProfilePic(currentUser?.photoURL);
-    else
-      setProfilePic(process.env.PUBLIC_URL + "/Assets/defaultProfilePic.webp");
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser?.photoURL !== null) setProfilePic(currentUser?.photoURL);
+  //   else
+  //     setProfilePic(process.env.PUBLIC_URL + "/Assets/defaultProfilePic.webp");
+  // }, [currentUser]);
 
   const EMAIL_REGEX = /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 

@@ -1,11 +1,16 @@
 import React, { useRef, useState } from "react";
-import { useAuthentication } from "../Contexts/AuthContext";
+// import { useAuthentication } from "../Contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { VscError } from "react-icons/vsc";
 import Attribution from "../Components/Dashboard/Attribution";
 
+import { useAppDispatch } from "../App/hooks";
+import { userSignUpThunk } from "../Reducerss/authSlice";
+
 const SignUp = () => {
-  const { userSignUp } = useAuthentication();
+  const dispatch = useAppDispatch();
+
+  // const { userSignUp } = useAuthentication();
   const navigate = useNavigate();
 
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -33,7 +38,13 @@ const SignUp = () => {
         emailRef.current?.value !== undefined &&
         passwordRef.current?.value !== undefined
       )
-        await userSignUp(emailRef.current?.value, passwordRef.current?.value);
+        // await userSignUp(emailRef.current?.value, passwordRef.current?.value);
+        dispatch(
+          userSignUpThunk({
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+          })
+        );
       navigate("/dashboard");
     } catch {
       setErrorMessage("Unable to sign up.");

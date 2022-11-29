@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { HiOutlineLightBulb, HiTag } from "react-icons/hi";
-import { FiEdit3 } from "react-icons/fi";
-import { BiPowerOff, BiLogOut } from "react-icons/bi";
 import { MdLabel, MdLabelOutline } from "react-icons/md";
-import { BsArchive, BsTrash } from "react-icons/bs";
-import { MdOutlineDoneOutline } from "react-icons/md";
 import ProfileSettingsPopup from "../../Components/Dashboard/ProfileSettingsPopup";
 
 import { useNavigate } from "react-router-dom";
@@ -48,20 +43,17 @@ const Navbar = (props: Props) => {
 
   useEffect(() => {
     if (currentUser?.photoURL !== null) setProfilePic(currentUser?.photoURL);
-    else
-      setProfilePic(process.env.PUBLIC_URL + "/Assets/defaultProfilePic.webp");
+    else setProfilePic(import.meta.env + "/Assets/defaultProfilePic.webp");
   }, [currentUser]);
 
   const NAV_LINKS = [
     {
       linkName: "Todos",
-      // icon: HiOutlineLightBulb,
       icon: FaLightbulb,
       execute: () => navigate(""),
     },
     {
       linkName: "Finished",
-      // icon: MdOutlineDoneOutline,
       icon: FaCheck,
       execute: () => navigate("finished"),
     },
@@ -109,7 +101,6 @@ const Navbar = (props: Props) => {
                 className="p-3 bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] hover:bg-stone-600 active:bg-stone-500 focus:bg-stone-400 focus:rounded-[10px]"
                 onClick={handleOpenLabelsBackdrop}
               >
-                {/* <MdLabelOutline color="rgb(253 186 116)" size={"1.7rem"} /> */}
                 <MdLabel color="rgb(253 186 116)" size={"1.7rem"} />
               </button>
               <Tooltip tooltipContent={"Labels"} />
@@ -121,7 +112,6 @@ const Navbar = (props: Props) => {
                 className="p-3 bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] hover:bg-stone-600 active:bg-stone-500 bottom-2 group"
                 onClick={userSignOut}
               >
-                {/* <BiLogOut size={"1.7rem"} color={"#ff3535"} /> */}
                 <FaSignOutAlt size={"1.7rem"} color={"#ff3535"} />
                 <Tooltip tooltipContent={"Sign out"} />
               </button>
