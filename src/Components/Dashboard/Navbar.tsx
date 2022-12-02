@@ -17,6 +17,10 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 
+import { useAppSelector } from "../../App/hooks";
+import { selectCurrentUser } from "../../Reducerss/authSlice";
+import { User } from "firebase/auth";
+
 type Props = {};
 
 const Navbar = (props: Props) => {
@@ -71,6 +75,10 @@ const Navbar = (props: Props) => {
       execute: () => navigate("trash"),
     },
   ];
+
+  const currentUserr = useAppSelector((state) => state.authentication.user);
+
+  console.log(currentUserr);
 
   return (
     <nav className="py-2 px-2 h-full bg-neutral-900">

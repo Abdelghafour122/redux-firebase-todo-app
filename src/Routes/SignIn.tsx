@@ -6,62 +6,75 @@ import { VscError } from "react-icons/vsc";
 import { FcGoogle } from "react-icons/fc";
 import Attribution from "../Components/Dashboard/Attribution";
 
+import { signInWithGoogleThunk, userSignInThunk } from "../Reducerss/authSlice";
+import { useAppDispatch, useAppSelector } from "../App/hooks";
+import { LoadingStatus, UIMessages } from "../Utils/types";
+import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
+import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
+import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
+
 const SignIn = () => {
   const navigate = useNavigate();
   const { userSignIn, signInWithGoogle, EMAIL_REGEX } = useAuthentication();
+  const dispatch = useAppDispatch();
+
+  const authError = useAppSelector((state) => state.authentication.error);
+  const authStatus = useAppSelector((state) => state.authentication.status);
 
   const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [errormessage, setErrorMessage] = useState("");
+
   const [validEmail, setValidEmail] = useState(true);
   const [emailFocus, setEmailFocus] = useState(false);
 
-  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [loading, setLoading] = useState(authStatus === LoadingStatus.pending);
+  console.log(authStatus);
 
-  const [errormessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  // setting the loading state based on the thunks status
+  useEffect(() => {
+    authStatus === LoadingStatus.pending ? setLoading(true) : setLoading(false);
+    authStatus === LoadingStatus.failed
+      ? setErrorMessage(authError as string)
+      : setErrorMessage("");
+  }, [authStatus]);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    try {
-      setErrorMessage("");
-      setLoading(true);
-      if (
-        emailRef.current?.value !== undefined &&
-        passwordRef.current?.value !== undefined
-      )
-        await userSignIn(emailRef.current?.value, passwordRef.current?.value);
-      navigate("/dashboard");
-    } catch {
-      setErrorMessage("An error has occurred, can't log in.");
-    }
-    setLoading(false);
+    if (emailRef.current?.value !== "" && passwordRef.current?.value !== "")
+      await dispatch(
+        userSignInThunk({
+          email: emailRef.current?.value as string,
+          password: passwordRef.current?.value as string,
+        })
+      ).then(
+        (res) =>
+          res.meta.requestStatus === "fulfilled" && navigate("/dashboard")
+      );
+    else setErrorMessage(UIMessages.signInWarning);
   }
 
-  async function handleGoogleSignIn() {
-    try {
-      setErrorMessage("");
-      setLoading(true);
-      await signInWithGoogle();
-      navigate("/dashboard");
-    } catch (error) {
-      setErrorMessage("An error has occurred, can't log in.");
-    }
-    setLoading(false);
-  }
+  // async function handleGoogleSignIn() {
+  //   try {
+  //     setErrorMessage("");
+  //     await signInWithGoogle();
+  //     navigate("/dashboard");
+  //   } catch (error) {
+  //     setErrorMessage("An error has occurred, can't log in.");
+  //   }
+  // }
+
+  // USE STATE INSTEAD OF REFS TO MAKE HELPER TEXT
 
   useEffect(() => {
-    if (emailRef.current?.value !== undefined && emailRef.current?.value !== "")
-      setValidEmail(EMAIL_REGEX.test(emailRef.current?.value));
+    if (emailRef.current?.value !== "")
+      setValidEmail(EMAIL_REGEX.test(emailRef.current?.value as string));
   }, [emailRef.current?.value, EMAIL_REGEX]);
 
   return (
     <div className="sign-in">
-      <h2 className="form-title">Sign In</h2>
-      {errormessage !== "" && (
-        <div className="form-error-message w-60 md:w-80 lg:w-96">
-          <VscError size="1.5rem" />
-          <p>{errormessage}</p>
-        </div>
-      )}
+      <PageTitle titleContent={"Sign In"} />
+      {errormessage !== "" && <ErrorMessage messageContent={errormessage} />}
       <form
         className="flex flex-col items-center justify-center my-3 mx-auto gap-3 w-max md:w-80 lg:w-96"
         action=""
@@ -79,7 +92,9 @@ const SignIn = () => {
             onBlur={() => setEmailFocus(false)}
             required
           />
-          {emailFocus && !validEmail && <p>Invalid Email Address</p>}
+          {emailFocus && !validEmail && (
+            <InputHelperText helperTextContent={"Invalid Email Address"} />
+          )}
         </div>
 
         <div className="password flex flex-col justify-center items-center w-full">
@@ -104,6 +119,7 @@ const SignIn = () => {
           type="submit"
           value="Sign In"
           onClick={handleSubmit}
+          // disabled={loadingRef.current}
           disabled={loading}
         >
           Sign In
@@ -116,7 +132,11 @@ const SignIn = () => {
         </Link>
       </div>
       <button
-        onClick={handleGoogleSignIn}
+        onClick={async () => {
+          await dispatch(signInWithGoogleThunk());
+          navigate("/dashboard");
+        }}
+        // disabled={loadingRef.current}
         disabled={loading}
         className="button flex justify-center items-center mt-3 mb-0 mx-auto"
       >

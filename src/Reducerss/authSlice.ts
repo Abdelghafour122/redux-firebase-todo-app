@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LoadingStatus } from "../Utils/types";
+import { LoadingStatus, UIMessages } from "../Utils/types";
 
 import {
   createUserWithEmailAndPassword,
@@ -12,7 +12,6 @@ import {
 } from "firebase/auth";
 import { RootState } from "../App/store";
 import { globalAuth } from "../firebase";
-import { useEffect } from "react";
 
 type authInitialStateType = {
   status: LoadingStatus;
@@ -26,7 +25,7 @@ type emailPasswordDataType = {
 };
 
 const authInitialState: authInitialStateType = {
-  status: LoadingStatus.pending,
+  status: LoadingStatus.idle,
   user: null,
   error: null,
 };
@@ -39,19 +38,39 @@ const authSlice = createSlice({
   initialState: authInitialState,
   reducers: {},
   extraReducers(builder) {
-    builder
+    builder //SIGN UP EMAIL PASSWORD
       .addCase(userSignUpThunk.pending, (state) => {
         state.status = LoadingStatus.pending;
       })
       .addCase(userSignUpThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
-        state.error = "Sign up failed, something went wrong!";
+        state.error = UIMessages.signUpFailed;
       })
-      .addCase(userSignUpThunk.fulfilled, (state) => {
+      .addCase(userSignUpThunk.fulfilled, (state, action) => {
         state.status = LoadingStatus.succeeded;
-        globalAuth.onAuthStateChanged((user) => {
-          state.user = user;
-        });
+        state.user = JSON.parse(action.payload);
+      }) //GOOGLE AUTH
+      .addCase(signInWithGoogleThunk.pending, (state) => {
+        state.status = LoadingStatus.pending;
+      })
+      .addCase(signInWithGoogleThunk.rejected, (state) => {
+        state.status = LoadingStatus.failed;
+        state.error = UIMessages.googleSignInFailed;
+      })
+      .addCase(signInWithGoogleThunk.fulfilled, (state, action) => {
+        state.status = LoadingStatus.succeeded;
+        state.user = JSON.parse(action.payload);
+      }) //EMAIL PASSWORD SIGN IN
+      .addCase(userSignInThunk.pending, (state) => {
+        state.status = LoadingStatus.pending;
+      })
+      .addCase(userSignInThunk.rejected, (state) => {
+        state.status = LoadingStatus.failed;
+        state.error = UIMessages.signInFailed;
+      })
+      .addCase(userSignInThunk.fulfilled, (state, action) => {
+        state.status = LoadingStatus.succeeded;
+        state.user = JSON.parse(action.payload);
       });
   },
 });
@@ -63,7 +82,7 @@ export const userSignUpThunk = createAsyncThunk(
       globalAuth,
       signUpData.email,
       signUpData.password
-    );
+    ).then((result) => JSON.stringify(result.user));
   }
 );
 
@@ -74,7 +93,7 @@ export const userSignInThunk = createAsyncThunk(
       globalAuth,
       signInData.email,
       signInData.password
-    );
+    ).then((result) => JSON.stringify(result.user));
   }
 );
 
@@ -88,7 +107,9 @@ export const resetPasswordThunk = createAsyncThunk(
 export const signInWithGoogleThunk = createAsyncThunk(
   "userSignInWithGoogle",
   async () => {
-    return await signInWithPopup(globalAuth, googleProvider);
+    return await signInWithPopup(globalAuth, googleProvider).then((result) =>
+      JSON.stringify(result.user)
+    );
   }
 );
 
@@ -96,12 +117,5 @@ export const userSignOutThunk = createAsyncThunk("userSignOut", async () => {
   return await signOut(globalAuth);
 });
 
-export const {
-  //   userSignIn,
-  //   userSignUp,
-  //   userSignOut,
-  //   signInWithGoogle,
-  //   resetPassword,
-} = authSlice.actions;
 export const selectCurrentUser = (state: RootState) => state.authentication;
 export default authSlice.reducer;

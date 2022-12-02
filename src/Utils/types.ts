@@ -2,9 +2,18 @@ import { User, UserCredential } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
 
 export enum LoadingStatus {
+  idle = "Idle",
   pending = "Pending",
   succeeded = "Succeeded",
   failed = "Failed",
+}
+
+export enum UIMessages {
+  signInFailed = "Sign in failed, something went wrong!",
+  signInWarning = "Please fill in the required fields!",
+  signUpFailed = "Sign up failed, something went wrong!",
+  signUpWarning = "Please fill in the required fields!",
+  googleSignInFailed = "Sign in with google failed, something went wrong!",
 }
 
 export type AuthContextType = {
