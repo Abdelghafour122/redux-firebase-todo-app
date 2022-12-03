@@ -6,11 +6,12 @@ import Attribution from "../Components/Dashboard/Attribution";
 
 import { useAppDispatch } from "../App/hooks";
 import { userSignUpThunk } from "../Reducerss/authSlice";
+import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
+import PasswordGuide from "../Components/Dashboard/Authentication/PasswordGuide";
+import { FaInfoCircle } from "react-icons/fa";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
-
-  // const { userSignUp } = useAuthentication();
   const navigate = useNavigate();
 
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -19,6 +20,14 @@ const SignUp = () => {
 
   const [errormessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [validEmail, setValidEmail] = useState(true);
+
+  const [password, setPassword] = useState("");
+  const [validPassword, setValidPassword] = useState(true);
+
+  const [openPasswordGuide, setOpenPasswordGuide] = useState(false);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -38,8 +47,7 @@ const SignUp = () => {
         emailRef.current?.value !== undefined &&
         passwordRef.current?.value !== undefined
       )
-        // await userSignUp(emailRef.current?.value, passwordRef.current?.value);
-        dispatch(
+        await dispatch(
           userSignUpThunk({
             email: emailRef.current.value,
             password: passwordRef.current.value,
@@ -91,6 +99,20 @@ const SignUp = () => {
               ref={passwordRef}
               required
             />
+            {
+              <div className="w-full flex items-center justify-between">
+                <InputHelperText helperTextContent={"Invalid password"} />
+                <button
+                  className="p-1 cursor-pointer"
+                  onClick={() => {
+                    setOpenPasswordGuide((prev) => !prev);
+                  }}
+                >
+                  <FaInfoCircle size="1.5rem" color="rgb(245 158 11)" />
+                </button>
+              </div>
+            }
+            {openPasswordGuide ? <PasswordGuide /> : null}
           </div>
           <div className="passwordConfirm flex flex-col justify-center items-center w-full">
             <label htmlFor="passwordConfirm" className="form-label">

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthentication } from "../Contexts/AuthContext";
 import { VscError } from "react-icons/vsc";
@@ -12,6 +12,11 @@ import { LoadingStatus, UIMessages } from "../Utils/types";
 import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
+import PasswordGuide from "../Components/Dashboard/Authentication/PasswordGuide";
+import { FaInfoCircle } from "react-icons/fa";
+
+const PWD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,24}$/;
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -21,12 +26,15 @@ const SignIn = () => {
   const authError = useAppSelector((state) => state.authentication.error);
   const authStatus = useAppSelector((state) => state.authentication.status);
 
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
   const [errormessage, setErrorMessage] = useState("");
 
+  const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(true);
   const [emailFocus, setEmailFocus] = useState(false);
+
+  const [password, setPassword] = useState("");
+  const [validPassword, setValidPassword] = useState(true);
+  const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [loading, setLoading] = useState(authStatus === LoadingStatus.pending);
   console.log(authStatus);
@@ -41,11 +49,11 @@ const SignIn = () => {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    if (emailRef.current?.value !== "" && passwordRef.current?.value !== "")
+    if (email !== "" && password !== "")
       await dispatch(
         userSignInThunk({
-          email: emailRef.current?.value as string,
-          password: passwordRef.current?.value as string,
+          email: email,
+          password: password,
         })
       ).then(
         (res) =>
@@ -53,23 +61,6 @@ const SignIn = () => {
       );
     else setErrorMessage(UIMessages.signInWarning);
   }
-
-  // async function handleGoogleSignIn() {
-  //   try {
-  //     setErrorMessage("");
-  //     await signInWithGoogle();
-  //     navigate("/dashboard");
-  //   } catch (error) {
-  //     setErrorMessage("An error has occurred, can't log in.");
-  //   }
-  // }
-
-  // USE STATE INSTEAD OF REFS TO MAKE HELPER TEXT
-
-  useEffect(() => {
-    if (emailRef.current?.value !== "")
-      setValidEmail(EMAIL_REGEX.test(emailRef.current?.value as string));
-  }, [emailRef.current?.value, EMAIL_REGEX]);
 
   return (
     <div className="sign-in">
@@ -87,16 +78,22 @@ const SignIn = () => {
             id="email"
             className="form-input"
             type="email"
-            ref={emailRef}
             onFocus={() => setEmailFocus(true)}
             onBlur={() => setEmailFocus(false)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setEmail(() => e.target.value);
+              setValidEmail(
+                () =>
+                  e.target.value.trim() !== "" &&
+                  EMAIL_REGEX.test(e.target.value.trim())
+              );
+            }}
             required
           />
           {emailFocus && !validEmail && (
             <InputHelperText helperTextContent={"Invalid Email Address"} />
           )}
         </div>
-
         <div className="password flex flex-col justify-center items-center w-full">
           <label htmlFor="password" className="form-label">
             Password:
@@ -105,9 +102,17 @@ const SignIn = () => {
             id="password"
             className="form-input"
             type="password"
-            ref={passwordRef}
+            onFocus={() => setPasswordFocus(true)}
+            onBlur={() => setPasswordFocus(false)}
+            onChange={(e) => {
+              setPassword(() => e.target.value);
+              setValidPassword(() => PWD_REGEX.test(e.target.value.trim()));
+            }}
             required
           />
+          {password !== "" && !validPassword && (
+            <InputHelperText helperTextContent={"Invalid password"} />
+          )}
         </div>
         <div className="forgot-password">
           <Link className="link" to={"/forgottenpassword"}>
@@ -119,7 +124,6 @@ const SignIn = () => {
           type="submit"
           value="Sign In"
           onClick={handleSubmit}
-          // disabled={loadingRef.current}
           disabled={loading}
         >
           Sign In
@@ -136,7 +140,6 @@ const SignIn = () => {
           await dispatch(signInWithGoogleThunk());
           navigate("/dashboard");
         }}
-        // disabled={loadingRef.current}
         disabled={loading}
         className="button flex justify-center items-center mt-3 mb-0 mx-auto"
       >
