@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthentication } from "../Contexts/AuthContext";
-import { VscError } from "react-icons/vsc";
 
 import { FcGoogle } from "react-icons/fc";
 import Attribution from "../Components/Dashboard/Attribution";
@@ -12,15 +11,13 @@ import { LoadingStatus, UIMessages } from "../Utils/types";
 import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
-import PasswordGuide from "../Components/Dashboard/Authentication/PasswordGuide";
-import { FaInfoCircle } from "react-icons/fa";
 
 const PWD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,24}$/;
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { userSignIn, signInWithGoogle, EMAIL_REGEX } = useAuthentication();
+  const { EMAIL_REGEX } = useAuthentication();
   const dispatch = useAppDispatch();
 
   const authError = useAppSelector((state) => state.authentication.error);
