@@ -5,19 +5,20 @@ import { useAuthentication } from "../Contexts/AuthContext";
 import { FcGoogle } from "react-icons/fc";
 import Attribution from "../Components/Dashboard/Attribution";
 
-import { signInWithGoogleThunk, userSignInThunk } from "../Reducerss/authSlice";
+import {
+  signInWithGoogleThunk,
+  userSignInThunk,
+  EMAIL_REGEX,
+  PWD_REGEX,
+} from "../Reducerss/authSlice";
 import { useAppDispatch, useAppSelector } from "../App/hooks";
 import { LoadingStatus, UIMessages } from "../Utils/types";
 import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
 
-const PWD_REGEX =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,24}$/;
-
 const SignIn = () => {
   const navigate = useNavigate();
-  const { EMAIL_REGEX } = useAuthentication();
   const dispatch = useAppDispatch();
 
   const authError = useAppSelector((state) => state.authentication.error);
@@ -27,11 +28,9 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(true);
-  const [emailFocus, setEmailFocus] = useState(false);
 
   const [password, setPassword] = useState("");
   const [validPassword, setValidPassword] = useState(true);
-  const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [loading, setLoading] = useState(authStatus === LoadingStatus.pending);
   console.log(authStatus);
@@ -46,17 +45,19 @@ const SignIn = () => {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    if (email !== "" && password !== "")
+    if (validEmail && validPassword)
       await dispatch(
         userSignInThunk({
-          email: email,
-          password: password,
+          email: email.trim(),
+          password: password.trim(),
         })
-      ).then(
-        (res) =>
-          res.meta.requestStatus === "fulfilled" && navigate("/dashboard")
+      ).then((res) =>
+        res.meta.requestStatus === "fulfilled"
+          ? navigate("/dashboard")
+          : res.meta.requestStatus === "rejected" &&
+            setErrorMessage(UIMessages.signInFailed)
       );
-    else setErrorMessage(UIMessages.signInWarning);
+    else setErrorMessage(UIMessages.authWarning);
   }
 
   return (
@@ -75,8 +76,6 @@ const SignIn = () => {
             id="email"
             className="form-input"
             type="email"
-            onFocus={() => setEmailFocus(true)}
-            onBlur={() => setEmailFocus(false)}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               setEmail(() => e.target.value);
               setValidEmail(
@@ -87,8 +86,8 @@ const SignIn = () => {
             }}
             required
           />
-          {emailFocus && !validEmail && (
-            <InputHelperText helperTextContent={"Invalid Email Address"} />
+          {email !== "" && !validEmail && (
+            <InputHelperText helperTextContent={UIMessages.emailInvalid} />
           )}
         </div>
         <div className="password flex flex-col justify-center items-center w-full">
@@ -99,17 +98,14 @@ const SignIn = () => {
             id="password"
             className="form-input"
             type="password"
-            onFocus={() => setPasswordFocus(true)}
-            onBlur={() => setPasswordFocus(false)}
             onChange={(e) => {
               setPassword(() => e.target.value);
-              setValidPassword(() => PWD_REGEX.test(e.target.value.trim()));
             }}
             required
           />
-          {password !== "" && !validPassword && (
+          {password !== "" && !validPassword ? (
             <InputHelperText helperTextContent={"Invalid password"} />
-          )}
+          ) : null}
         </div>
         <div className="forgot-password">
           <Link className="link" to={"/forgottenpassword"}>

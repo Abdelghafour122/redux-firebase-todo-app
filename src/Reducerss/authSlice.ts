@@ -30,7 +30,9 @@ const authInitialState: authInitialStateType = {
   error: null,
 };
 
-const EMAIL_REGEX = /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+export const EMAIL_REGEX = /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+export const PWD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,24}$/;
 const googleProvider = new GoogleAuthProvider();
 
 const authSlice = createSlice({

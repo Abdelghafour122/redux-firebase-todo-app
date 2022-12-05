@@ -1,22 +1,28 @@
-import React, { useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 // import { useAuthentication } from "../Contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { VscError } from "react-icons/vsc";
 import Attribution from "../Components/Dashboard/Attribution";
 
-import { useAppDispatch } from "../App/hooks";
-import { userSignUpThunk } from "../Reducerss/authSlice";
+import { useAppDispatch, useAppSelector } from "../App/hooks";
+import {
+  userSignUpThunk,
+  EMAIL_REGEX,
+  PWD_REGEX,
+} from "../Reducerss/authSlice";
 import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
 import PasswordGuide from "../Components/Dashboard/Authentication/PasswordGuide";
 import { FaInfoCircle } from "react-icons/fa";
+import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
+import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
+import { LoadingStatus, UIMessages } from "../Utils/types";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
-  const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
+  const authError = useAppSelector((state) => state.authentication.error);
+  const authStatus = useAppSelector((state) => state.authentication.status);
 
   const [errormessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,51 +32,44 @@ const SignUp = () => {
 
   const [password, setPassword] = useState("");
   const [validPassword, setValidPassword] = useState(true);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [openPasswordGuide, setOpenPasswordGuide] = useState(false);
+
+  // setting the loading state based on the thunks status
+  useEffect(() => {
+    authStatus === LoadingStatus.pending ? setLoading(true) : setLoading(false);
+    authStatus === LoadingStatus.failed
+      ? setErrorMessage(authError as string)
+      : setErrorMessage("");
+  }, [authStatus]);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    console.log(
-      emailRef.current?.value,
-      passwordRef.current?.value,
-      confirmPasswordRef.current?.value
-    );
-
-    if (passwordRef.current?.value !== confirmPasswordRef.current?.value)
-      return setErrorMessage("Passwords do not match!");
-
-    try {
-      setErrorMessage("");
-      setLoading(true);
-      if (
-        emailRef.current?.value !== undefined &&
-        passwordRef.current?.value !== undefined
-      )
-        await dispatch(
-          userSignUpThunk({
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-          })
-        );
-      navigate("/dashboard");
-    } catch {
-      setErrorMessage("Unable to sign up.");
-    }
-
-    setLoading(false);
+    console.log(email, password, confirmPassword);
+    if (password !== confirmPassword)
+      return setErrorMessage(UIMessages.passwordsDontMatch);
+    if (validEmail && validPassword && passwordsMatch)
+      await dispatch(
+        userSignUpThunk({
+          email: email.trim(),
+          password: password.trim(),
+        })
+      ).then((res) =>
+        res.meta.requestStatus === "fulfilled"
+          ? navigate("/dashboard")
+          : res.meta.requestStatus === "rejected" &&
+            setErrorMessage(UIMessages.signUpFailed)
+      );
+    else setErrorMessage(UIMessages.authWarning);
   }
 
   return (
     <div className="sign-up">
       <div className="container">
-        <h2 className="form-title">Sign Up</h2>
-        {errormessage !== "" && (
-          <div className="form-error-message w-60 md:w-80 lg:w-96">
-            <VscError size="1.5rem" />
-            <p>{errormessage}</p>
-          </div>
-        )}
+        <PageTitle titleContent={"Sign Up"} />
+        {errormessage !== "" && <ErrorMessage messageContent={errormessage} />}
         <form
           action=""
           className="flex flex-col items-center justify-center my-3 mx-auto gap-3 w-max md:w-80 lg:w-96"
@@ -84,9 +83,20 @@ const SignUp = () => {
               id="email"
               type="email"
               className="form-input"
-              ref={emailRef}
+              value={email}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setEmail(() => e.target.value);
+                setValidEmail(
+                  () =>
+                    e.target.value.trim() !== "" &&
+                    EMAIL_REGEX.test(e.target.value.trim())
+                );
+              }}
               required
             />
+            {email !== "" && !validEmail && (
+              <InputHelperText helperTextContent={UIMessages.emailInvalid} />
+            )}
           </div>
           <div className="password flex flex-col justify-center items-center w-full">
             <label htmlFor="password" className="form-label">
@@ -96,23 +106,31 @@ const SignUp = () => {
               id="password"
               type="password"
               className="form-input"
-              ref={passwordRef}
+              value={password}
+              onChange={(e) => {
+                setPassword(() => e.target.value);
+                setValidPassword(() => PWD_REGEX.test(e.target.value.trim()));
+              }}
               required
             />
-            {
-              <div className="w-full flex items-center justify-between">
-                <InputHelperText helperTextContent={"Invalid password"} />
-                <button
-                  className="p-1 cursor-pointer"
-                  onClick={() => {
-                    setOpenPasswordGuide((prev) => !prev);
-                  }}
-                >
-                  <FaInfoCircle size="1.5rem" color="rgb(245 158 11)" />
-                </button>
-              </div>
-            }
-            {openPasswordGuide ? <PasswordGuide /> : null}
+            {password !== "" && !validPassword ? (
+              <>
+                <div className="w-full flex items-center justify-between">
+                  <InputHelperText
+                    helperTextContent={UIMessages.passwordInvalid}
+                  />
+                  <button
+                    className="p-1 cursor-pointer"
+                    onClick={() => {
+                      setOpenPasswordGuide((prev) => !prev);
+                    }}
+                  >
+                    <FaInfoCircle size="1.5rem" color="rgb(245 158 11)" />
+                  </button>
+                </div>
+                {openPasswordGuide ? <PasswordGuide /> : null}
+              </>
+            ) : null}
           </div>
           <div className="passwordConfirm flex flex-col justify-center items-center w-full">
             <label htmlFor="passwordConfirm" className="form-label">
@@ -122,9 +140,18 @@ const SignUp = () => {
               id="passwordConfirm"
               type="password"
               className="form-input"
-              ref={confirmPasswordRef}
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(() => e.target.value);
+                setPasswordsMatch(() => e.target.value.trim() === password);
+              }}
               required
             />
+            {confirmPassword !== "" && !passwordsMatch && (
+              <InputHelperText
+                helperTextContent={UIMessages.passwordsDontMatch}
+              />
+            )}
           </div>
           <button className="button" disabled={loading}>
             Sign Up
