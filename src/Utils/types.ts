@@ -8,7 +8,7 @@ export enum LoadingStatus {
   failed = "Failed",
 }
 
-export enum UIMessages {
+export enum AuthUIMessages {
   signInFailed = "Sign in failed, something went wrong!",
   signUpFailed = "Sign up failed, something went wrong!",
   passwordsDontMatch = "Passwords don't match!",

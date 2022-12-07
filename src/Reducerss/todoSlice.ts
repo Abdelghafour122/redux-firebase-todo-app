@@ -3,7 +3,6 @@ import { RootState } from "../App/store";
 import { getTodosList } from "../Utils/firestore";
 import { Todos, LoadingStatus } from "../Utils/types";
 
-// const todosInitialState: Todos = [];
 type todosInitialStateType = {
   todosList: Todos;
   status: LoadingStatus;
@@ -19,7 +18,7 @@ export const fetchTodosThunk = createAsyncThunk(
   "todos/fetchTodos",
   async () => {
     const todosResult = await getTodosList();
-    return todosResult;
+    return JSON.stringify(todosResult);
   }
 );
 
@@ -44,9 +43,7 @@ const todoSlice = createSlice({
       })
       .addCase(fetchTodosThunk.fulfilled, (state, { payload }) => {
         state.status = LoadingStatus.succeeded;
-        // state.todosList.push(action.payload);
-        // state.todosList.push(payload as Todos);
-        console.log(payload);
+        state.todosList.push(JSON.parse(payload));
       })
       .addCase(fetchTodosThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;

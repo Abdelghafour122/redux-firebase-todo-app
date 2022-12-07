@@ -7,11 +7,10 @@ import TodosContainer from "./Containers/TodosContainer";
 import EmptySection from "./Placeholders/EmptySection";
 import Message from "./Todos/Message";
 import LoadingPage from "./LoadingPage";
+import { useAppSelector } from "../../App/hooks";
 
-type Props = {};
-
-const Todos = (props: Props) => {
-  const { todoList } = useTodoContext();
+const Todos = () => {
+  const todoList = useAppSelector((state) => state.todos.todosList);
 
   const [openTodoForm, setOpenTodoForm] = useState(false);
   const [loading, setLoading] = useState(true);

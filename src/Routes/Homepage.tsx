@@ -1,20 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "../Contexts/AuthContext";
-import { useTodoContext } from "../Contexts/TodoContext";
-
 import Attribution from "../Components/Dashboard/Attribution";
 import { FaHandPointRight, FaHome } from "react-icons/fa";
+import { useAppSelector } from "../App/hooks";
 
 function Homepage() {
-  const { currentUser } = useAuthentication();
-  const { fetchTodoItems, fetchLabels } = useTodoContext();
-
-  useEffect(() => {
-    fetchTodoItems();
-    fetchLabels();
-  }, [fetchTodoItems, fetchLabels]);
-
+  const currentUser = useAppSelector((state) => state.authentication.user);
   const navigate = useNavigate();
   return (
     <div className="homepage h-full flex flex-col items-center justify-center">
@@ -29,14 +20,12 @@ function Homepage() {
           <>
             <button className="big-button" onClick={() => navigate("/signin")}>
               Get Started
-              {/* <BsArrowRight size={"1.3rem"} /> */}
               <FaHandPointRight size={"1.3rem"} />
             </button>
           </>
         ) : (
           <button className="big-button" onClick={() => navigate("/dashboard")}>
             Go to dashboard
-            {/* <AiFillHome size={"1.3rem"} /> */}
             <FaHome size={"1.3rem"} />
           </button>
         )}

@@ -14,7 +14,7 @@ import PasswordGuide from "../Components/Dashboard/Authentication/PasswordGuide"
 import { FaInfoCircle } from "react-icons/fa";
 import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
-import { LoadingStatus, UIMessages } from "../Utils/types";
+import { LoadingStatus, AuthUIMessages } from "../Utils/types";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +52,7 @@ const SignUp = () => {
     e.preventDefault();
     console.log(email, password, confirmPassword);
     if (password !== confirmPassword)
-      return setErrorMessage(UIMessages.passwordsDontMatch);
+      return setErrorMessage(AuthUIMessages.passwordsDontMatch);
     if (validEmail && validPassword && passwordsMatch)
       return await dispatch(
         userSignUpThunk({
@@ -63,7 +63,7 @@ const SignUp = () => {
         res.meta.requestStatus === "fulfilled"
           ? navigate("/dashboard")
           : res.meta.requestStatus === "rejected" &&
-            setErrorMessage(UIMessages.signUpFailed)
+            setErrorMessage(AuthUIMessages.signUpFailed)
       );
   }
 
@@ -97,7 +97,9 @@ const SignUp = () => {
               required
             />
             {email !== "" && !validEmail && (
-              <InputHelperText helperTextContent={UIMessages.emailInvalid} />
+              <InputHelperText
+                helperTextContent={AuthUIMessages.emailInvalid}
+              />
             )}
           </div>
           <div className="password flex flex-col justify-center items-center w-full">
@@ -119,7 +121,7 @@ const SignUp = () => {
               <>
                 <div className="w-full flex items-center justify-between">
                   <InputHelperText
-                    helperTextContent={UIMessages.passwordInvalid}
+                    helperTextContent={AuthUIMessages.passwordInvalid}
                   />
                   <button
                     className="p-1 cursor-pointer"
@@ -151,7 +153,7 @@ const SignUp = () => {
             />
             {confirmPassword !== "" && !passwordsMatch && (
               <InputHelperText
-                helperTextContent={UIMessages.passwordsDontMatch}
+                helperTextContent={AuthUIMessages.passwordsDontMatch}
               />
             )}
           </div>

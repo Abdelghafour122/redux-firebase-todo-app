@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { LoadingStatus, UIMessages } from "../Utils/types";
+import { LoadingStatus, AuthUIMessages } from "../Utils/types";
 
 import {
   createUserWithEmailAndPassword,
@@ -46,7 +46,7 @@ const authSlice = createSlice({
       })
       .addCase(userSignUpThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
-        state.error = UIMessages.signUpFailed;
+        state.error = AuthUIMessages.signUpFailed;
       })
       .addCase(userSignUpThunk.fulfilled, (state, action) => {
         state.status = LoadingStatus.succeeded;
@@ -57,7 +57,7 @@ const authSlice = createSlice({
       })
       .addCase(signInWithGoogleThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
-        state.error = UIMessages.googleSignInFailed;
+        state.error = AuthUIMessages.googleSignInFailed;
       })
       .addCase(signInWithGoogleThunk.fulfilled, (state, action) => {
         state.status = LoadingStatus.succeeded;
@@ -68,7 +68,7 @@ const authSlice = createSlice({
       })
       .addCase(userSignInThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
-        state.error = UIMessages.signInFailed;
+        state.error = AuthUIMessages.signInFailed;
       })
       .addCase(userSignInThunk.fulfilled, (state, action) => {
         state.status = LoadingStatus.succeeded;

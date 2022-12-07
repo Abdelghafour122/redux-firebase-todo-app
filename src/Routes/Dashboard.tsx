@@ -1,8 +1,17 @@
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { useAppDispatch } from "../App/hooks";
 import Navbar from "../Components/Dashboard/Navbar";
 
+import { fetchTodosThunk } from "../Reducerss/todoSlice";
+
 function Dashboard() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTodosThunk());
+  }, []);
+
   return (
     <div className="dashboard h-full w-full flex items-start justify-start">
       <Navbar />

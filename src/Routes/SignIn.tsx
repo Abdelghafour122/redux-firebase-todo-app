@@ -10,7 +10,7 @@ import {
   EMAIL_REGEX,
 } from "../Reducerss/authSlice";
 import { useAppDispatch, useAppSelector } from "../App/hooks";
-import { LoadingStatus, UIMessages } from "../Utils/types";
+import { LoadingStatus, AuthUIMessages } from "../Utils/types";
 import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
@@ -55,7 +55,7 @@ const SignIn = () => {
         res.meta.requestStatus === "fulfilled"
           ? navigate("/dashboard")
           : res.meta.requestStatus === "rejected" &&
-            setErrorMessage(UIMessages.signInFailed)
+            setErrorMessage(AuthUIMessages.signInFailed)
       );
     }
     setPassword("");
@@ -91,7 +91,9 @@ const SignIn = () => {
               required
             />
             {email !== "" && !validEmail && (
-              <InputHelperText helperTextContent={UIMessages.emailInvalid} />
+              <InputHelperText
+                helperTextContent={AuthUIMessages.emailInvalid}
+              />
             )}
           </div>
           <div className="password flex flex-col justify-center items-center w-full">

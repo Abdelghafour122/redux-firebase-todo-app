@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../App/hooks";
-import { LoadingStatus, UIMessages } from "../Utils/types";
+import { LoadingStatus, AuthUIMessages } from "../Utils/types";
 import { resetPasswordThunk } from "../Reducerss/authSlice";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InfoMessage from "../Components/Dashboard/Authentication/InfoMessage";
@@ -27,9 +27,9 @@ function ForgottenPassword() {
         resetPasswordThunk(emailRef.current?.value.trim() as string)
       ).then((res) =>
         res.meta.requestStatus === "fulfilled"
-          ? setErrorMessage(UIMessages.resetPasswordSucceeded)
+          ? setErrorMessage(AuthUIMessages.resetPasswordSucceeded)
           : res.meta.requestStatus === "rejected" &&
-            setErrorMessage(UIMessages.resetPasswordFailed)
+            setErrorMessage(AuthUIMessages.resetPasswordFailed)
       );
   }
 
@@ -55,9 +55,9 @@ function ForgottenPassword() {
           onSubmit={handleSubmit}
         >
           {errorMessage !== "" &&
-            (Object.is(UIMessages.resetPasswordSucceeded, errorMessage) ? (
+            (Object.is(AuthUIMessages.resetPasswordSucceeded, errorMessage) ? (
               <SuccessMessage
-                messageContent={UIMessages.resetPasswordSucceeded}
+                messageContent={AuthUIMessages.resetPasswordSucceeded}
               />
             ) : (
               <ErrorMessage messageContent={errorMessage} />
