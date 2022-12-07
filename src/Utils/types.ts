@@ -11,11 +11,12 @@ export enum LoadingStatus {
 export enum UIMessages {
   signInFailed = "Sign in failed, something went wrong!",
   signUpFailed = "Sign up failed, something went wrong!",
-  authWarning = "Please fill in the required fields!",
   passwordsDontMatch = "Passwords don't match!",
   passwordInvalid = "Password invalid",
   googleSignInFailed = "Sign in with google failed, something went wrong!",
   emailInvalid = "This is not an Email",
+  resetPasswordFailed = "Unable to reset password, something went wrong!",
+  resetPasswordSucceeded = "Check your inbox!",
 }
 
 export type AuthContextType = {

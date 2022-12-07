@@ -1,48 +1,67 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
-import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "../Contexts/AuthContext";
+import { useAppDispatch, useAppSelector } from "../App/hooks";
+import { LoadingStatus, UIMessages } from "../Utils/types";
+import { resetPasswordThunk } from "../Reducerss/authSlice";
+import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
+import InfoMessage from "../Components/Dashboard/Authentication/InfoMessage";
+import SuccessMessage from "../Components/Dashboard/Authentication/SuccessMessage";
 
 function ForgottenPassword() {
   const navigate = useNavigate();
-  const { resetPassword } = useAuthentication();
+  const dispatch = useAppDispatch();
+
+  const authError = useAppSelector((state) => state.authentication.error);
+  const authStatus = useAppSelector((state) => state.authentication.status);
 
   const emailRef = useRef<HTMLInputElement | null>(null);
 
-  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    try {
-      setMessage("");
-      setLoading(true);
-      if (emailRef.current?.value !== undefined)
-        await resetPassword(emailRef.current?.value);
-      setMessage("Instructions to reset your password are in your inbox!");
-    } catch {
-      setMessage("An error has occurred, can't reset the password.");
-    }
-    setLoading(false);
+    if (emailRef.current?.value.trim() !== "")
+      return await dispatch(
+        resetPasswordThunk(emailRef.current?.value.trim() as string)
+      ).then((res) =>
+        res.meta.requestStatus === "fulfilled"
+          ? setErrorMessage(UIMessages.resetPasswordSucceeded)
+          : res.meta.requestStatus === "rejected" &&
+            setErrorMessage(UIMessages.resetPasswordFailed)
+      );
   }
 
+  useEffect(() => {
+    authStatus === LoadingStatus.pending ? setLoading(true) : setLoading(false);
+    authStatus === LoadingStatus.failed
+      ? setErrorMessage(authError as string)
+      : setErrorMessage("");
+  }, [authStatus]);
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, []);
+
   return (
-    <div className="forgotten-password">
-      <div className="container">
+    <div className="forgotten-password h-full flex flex-col items-center justify-center">
+      <section className="container">
         <h2 className="form-title">Reset your password</h2>
-        <div className="form-info-message w-60 md:w-80 lg:w-96 ">
-          <AiOutlineInfoCircle size="2rem" />
-          <p className="text-sm font-medium text-left">
-            If you have an account, you will recieve an email to reset your
-            password in your inbox.
-          </p>
-        </div>
+        <InfoMessage />
         <form
-          className="flex flex-col items-center justify-center my-3 mx-auto gap-3 w-max md:w-80 lg:w-96"
+          className="flex flex-col items-center justify-center my-7 mx-auto gap-3 w-max md:w-80 lg:w-96"
           action=""
+          onSubmit={handleSubmit}
         >
-          {message !== "" && <p>{message}</p>}
+          {errorMessage !== "" &&
+            (Object.is(UIMessages.resetPasswordSucceeded, errorMessage) ? (
+              <SuccessMessage
+                messageContent={UIMessages.resetPasswordSucceeded}
+              />
+            ) : (
+              <ErrorMessage messageContent={errorMessage} />
+            ))}
           <div className="email flex flex-col justify-center items-center w-full">
             <label htmlFor="email-address" className="form-label">
               Email:
@@ -55,12 +74,7 @@ function ForgottenPassword() {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="button"
-            disabled={loading}
-            onClick={handleSubmit}
-          >
+          <button type="submit" className="button" disabled={loading}>
             Reset password
           </button>
         </form>
@@ -71,7 +85,7 @@ function ForgottenPassword() {
           <BsArrowLeftSquareFill size="1.5em" color="#e7e5e4" />
           Go Back
         </button>
-      </div>
+      </section>
     </div>
   );
 }

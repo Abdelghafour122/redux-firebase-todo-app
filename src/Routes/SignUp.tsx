@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 // import { useAuthentication } from "../Contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { VscError } from "react-icons/vsc";
 import Attribution from "../Components/Dashboard/Attribution";
 
 import { useAppDispatch, useAppSelector } from "../App/hooks";
@@ -45,13 +44,17 @@ const SignUp = () => {
       : setErrorMessage("");
   }, [authStatus]);
 
+  useEffect(() => {
+    setErrorMessage("");
+  }, []);
+
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     console.log(email, password, confirmPassword);
     if (password !== confirmPassword)
       return setErrorMessage(UIMessages.passwordsDontMatch);
     if (validEmail && validPassword && passwordsMatch)
-      await dispatch(
+      return await dispatch(
         userSignUpThunk({
           email: email.trim(),
           password: password.trim(),
@@ -62,12 +65,11 @@ const SignUp = () => {
           : res.meta.requestStatus === "rejected" &&
             setErrorMessage(UIMessages.signUpFailed)
       );
-    else setErrorMessage(UIMessages.authWarning);
   }
 
   return (
-    <div className="sign-up">
-      <div className="container">
+    <div className="sign-up h-full flex flex-col items-center justify-center">
+      <section className="container">
         <PageTitle titleContent={"Sign Up"} />
         {errormessage !== "" && <ErrorMessage messageContent={errormessage} />}
         <form
@@ -163,7 +165,7 @@ const SignUp = () => {
             Sign In
           </Link>
         </div>
-      </div>
+      </section>
       <Attribution />
     </div>
   );

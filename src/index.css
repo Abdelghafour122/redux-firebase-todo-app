@@ -27,7 +27,7 @@
 
   .form-title {
     padding: 1rem 1.5rem;
-    @apply text-stone-100 text-5xl font-bold text-center;
+    @apply text-stone-100 text-6xl font-bold text-center;
   }
 
   .form-label {
@@ -58,15 +58,15 @@
   }
 
   .form-info-message {
-    @apply bg-amber-200 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1;
+    @apply bg-amber-200 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1 border-2 border-black;
   }
 
   .form-error-message {
-    @apply bg-red-500 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1;
+    @apply bg-red-500 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1 border-2 border-black;
   }
 
   .form-success-message {
-    @apply bg-green-500 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1;
+    @apply bg-green-500 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1 border-2 border-black;
   }
 
   .todo-form-input {
