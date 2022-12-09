@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch } from "../App/hooks";
 import Navbar from "../Components/Dashboard/Navbar";
+import { globalAuth } from "../firebase";
+import { setUser } from "../Reducerss/authSlice";
 
 import { fetchTodosThunk } from "../Reducerss/todoSlice";
 
@@ -10,6 +12,11 @@ function Dashboard() {
 
   useEffect(() => {
     dispatch(fetchTodosThunk());
+    globalAuth.onAuthStateChanged((user) => {
+      if (user) {
+        dispatch(setUser(JSON.stringify(user)));
+      } else console.log("user is null", user);
+    });
   }, []);
 
   return (

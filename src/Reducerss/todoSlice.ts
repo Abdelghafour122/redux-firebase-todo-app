@@ -1,7 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { addDoc, doc, updateDoc } from "firebase/firestore";
 import { RootState } from "../App/store";
+import { todoDatabase, todosCollection } from "../Utils/firestore";
 import { getTodosList } from "../Utils/firestore";
-import { Todos, LoadingStatus } from "../Utils/types";
+import {
+  Todos,
+  LoadingStatus,
+  AddTodoParamsType,
+  EditTodoParamsType,
+} from "../Utils/types";
 
 type todosInitialStateType = {
   todosList: Todos;
@@ -22,11 +29,33 @@ export const fetchTodosThunk = createAsyncThunk(
   }
 );
 
+export const addTodoThunk = createAsyncThunk(
+  "todos/addTodo",
+  async (addTodoPayload: AddTodoParamsType) => {
+    let documentId = "";
+    await addDoc(todosCollection, addTodoPayload).then(
+      (doc) => (documentId = doc.id)
+    );
+    return JSON.stringify({ ...addTodoPayload, id: documentId });
+  }
+);
+
+export const editTodoThunk = createAsyncThunk(
+  "todos/editTodo",
+  async (editTodoPayload: EditTodoParamsType) => {
+    const editTodoDocRef = doc(todoDatabase, "todos", editTodoPayload.id);
+    await updateDoc(editTodoDocRef, {
+      title: editTodoPayload.title,
+      content: editTodoPayload.content,
+    });
+    return JSON.stringify(editTodoPayload);
+  }
+);
+
 const todoSlice = createSlice({
   name: "todos",
   initialState: todosInitialState,
   reducers: {
-    addTodo: () => {},
     editTodo: () => {},
     removeTodo: () => {},
     restoreTodo: () => {},
@@ -43,11 +72,47 @@ const todoSlice = createSlice({
       })
       .addCase(fetchTodosThunk.fulfilled, (state, { payload }) => {
         state.status = LoadingStatus.succeeded;
-        state.todosList.push(JSON.parse(payload));
+        state.todosList = JSON.parse(payload);
       })
       .addCase(fetchTodosThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
         state.error = "An error has occured while fetching countries";
+      }) //ADD TODO THUNK
+      .addCase(addTodoThunk.pending, (state) => {
+        state.status = LoadingStatus.pending;
+      })
+      .addCase(addTodoThunk.fulfilled, (state, { payload }) => {
+        state.status = LoadingStatus.succeeded;
+        state.todosList.push(JSON.parse(payload));
+      })
+      .addCase(addTodoThunk.rejected, (state) => {
+        state.status = LoadingStatus.failed;
+      })
+      .addCase(editTodoThunk.pending, (state) => {
+        state.status = LoadingStatus.pending;
+      })
+      .addCase(editTodoThunk.fulfilled, (state, { payload }) => {
+        state.status = LoadingStatus.succeeded;
+        const parsedPayload = JSON.parse(payload);
+        console.log(parsedPayload);
+        // todo.id === parsedPayload.id
+        // ? {
+        //     ...todo,
+        //     title: parsedPayload.title,
+        //     content: parsedPayload.content,
+        //     date: parsedPayload.date,
+        //   }
+        // : todo
+        state.todosList.map((todo) => {
+          if (todo.id === parsedPayload.id) {
+            todo.title = parsedPayload.title;
+            todo.content = parsedPayload.content;
+            todo.date = parsedPayload.date;
+          }
+        });
+      })
+      .addCase(editTodoThunk.rejected, (state) => {
+        state.status = LoadingStatus.failed;
       });
   },
 });

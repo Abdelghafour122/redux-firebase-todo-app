@@ -1,12 +1,11 @@
 import React from "react";
+import { useAppSelector } from "../../../App/hooks";
 import LittleSectionHeader from "../../../Components/Todos/LittleSectionHeader";
-import { useTodoContext } from "../../../Contexts/TodoContext";
 import Todo from "../Todos/Todo";
 
-type Props = {};
-
-const TodosContainer = (props: Props) => {
-  const { todoList } = useTodoContext();
+const TodosContainer = () => {
+  const todoList = useAppSelector((state) => state.todos.todosList);
+  console.log(todoList);
   return (
     <div className="section-global-container">
       <LittleSectionHeader header={"Ongoing Todos"} />

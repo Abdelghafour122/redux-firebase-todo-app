@@ -38,7 +38,11 @@ const googleProvider = new GoogleAuthProvider();
 const authSlice = createSlice({
   name: "authenticationSlice",
   initialState: authInitialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, { payload }) => {
+      if (payload.user) state.user = JSON.parse(payload.user);
+    },
+  },
   extraReducers(builder) {
     builder //SIGN UP EMAIL PASSWORD
       .addCase(userSignUpThunk.pending, (state) => {
@@ -62,7 +66,7 @@ const authSlice = createSlice({
       .addCase(signInWithGoogleThunk.fulfilled, (state, action) => {
         state.status = LoadingStatus.succeeded;
         state.user = JSON.parse(action.payload);
-      }) //EMAIL PASSWORD SIGN IN
+      }) //EMAIL PASSWORD AUTH
       .addCase(userSignInThunk.pending, (state) => {
         state.status = LoadingStatus.pending;
       })
@@ -119,5 +123,6 @@ export const userSignOutThunk = createAsyncThunk("userSignOut", async () => {
   return await signOut(globalAuth);
 });
 
+export const { setUser } = authSlice.actions;
 export const selectCurrentUser = (state: RootState) => state.authentication;
 export default authSlice.reducer;

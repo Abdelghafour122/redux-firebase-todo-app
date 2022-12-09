@@ -9,8 +9,8 @@ import { app } from "../firebase";
 import { Labels, Todos } from "./types";
 
 export const todoDatabase = getFirestore(app);
-const todosCollection = collection(todoDatabase, "todos");
-const labelsCollection = collection(todoDatabase, "labels");
+export const todosCollection = collection(todoDatabase, "todos");
+export const labelsCollection = collection(todoDatabase, "labels");
 
 // TODOS FETCHING FUNCTION:
 export const getTodosList = async () => {

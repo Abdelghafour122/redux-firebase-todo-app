@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { VscChromeClose } from "react-icons/vsc";
-import { EditTodoParamsType } from "../../Utils/types";
+import { EditTodoParamsType, LoadingStatus } from "../../Utils/types";
 import { useTodoContext } from "../../Contexts/TodoContext";
 import { Timestamp } from "firebase/firestore";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaSpinner } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "../../App/hooks";
+import { editTodoThunk } from "../../Reducerss/todoSlice";
 
 type Props = {
   handleCloseEditTodoBackdrop: () => void;
@@ -11,7 +12,20 @@ type Props = {
 };
 
 const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
-  const { editTodoItem } = useTodoContext();
+  const dispatch = useAppDispatch();
+  const editTodoThunkStatus = useAppSelector((state) => state.todos.status);
+
+  const [editingPending, setEditingPending] = useState(false);
+
+  useEffect(() => {
+    setEditingPending(() =>
+      Object.is(editTodoThunkStatus, LoadingStatus.pending)
+    );
+    Object.is(editTodoThunkStatus, LoadingStatus.pending)
+      ? setButtonDisabled(true)
+      : setButtonDisabled(false);
+  }, [editTodoThunkStatus]);
+
   const [editedTodoTitle, setEditedTodoTitle] = useState<string>(
     todoInfo.title
   );
@@ -22,13 +36,14 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
   useEffect(() => {
+    console.log(editingPending);
     (editedTodoContent !== "" && editedTodoContent !== todoInfo.content) ||
     (editedTodoTitle !== "" && editedTodoTitle !== todoInfo.title)
       ? setButtonDisabled(false)
       : setButtonDisabled(true);
   }, [editedTodoContent, editedTodoTitle, todoInfo.title, todoInfo.content]);
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     // use try/catch when firebase backend gets involved
 
@@ -36,12 +51,15 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
       (editedTodoContent !== "" && editedTodoContent !== todoInfo.content) ||
       (editedTodoTitle !== "" && editedTodoTitle !== todoInfo.title)
     ) {
-      editTodoItem({
-        id: todoInfo.id,
-        title: editedTodoTitle,
-        content: editedTodoContent,
-        date: Timestamp.now(),
-      });
+      await dispatch(
+        editTodoThunk({
+          id: todoInfo.id,
+          title: editedTodoTitle,
+          content: editedTodoContent,
+          date: Timestamp.now(),
+        })
+      );
+
       // set a success message
       handleCloseEditTodoBackdrop();
     } else if (editedTodoContent === "" || editedTodoTitle === "") {
@@ -60,7 +78,6 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
             className="p-2 rounded-full hover:bg-neutral-600 active:bg-neutral-500"
             onClick={handleCloseEditTodoBackdrop}
           >
-            {/* <VscChromeClose color="rgb(231 229 228)" size="1.5rem" /> */}
             <FaTimes color="rgb(231 229 228)" size="1.5rem" />
           </button>
         </div>
@@ -87,8 +104,19 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
               setEditedTodoContent(e.target.value)
             }
           />
-          <button className="button" disabled={buttonDisabled}>
-            Update
+          <button
+            className="button flex align-center justify-center"
+            disabled={buttonDisabled}
+          >
+            {editingPending ? (
+              <FaSpinner
+                className={`${editingPending ? "animate-spin" : ""}`}
+                color="rgb(38 38 38)"
+                size="1.5rem"
+              />
+            ) : (
+              "Update"
+            )}
           </button>
         </form>
       </div>

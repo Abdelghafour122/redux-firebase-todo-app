@@ -4,14 +4,12 @@ import { FiEdit3 } from "react-icons/fi";
 import { CgRemove } from "react-icons/cg";
 import { FaTrash, FaTrashRestore } from "react-icons/fa";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
-import { ImEnlarge2 } from "react-icons/im";
 import EditTodoBackdrop from "../../../Components/Todos/EditTodoBackdrop";
 import { useTodoContext } from "../../../Contexts/TodoContext";
 import {
   EditTodoParamsType,
   DetailedTodoType,
   Todo as TodoType,
-  Labels,
 } from "../../../Utils/types";
 import DetailedTodoBackdrop from "./DetailedTodoBackdrop";
 import Snackbar from "../../../Components/Todos/Snackbar";
@@ -19,16 +17,7 @@ import TodoLabelsList from "../../../Components/Todos/TodoLabelsList";
 import TodoActionsTooltip from "./TodoActionsTooltip";
 import VerifyPermanentDelete from "./VerifyPermanentDelete";
 
-import {
-  FaTrashAlt,
-  FaTrashRestoreAlt,
-  FaPen,
-  FaExpandAlt,
-  FaLightbulb,
-  FaSignOutAlt,
-  FaTimes,
-  FaArchive,
-} from "react-icons/fa";
+import { FaTrashAlt, FaPen, FaExpandAlt, FaArchive } from "react-icons/fa";
 
 const Todo = (todoInfo: TodoType) => {
   const {
@@ -90,7 +79,7 @@ const Todo = (todoInfo: TodoType) => {
     let result = [
       ...labelsArray.filter((label) => todoLabelsIdList.includes(label.id)),
     ];
-    console.log("synced the labels");
+    // console.log("synced the labels");
     return result;
   }, [labelsArray, todoInfo.labels]);
 
@@ -120,7 +109,6 @@ const Todo = (todoInfo: TodoType) => {
               className="todo-action-button relative group"
               onClick={handleOpenEditTodoBackdrop}
             >
-              {/* <FiEdit3 size={"1.3rem"} /> */}
               <FaPen size={"1.3rem"} />
               <TodoActionsTooltip text={"Edit"} />
             </button>
@@ -136,7 +124,6 @@ const Todo = (todoInfo: TodoType) => {
                     })
                   }
                 >
-                  {/* <BsArchive size={"1.3rem"} /> */}
                   <FaArchive size={"1.3rem"} />
                   <TodoActionsTooltip text={"Archive"} />
                 </button>
@@ -161,7 +148,6 @@ const Todo = (todoInfo: TodoType) => {
                 removeTodoItem({ id: todoInfo.id, deleted: todoInfo.deleted })
               }
             >
-              {/* <BsTrash size={"1.3rem"} /> */}
               <FaTrashAlt size={"1.3rem"} />
               <TodoActionsTooltip text={"Delete"} />
             </button>
@@ -169,7 +155,6 @@ const Todo = (todoInfo: TodoType) => {
               className="todo-action-button relative group"
               onClick={handleOpenDetailedTodoBackdrop}
             >
-              {/* <ImEnlarge2 size={"1.3rem"} /> */}
               <FaExpandAlt size={"1.3rem"} />
               <TodoActionsTooltip text={"Enlarge"} />
             </button>
@@ -180,7 +165,6 @@ const Todo = (todoInfo: TodoType) => {
               className="todo-action-button relative group"
               onClick={() => handleOpenVerifyDeleteBackdrop()}
             >
-              {/* <CgRemove size={"1.5rem"} color={"rgb(220 38 38)"} /> */}
               <FaTrash size={"1.5rem"} color={"rgb(220 38 38)"} />
               <TodoActionsTooltip text={"Delete forever"} />
             </button>

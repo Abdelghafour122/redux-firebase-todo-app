@@ -98,6 +98,7 @@ export type CompletedTodoParamsType = {
   completed: boolean;
 };
 
+// REMOVE THIS LATER
 export type UpdateTodoContentParamsType = {
   id: string;
   title: string;

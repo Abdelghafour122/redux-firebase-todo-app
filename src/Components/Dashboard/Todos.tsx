@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useTodoContext } from "../../Contexts/TodoContext";
 
 import { HiLightBulb } from "react-icons/hi";
 import TodoForm from "./Todos/TodoForm";
@@ -25,7 +24,7 @@ const Todos = () => {
   };
 
   useEffect(() => {
-    todoList === undefined ? setLoading(true) : setLoading(false);
+    Object.is(todoList, []) ? setLoading(true) : setLoading(false);
   }, [todoList]);
 
   useEffect(() => {

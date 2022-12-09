@@ -19,11 +19,8 @@ import {
 
 import { useAppSelector } from "../../App/hooks";
 import { selectCurrentUser } from "../../Reducerss/authSlice";
-import { User } from "firebase/auth";
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
   const { currentUser, userSignOut } = useAuthentication();
   const { fetchLabels } = useTodoContext();
   const navigate = useNavigate();

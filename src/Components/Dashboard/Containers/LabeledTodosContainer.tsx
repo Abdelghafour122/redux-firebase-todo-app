@@ -1,5 +1,5 @@
 import React from "react";
-import { useTodoContext } from "../../../Contexts/TodoContext";
+import { useAppSelector } from "../../../App/hooks";
 import { Labels } from "../../../Utils/types";
 import Todo from "../Todos/Todo";
 
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const LabeledTodosContainer = ({ id, name }: Props) => {
-  const { todoList } = useTodoContext();
+  const todoList = useAppSelector((state) => state.todos.todosList);
   const getLabelsIds = (curLabelsList: Labels) => {
     return curLabelsList.map((label) => label.id);
   };

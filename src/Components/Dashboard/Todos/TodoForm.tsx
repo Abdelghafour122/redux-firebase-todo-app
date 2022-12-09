@@ -1,7 +1,10 @@
 import React, { useState, SyntheticEvent } from "react";
-import { VscChromeClose } from "react-icons/vsc";
 import { useTodoContext } from "../../../Contexts/TodoContext";
 import { FaTimes } from "react-icons/fa";
+import { useAppDispatch } from "../../../App/hooks";
+import { addTodoThunk } from "../../../Reducerss/todoSlice";
+import { Labels } from "../../../Utils/types";
+import { Timestamp } from "firebase/firestore";
 
 type Props = {
   handleCloseTodoFormBackdrop: () => void;
@@ -11,11 +14,26 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
   const { addTodoItem } = useTodoContext();
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [todoContent, setTodoContent] = useState<string>("");
-  const handleSubmit = (e: SyntheticEvent) => {
+
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     todoContent !== "" &&
-      addTodoItem({ title: todoTitle, content: todoContent });
+      // addTodoItem({ title: todoTitle, content: todoContent });
+      dispatch(
+        addTodoThunk({
+          title: todoTitle,
+          content: todoContent,
+          archived: false,
+          completed: false,
+          deleted: false,
+          edited: false,
+          labels: [] as Labels,
+          date: Timestamp.now(),
+        })
+      );
 
     setTodoContent("");
     setTodoTitle("");
