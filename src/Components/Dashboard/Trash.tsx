@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { BsTrashFill } from "react-icons/bs";
-import { useTodoContext } from "../../Contexts/TodoContext";
 import EmptySection from "./Placeholders/EmptySection";
 import DeletedTodosContainer from "./Containers/DeletedTodosContainer";
 import LoadingPage from "./LoadingPage";
+import { useAppSelector } from "../../App/hooks";
 
-type Props = {};
-
-const Trash = (props: Props) => {
-  const { todoList } = useTodoContext();
+const Trash = () => {
+  const todoList = useAppSelector((state) => state.todos.todosList);
   const [undeletedTodos, setUndeletedTodos] = useState<boolean>();
   const [loading, setLoading] = useState(true);
 

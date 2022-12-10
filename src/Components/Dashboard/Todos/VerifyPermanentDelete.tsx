@@ -1,5 +1,6 @@
 import React from "react";
-import { useTodoContext } from "../../../Contexts/TodoContext";
+import { useAppDispatch } from "../../../App/hooks";
+import { permanentlyDeleteTodoThnuk } from "../../../Reducerss/todoSlice";
 
 type Props = {
   id: string;
@@ -10,7 +11,7 @@ const VerifyPermanentDelete = ({
   handleCloseVerifyDeleteBackdrop,
   id,
 }: Props) => {
-  const { permanentlyRemoveTodoItem } = useTodoContext();
+  const dispatch = useAppDispatch();
   return (
     <div className="backdrop">
       <section className="flex flex-col items-center justify-between gap-10 w-1/3 max-w-md min-h-max p-4 bg-neutral-900 rounded-md shadow-md">
@@ -26,7 +27,10 @@ const VerifyPermanentDelete = ({
           </button>
           <button
             className="button"
-            onClick={() => permanentlyRemoveTodoItem({ id: id })}
+            onClick={async () => {
+              await dispatch(permanentlyDeleteTodoThnuk(id));
+              handleCloseVerifyDeleteBackdrop();
+            }}
           >
             Delete
           </button>

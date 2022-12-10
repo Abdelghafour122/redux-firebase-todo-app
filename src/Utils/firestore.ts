@@ -4,6 +4,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  Timestamp,
 } from "firebase/firestore";
 import { app } from "../firebase";
 import { Labels, Todos } from "./types";
@@ -55,4 +56,14 @@ export const getSpecificLabelCount = async (labelId: string) => {
     } else console.log("label not found in database");
   });
   return res;
+};
+
+// FORMAT THE DATE FOR THE DETAILED TODO
+export const formatDate = (fetchedDate: Timestamp) => {
+  return new Timestamp(fetchedDate.seconds, fetchedDate.nanoseconds)
+    .toDate()
+    .toLocaleString("en-GB", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
 };

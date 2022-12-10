@@ -8,7 +8,6 @@ const ArchivedTodosContainer = () => {
   return (
     <div className="section-global-container">
       <LittleSectionHeader header={"Archived Todos"} />
-      {/* <div className="archived-todos-container flex flex-wrap items-start justify-start gap-2 overflow-auto"> */}
       <div className="archived-todos-container todo-container">
         {todoList.map((todo) => {
           return (

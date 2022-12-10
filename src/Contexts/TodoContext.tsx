@@ -253,6 +253,7 @@ const TodoContext = ({ children }: TodoContextProps) => {
     }, []),
 
     formatDate: (fetchedDate: Timestamp) => {
+      console.log(fetchedDate.toDate());
       return fetchedDate.toDate().toLocaleString("en-GB", {
         dateStyle: "short",
         timeStyle: "short",

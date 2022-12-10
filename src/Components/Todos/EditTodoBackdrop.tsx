@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { EditTodoParamsType, LoadingStatus } from "../../Utils/types";
-import { useTodoContext } from "../../Contexts/TodoContext";
 import { Timestamp } from "firebase/firestore";
 import { FaTimes, FaSpinner } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";

@@ -1,7 +1,4 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { BsArchive, BsTrash } from "react-icons/bs";
-import { FiEdit3 } from "react-icons/fi";
-import { CgRemove } from "react-icons/cg";
 import { FaTrash, FaTrashRestore } from "react-icons/fa";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
 import EditTodoBackdrop from "../../../Components/Todos/EditTodoBackdrop";
@@ -10,6 +7,7 @@ import {
   EditTodoParamsType,
   DetailedTodoType,
   Todo as TodoType,
+  LoadingStatus,
 } from "../../../Utils/types";
 import DetailedTodoBackdrop from "./DetailedTodoBackdrop";
 import Snackbar from "../../../Components/Todos/Snackbar";
@@ -17,9 +15,23 @@ import TodoLabelsList from "../../../Components/Todos/TodoLabelsList";
 import TodoActionsTooltip from "./TodoActionsTooltip";
 import VerifyPermanentDelete from "./VerifyPermanentDelete";
 
-import { FaTrashAlt, FaPen, FaExpandAlt, FaArchive } from "react-icons/fa";
+import {
+  FaTrashAlt,
+  FaPen,
+  FaExpandAlt,
+  FaArchive,
+  FaSpinner,
+} from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
+import {
+  archiveTodoThunk,
+  deleteTodoThnuk,
+} from "../../../Reducerss/todoSlice";
 
 const Todo = (todoInfo: TodoType) => {
+  const [todoActionLoading, setTodoActionLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
   const {
     removeTodoItem,
     restoreTodoItem,
@@ -34,6 +46,20 @@ const Todo = (todoInfo: TodoType) => {
   const [openVerifyDeleteBackdrop, setOpenVerifyDeleteBackdrop] =
     useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const currentThunkStatus = useAppSelector((state) => state.todos.status);
+
+  const curentTodo = useAppSelector((state) =>
+    state.todos.todosList.find(
+      (todoFromState) => todoInfo.id === todoFromState.id
+    )
+  );
+
+  useEffect(() => {
+    setTodoActionLoading(() =>
+      Object.is(currentThunkStatus, LoadingStatus.pending)
+    );
+  }, [currentThunkStatus]);
 
   const handleOpenVerifyDeleteBackdrop = () => {
     return setOpenVerifyDeleteBackdrop(true);
@@ -117,24 +143,38 @@ const Todo = (todoInfo: TodoType) => {
               todoInfo.archived === false ? (
                 <button
                   className="todo-action-button group relative"
-                  onClick={() =>
-                    archiveTodoItem({
-                      id: todoInfo.id,
-                      archived: true,
-                    })
+                  onClick={async () =>
+                    await dispatch(
+                      archiveTodoThunk({
+                        id: todoInfo.id,
+                        archived: true,
+                      })
+                    )
                   }
                 >
-                  <FaArchive size={"1.3rem"} />
-                  <TodoActionsTooltip text={"Archive"} />
+                  {/* FIX THE ID BUG */}
+                  {todoActionLoading && curentTodo?.id === todoInfo.id ? (
+                    <FaSpinner
+                      size={"1.3rem"}
+                      className={`${todoActionLoading ? "animate-spin" : ""}`}
+                    />
+                  ) : (
+                    <>
+                      <FaArchive size={"1.3rem"} />
+                      <TodoActionsTooltip text={"Archive"} />
+                    </>
+                  )}
                 </button>
               ) : (
                 <button
                   className="todo-action-button relative group"
-                  onClick={() =>
-                    archiveTodoItem({
-                      id: todoInfo.id,
-                      archived: false,
-                    })
+                  onClick={async () =>
+                    await dispatch(
+                      archiveTodoThunk({
+                        id: todoInfo.id,
+                        archived: false,
+                      })
+                    )
                   }
                 >
                   <RiInboxUnarchiveLine size={"1.3rem"} />
@@ -144,8 +184,13 @@ const Todo = (todoInfo: TodoType) => {
             </>
             <button
               className="todo-action-button relative group"
-              onClick={() =>
-                removeTodoItem({ id: todoInfo.id, deleted: todoInfo.deleted })
+              onClick={async () =>
+                await dispatch(
+                  deleteTodoThnuk({
+                    id: todoInfo.id,
+                    deleted: true,
+                  })
+                )
               }
             >
               <FaTrashAlt size={"1.3rem"} />
@@ -170,8 +215,10 @@ const Todo = (todoInfo: TodoType) => {
             </button>
             <button
               className="todo-action-button relative group"
-              onClick={() =>
-                restoreTodoItem({ id: todoInfo.id, deleted: todoInfo.deleted })
+              onClick={async () =>
+                await dispatch(
+                  deleteTodoThnuk({ id: todoInfo.id, deleted: false })
+                )
               }
             >
               <FaTrashRestore size={"1.5rem"} color={"rgb(22 163 74)"} />

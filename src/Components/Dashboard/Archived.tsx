@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useTodoContext } from "../../Contexts/TodoContext";
 import ArchivedTodosContainer from "./Containers/ArchivedTodosContainer";
 import EmptySection from "./Placeholders/EmptySection";
 import { BsArchiveFill } from "react-icons/bs";
 import LoadingPage from "./LoadingPage";
+import { useAppSelector } from "../../App/hooks";
 
 type Props = {};
 
 const Archived = (props: Props) => {
-  const { todoList } = useTodoContext();
+  const todoList = useAppSelector((state) => state.todos.todosList);
+
   const [loading, setLoading] = useState(true);
   const [unArchivedTodos, setUnArchivedTodos] = useState<boolean>();
 

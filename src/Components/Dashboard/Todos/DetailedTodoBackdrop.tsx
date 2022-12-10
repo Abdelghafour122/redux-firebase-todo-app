@@ -1,24 +1,18 @@
 import React, { useState } from "react";
-import { BsArchive, BsTrash } from "react-icons/bs";
 import { DetailedTodoType } from "../../../Utils/types";
+import { formatDate } from "../../../Utils/firestore";
 import { useTodoContext } from "../../../Contexts/TodoContext";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
-import { MdOutlineNewLabel } from "react-icons/md";
 import TodoActionsTooltip from "./TodoActionsTooltip";
 import LabelListDropdown from "../Labels/LabelListDropdown";
 import TodoLabelsList from "../../../Components/Todos/TodoLabelsList";
 
+import { FaTrashAlt, FaArchive, FaTags } from "react-icons/fa";
+import { useAppDispatch } from "../../../App/hooks";
 import {
-  FaTrashAlt,
-  FaTrashRestoreAlt,
-  FaPen,
-  FaExpandAlt,
-  FaLightbulb,
-  FaSignOutAlt,
-  FaTimes,
-  FaArchive,
-  FaTags,
-} from "react-icons/fa";
+  archiveTodoThunk,
+  deleteTodoThnuk,
+} from "../../../Reducerss/todoSlice";
 
 type Props = {
   handleCloseDetailedTodoBackdrop: () => void;
@@ -29,8 +23,10 @@ const DetailedTodoBackdrop = ({
   handleCloseDetailedTodoBackdrop,
   detailedTodoInfo,
 }: Props) => {
-  const { removeTodoItem, archiveTodoItem, formatDate, labelsArray } =
-    useTodoContext();
+  const { labelsArray } = useTodoContext();
+
+  const dispatch = useAppDispatch();
+
   const [openLabelsDrpdown, setOpenLabelsDropdown] = useState(false);
   return (
     <div className="detailed-todo backdrop">
@@ -61,14 +57,15 @@ const DetailedTodoBackdrop = ({
             <li>
               <button
                 className="todo-action-button group relative"
-                onClick={() =>
-                  removeTodoItem({
-                    id: detailedTodoInfo.id,
-                    deleted: detailedTodoInfo.deleted,
-                  })
-                }
+                onClick={async () => {
+                  await dispatch(
+                    deleteTodoThnuk({
+                      id: detailedTodoInfo.id,
+                      deleted: detailedTodoInfo.deleted,
+                    })
+                  );
+                }}
               >
-                {/* <BsTrash size={"1.3rem"} /> */}
                 <FaTrashAlt size={"1.3rem"} />
                 <TodoActionsTooltip text={"Delete"} />
               </button>
@@ -78,25 +75,28 @@ const DetailedTodoBackdrop = ({
               detailedTodoInfo.archived === false ? (
                 <button
                   className="todo-action-button group relative"
-                  onClick={() =>
-                    archiveTodoItem({
-                      id: detailedTodoInfo.id,
-                      archived: true,
-                    })
-                  }
+                  onClick={async () => {
+                    dispatch(
+                      archiveTodoThunk({
+                        id: detailedTodoInfo.id,
+                        archived: true,
+                      })
+                    );
+                  }}
                 >
-                  {/* <BsArchive size={"1.3rem"} /> */}
                   <FaArchive size={"1.3rem"} />
                   <TodoActionsTooltip text={"Archive"} />
                 </button>
               ) : (
                 <button
                   className="todo-action-button group relative"
-                  onClick={() =>
-                    archiveTodoItem({
-                      id: detailedTodoInfo.id,
-                      archived: false,
-                    })
+                  onClick={async () =>
+                    await dispatch(
+                      archiveTodoThunk({
+                        id: detailedTodoInfo.id,
+                        archived: false,
+                      })
+                    )
                   }
                 >
                   <RiInboxUnarchiveLine size={"1.3rem"} />
@@ -109,7 +109,6 @@ const DetailedTodoBackdrop = ({
                 className="todo-action-button group relative"
                 onClick={() => setOpenLabelsDropdown((prev) => !prev)}
               >
-                {/* <MdOutlineNewLabel size={"1.3rem"} /> */}
                 <FaTags size={"1.3rem"} />
                 <TodoActionsTooltip text={"Add Label"} />
               </button>

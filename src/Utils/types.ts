@@ -53,10 +53,10 @@ export type TodoContextValueType = {
   ) => void;
 };
 
-type ArchiveTodoType = {
-  id: string;
-  deleted: boolean;
-};
+// type ArchiveTodoType = {
+//   id: string;
+//   deleted: boolean;
+// };
 
 export type EditTodoPayloadType = {
   id?: string;
@@ -106,7 +106,11 @@ export type UpdateTodoContentParamsType = {
   edited: boolean;
 };
 
-export type DeletedTodoParamsType = ArchiveTodoType;
+// export type DeletedTodoParamsType = ArchiveTodoType;
+export type DeletedTodoParamsType = {
+  id: string;
+  deleted: boolean;
+};
 
 export type ArchivedTodoParamsType = {
   id: string;
