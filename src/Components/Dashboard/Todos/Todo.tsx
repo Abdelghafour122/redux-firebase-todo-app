@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import {
   archiveTodoThunk,
   deleteTodoThnuk,
+  toggleTodoCompletedThunk,
 } from "../../../Reducerss/todoSlice";
 
 const Todo = (todoInfo: TodoType) => {
@@ -49,7 +50,7 @@ const Todo = (todoInfo: TodoType) => {
 
   const currentThunkStatus = useAppSelector((state) => state.todos.status);
 
-  const curentTodo = useAppSelector((state) =>
+  const currentTodo = useAppSelector((state) =>
     state.todos.todosList.find(
       (todoFromState) => todoInfo.id === todoFromState.id
     )
@@ -95,9 +96,14 @@ const Todo = (todoInfo: TodoType) => {
 
   const markTodoAsCompleted = () => {
     setTodoIsDone(!todoIsDone);
-    return setTimeout(() => {
-      markAsCompleted({ id: todoInfo.id, completed: !todoInfo.completed });
-    }, 1500);
+    dispatch(
+      toggleTodoCompletedThunk({
+        id: todoInfo.id,
+        completed: !todoInfo.completed,
+      })
+    );
+    // return setTimeout(() => {
+    // }, 1500);
   };
 
   const syncTodoLabels = useMemo(() => {
@@ -153,7 +159,7 @@ const Todo = (todoInfo: TodoType) => {
                   }
                 >
                   {/* FIX THE ID BUG */}
-                  {todoActionLoading && curentTodo?.id === todoInfo.id ? (
+                  {todoActionLoading && currentTodo?.id === todoInfo.id ? (
                     <FaSpinner
                       size={"1.3rem"}
                       className={`${todoActionLoading ? "animate-spin" : ""}`}

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MdOutlineDone } from "react-icons/md";
-import { VscChromeClose } from "react-icons/vsc";
 import { FaCheck, FaTimes } from "react-icons/fa";
-import { useTodoContext } from "../../../Contexts/TodoContext";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
+import { addLabelThunk, fetchLabelsThunk } from "../../../Reducerss/labelSlice";
 import LabelContentHolder from "./LabelContentHolder";
 
 type Props = {
@@ -10,15 +9,20 @@ type Props = {
 };
 
 const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
-  const { addLabel, labelsArray, fetchLabels } = useTodoContext();
   const [label, setLabel] = useState("");
   const labelValid = useRef(true);
   const labelExists = useRef(false);
   const [listLimitReached, setListLimitReached] = useState(false);
 
+  const dispatch = useAppDispatch();
+  const labelsArray = useAppSelector((state) => state.labels.labelsList);
+
   useEffect(() => {
+    const fetchLabels = async () => {
+      await dispatch(fetchLabelsThunk());
+    };
     fetchLabels();
-  }, [fetchLabels]);
+  }, []);
 
   useEffect(() => {
     if (labelsArray.length >= 5) setListLimitReached(true);
@@ -32,16 +36,18 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
     labelExists.current = false;
   }, [label, labelsArray]);
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     labelsArray.every((l) => l.name !== label) === false
       ? (labelExists.current = true)
       : (labelExists.current = false);
     if (!labelExists.current && labelValid.current && label.trim().length > 0) {
-      addLabel({
-        name: label.trim(),
-        count: 0,
-      });
+      await dispatch(
+        addLabelThunk({
+          name: label.trim(),
+          count: 0,
+        })
+      );
     }
     setLabel("");
   };
@@ -83,7 +89,6 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
                 onClick={handleSubmit}
                 disabled={!labelValid.current || label === ""}
               >
-                {/* <MdOutlineDone size={"1.4rem"} /> */}
                 <FaCheck size={"1.4rem"} color="rgb(231 229 228)" />
               </button>
             </div>

@@ -8,7 +8,7 @@ import LabelListDropdown from "../Labels/LabelListDropdown";
 import TodoLabelsList from "../../../Components/Todos/TodoLabelsList";
 
 import { FaTrashAlt, FaArchive, FaTags } from "react-icons/fa";
-import { useAppDispatch } from "../../../App/hooks";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import {
   archiveTodoThunk,
   deleteTodoThnuk,
@@ -23,7 +23,7 @@ const DetailedTodoBackdrop = ({
   handleCloseDetailedTodoBackdrop,
   detailedTodoInfo,
 }: Props) => {
-  const { labelsArray } = useTodoContext();
+  const labelsArray = useAppSelector((state) => state.labels.labelsList);
 
   const dispatch = useAppDispatch();
 

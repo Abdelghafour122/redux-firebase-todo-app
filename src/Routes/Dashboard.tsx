@@ -4,6 +4,7 @@ import { useAppDispatch } from "../App/hooks";
 import Navbar from "../Components/Dashboard/Navbar";
 import { globalAuth } from "../firebase";
 import { setUser } from "../Reducerss/authSlice";
+import { fetchLabelsThunk } from "../Reducerss/labelSlice";
 
 import { fetchTodosThunk } from "../Reducerss/todoSlice";
 
@@ -12,6 +13,7 @@ function Dashboard() {
 
   useEffect(() => {
     dispatch(fetchTodosThunk());
+    dispatch(fetchLabelsThunk());
     globalAuth.onAuthStateChanged((user) => {
       if (user) {
         dispatch(setUser(JSON.stringify(user)));

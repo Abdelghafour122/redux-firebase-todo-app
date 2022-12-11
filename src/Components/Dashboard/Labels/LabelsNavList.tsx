@@ -1,11 +1,9 @@
 import React from "react";
-import { useTodoContext } from "../../../Contexts/TodoContext";
+import { useAppSelector } from "../../../App/hooks";
 import LabelsNavListItem from "./LabelsNavListItem";
 
-type Props = {};
-
-const LabelsNavList = (props: Props) => {
-  const { labelsArray } = useTodoContext();
+const LabelsNavList = () => {
+  const labelsArray = useAppSelector((state) => state.labels.labelsList);
   return (
     <ul className="label-nav-list flex flex-col w-full items-end justify-start gap-2">
       {labelsArray.length !== 0

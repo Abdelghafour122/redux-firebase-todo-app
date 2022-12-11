@@ -186,6 +186,16 @@ export type UpdateLabelNameParamsType = {
   name: string;
 };
 
+export type UpdateLabelCountParamsTypeRedux = {
+  id: string;
+  count: number;
+};
+
+export type UpdateLabelNameParamsTypeRedux = {
+  id: string;
+  name: string;
+};
+
 export type UpdateLabelContentParamsType =
   | UpdateLabelNameParamsType
   | UpdateLabelCountParamsType;

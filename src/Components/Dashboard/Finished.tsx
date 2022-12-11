@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useTodoContext } from "../../Contexts/TodoContext";
 import EmptySection from "./Placeholders/EmptySection";
 import FinishedTodosContainer from "./Containers/FinishedTodosContainer";
 import { MdOutlineDone } from "react-icons/md";
 import LoadingPage from "./LoadingPage";
+import { useAppSelector } from "../../App/hooks";
 
 const Finished = () => {
-  const { todoList } = useTodoContext();
+  const todoList = useAppSelector((state) => state.todos.todosList);
   const [noFinishedTodos, setNoFinishedTodos] = useState<boolean>();
   const [loading, setLoading] = useState(true);
 

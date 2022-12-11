@@ -10,6 +10,7 @@ import {
   EditTodoParamsType,
   ArchivedTodoParamsType,
   DeletedTodoParamsType,
+  CompletedTodoParamsType,
 } from "../Utils/types";
 
 type todosInitialStateType = {
@@ -17,6 +18,7 @@ type todosInitialStateType = {
   status: LoadingStatus;
   error: null | string;
 };
+
 const todosInitialState: todosInitialStateType = {
   todosList: [],
   status: LoadingStatus.pending,
@@ -82,6 +84,21 @@ export const permanentlyDeleteTodoThnuk = createAsyncThunk(
     const pDeleteTodoDocRef = doc(todoDatabase, "todos", pDeleteTodoPayload);
     await deleteDoc(pDeleteTodoDocRef);
     return JSON.stringify(pDeleteTodoPayload);
+  }
+);
+
+export const toggleTodoCompletedThunk = createAsyncThunk(
+  "todos/toggleTodoCompleted",
+  async (completedTodoPayload: CompletedTodoParamsType) => {
+    const completedTodoDocRef = doc(
+      todoDatabase,
+      "todos",
+      completedTodoPayload.id
+    );
+    await updateDoc(completedTodoDocRef, {
+      completed: completedTodoPayload.completed,
+    });
+    return JSON.stringify(completedTodoPayload);
   }
 );
 
@@ -169,6 +186,21 @@ const todoSlice = createSlice({
         );
       })
       .addCase(permanentlyDeleteTodoThnuk.rejected, (state) => {
+        state.status = LoadingStatus.failed;
+      })
+      .addCase(toggleTodoCompletedThunk.pending, (state) => {
+        state.status = LoadingStatus.pending;
+      })
+      .addCase(toggleTodoCompletedThunk.fulfilled, (state, { payload }) => {
+        state.status = LoadingStatus.succeeded;
+        const parsedPayload: CompletedTodoParamsType = JSON.parse(payload);
+        state.todosList.map((todo) => {
+          if (todo.id === parsedPayload.id) {
+            todo.completed = parsedPayload.completed;
+          }
+        });
+      })
+      .addCase(toggleTodoCompletedThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
       });
   },

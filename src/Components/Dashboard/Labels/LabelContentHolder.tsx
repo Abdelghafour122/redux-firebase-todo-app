@@ -1,10 +1,10 @@
 import React from "react";
-import { useTodoContext } from "../../../Contexts/TodoContext";
+import { useAppSelector } from "../../../App/hooks";
 import LabelItem from "./LabelItem";
 import NoLabelsMessage from "./NoLabelsMessage";
 
 const LabelContentHolder = () => {
-  const { labelsArray } = useTodoContext();
+  const labelsArray = useAppSelector((state) => state.labels.labelsList);
 
   return (
     <>
