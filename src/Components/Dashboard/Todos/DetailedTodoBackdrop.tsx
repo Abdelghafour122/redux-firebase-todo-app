@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { DetailedTodoType } from "../../../Utils/types";
+import { DetailedTodoType, checkIfLoading } from "../../../Utils/types";
 import { formatDate } from "../../../Utils/firestore";
 import { useTodoContext } from "../../../Contexts/TodoContext";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
@@ -7,7 +7,7 @@ import TodoActionsTooltip from "./TodoActionsTooltip";
 import LabelListDropdown from "../Labels/LabelListDropdown";
 import TodoLabelsList from "../../../Components/Todos/TodoLabelsList";
 
-import { FaTrashAlt, FaArchive, FaTags } from "react-icons/fa";
+import { FaTrashAlt, FaArchive, FaTags, FaSpinner } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import {
   archiveTodoThunk,
@@ -25,6 +25,8 @@ const DetailedTodoBackdrop = ({
 }: Props) => {
   const labelsArray = useAppSelector((state) => state.labels.labelsList);
 
+  const currentThunkStatus = useAppSelector((state) => state.todos.status);
+
   const dispatch = useAppDispatch();
 
   const [openLabelsDrpdown, setOpenLabelsDropdown] = useState(false);
@@ -41,7 +43,6 @@ const DetailedTodoBackdrop = ({
           </p>
         </div>
         <p>
-          {" "}
           {`${
             detailedTodoInfo.edited === false ? "Created on: " : "Edited on: "
           } ${formatDate(detailedTodoInfo.date)}`}{" "}
@@ -57,17 +58,24 @@ const DetailedTodoBackdrop = ({
             <li>
               <button
                 className="todo-action-button group relative"
+                disabled={checkIfLoading(currentThunkStatus.deleteTodoStatus)}
                 onClick={async () => {
                   await dispatch(
                     deleteTodoThnuk({
                       id: detailedTodoInfo.id,
-                      deleted: detailedTodoInfo.deleted,
+                      deleted: true,
                     })
                   );
                 }}
               >
-                <FaTrashAlt size={"1.3rem"} />
-                <TodoActionsTooltip text={"Delete"} />
+                {checkIfLoading(currentThunkStatus.deleteTodoStatus) ? (
+                  <FaSpinner size={"1.3rem"} className="animate-spin" />
+                ) : (
+                  <>
+                    <FaTrashAlt size={"1.3rem"} />
+                    <TodoActionsTooltip text={"Delete"} />
+                  </>
+                )}
               </button>
             </li>
             <li>
@@ -75,6 +83,9 @@ const DetailedTodoBackdrop = ({
               detailedTodoInfo.archived === false ? (
                 <button
                   className="todo-action-button group relative"
+                  disabled={checkIfLoading(
+                    currentThunkStatus.archiveTodoStatus
+                  )}
                   onClick={async () => {
                     dispatch(
                       archiveTodoThunk({
@@ -84,8 +95,14 @@ const DetailedTodoBackdrop = ({
                     );
                   }}
                 >
-                  <FaArchive size={"1.3rem"} />
-                  <TodoActionsTooltip text={"Archive"} />
+                  {checkIfLoading(currentThunkStatus.archiveTodoStatus) ? (
+                    <FaSpinner size={"1.3rem"} className="animate-spin" />
+                  ) : (
+                    <>
+                      <FaArchive size={"1.3rem"} />
+                      <TodoActionsTooltip text={"Archive"} />
+                    </>
+                  )}
                 </button>
               ) : (
                 <button

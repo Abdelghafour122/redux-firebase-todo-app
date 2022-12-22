@@ -26,10 +26,7 @@ const Trash = () => {
       {loading ? (
         <LoadingPage />
       ) : undeletedTodos === true ? (
-        <EmptySection
-          message={"Your deleted todos will appear here!"}
-          Icon={BsTrashFill}
-        />
+        <EmptySection message={"No todos in Trash!"} Icon={BsTrashFill} />
       ) : (
         <DeletedTodosContainer />
       )}

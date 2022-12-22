@@ -8,6 +8,20 @@ export enum LoadingStatus {
   failed = "Failed",
 }
 
+export type TodoFuncsLoadingStatus = {
+  addTodoStatus: LoadingStatus;
+  toggleCompletedStatus: LoadingStatus;
+  editTodoStatus: LoadingStatus;
+  archiveTodoStatus: LoadingStatus;
+  deleteTodoStatus: LoadingStatus;
+  permanentlyDeleteTodoStatus: LoadingStatus;
+  fetchTodoStatus: LoadingStatus;
+};
+
+export const checkIfLoading = (funcStatus: LoadingStatus) => {
+  return Object.is(funcStatus, LoadingStatus.pending);
+};
+
 export enum AuthUIMessages {
   signInFailed = "Sign in failed, something went wrong!",
   signUpFailed = "Sign up failed, something went wrong!",

@@ -33,10 +33,7 @@ const Archived = (props: Props) => {
       {loading ? (
         <LoadingPage />
       ) : unArchivedTodos === true ? (
-        <EmptySection
-          Icon={BsArchiveFill}
-          message={"Your archived todos will appear here!"}
-        />
+        <EmptySection Icon={BsArchiveFill} message={"No archived Todos!"} />
       ) : (
         <ArchivedTodosContainer />
       )}

@@ -54,7 +54,7 @@
   }
 
   .todo-action-button {
-    @apply p-2 rounded-full hover:bg-neutral-700 active:bg-neutral-500;
+    @apply p-2 rounded-full hover:bg-neutral-700 active:bg-neutral-500 disabled:bg-neutral-700 disabled:cursor-not-allowed disabled:hover:bg-transparent;
   }
 
   .form-info-message {

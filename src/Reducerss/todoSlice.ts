@@ -11,17 +11,28 @@ import {
   ArchivedTodoParamsType,
   DeletedTodoParamsType,
   CompletedTodoParamsType,
+  TodoFuncsLoadingStatus,
 } from "../Utils/types";
 
 type todosInitialStateType = {
   todosList: Todos;
-  status: LoadingStatus;
+  status: TodoFuncsLoadingStatus;
   error: null | string;
+};
+
+const initialStatus: TodoFuncsLoadingStatus = {
+  addTodoStatus: LoadingStatus.idle,
+  editTodoStatus: LoadingStatus.idle,
+  archiveTodoStatus: LoadingStatus.idle,
+  deleteTodoStatus: LoadingStatus.idle,
+  fetchTodoStatus: LoadingStatus.idle,
+  toggleCompletedStatus: LoadingStatus.idle,
+  permanentlyDeleteTodoStatus: LoadingStatus.idle,
 };
 
 const todosInitialState: todosInitialStateType = {
   todosList: [],
-  status: LoadingStatus.pending,
+  status: initialStatus,
   error: null,
 };
 
@@ -109,31 +120,31 @@ const todoSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchTodosThunk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.fetchTodoStatus = LoadingStatus.pending;
       })
       .addCase(fetchTodosThunk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.fetchTodoStatus = LoadingStatus.succeeded;
         state.todosList = JSON.parse(payload);
       })
       .addCase(fetchTodosThunk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
+        state.status.fetchTodoStatus = LoadingStatus.failed;
         state.error = "An error has occured while fetching countries";
       }) //ADD TODO THUNK
       .addCase(addTodoThunk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.addTodoStatus = LoadingStatus.pending;
       })
       .addCase(addTodoThunk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.addTodoStatus = LoadingStatus.succeeded;
         state.todosList.push(JSON.parse(payload));
       })
       .addCase(addTodoThunk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
+        state.status.addTodoStatus = LoadingStatus.failed;
       })
       .addCase(editTodoThunk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.editTodoStatus = LoadingStatus.pending;
       })
       .addCase(editTodoThunk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.editTodoStatus = LoadingStatus.succeeded;
         const parsedPayload: EditTodoParamsType = JSON.parse(payload);
         state.todosList.map((todo) => {
           if (todo.id === parsedPayload.id) {
@@ -144,13 +155,13 @@ const todoSlice = createSlice({
         });
       })
       .addCase(editTodoThunk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
+        state.status.editTodoStatus = LoadingStatus.failed;
       })
       .addCase(archiveTodoThunk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.archiveTodoStatus = LoadingStatus.pending;
       })
       .addCase(archiveTodoThunk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.archiveTodoStatus = LoadingStatus.succeeded;
         const parsedPayload: ArchivedTodoParamsType = JSON.parse(payload);
         state.todosList.map((todo) => {
           if (todo.id === parsedPayload.id) {
@@ -159,13 +170,13 @@ const todoSlice = createSlice({
         });
       })
       .addCase(archiveTodoThunk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
+        state.status.archiveTodoStatus = LoadingStatus.failed;
       })
       .addCase(deleteTodoThnuk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.deleteTodoStatus = LoadingStatus.pending;
       })
       .addCase(deleteTodoThnuk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.deleteTodoStatus = LoadingStatus.succeeded;
         const parsedPayload: DeletedTodoParamsType = JSON.parse(payload);
         state.todosList.map((todo) => {
           if (todo.id === parsedPayload.id) {
@@ -174,25 +185,25 @@ const todoSlice = createSlice({
         });
       })
       .addCase(deleteTodoThnuk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
+        state.status.deleteTodoStatus = LoadingStatus.failed;
       })
       .addCase(permanentlyDeleteTodoThnuk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.permanentlyDeleteTodoStatus = LoadingStatus.pending;
       })
       .addCase(permanentlyDeleteTodoThnuk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.permanentlyDeleteTodoStatus = LoadingStatus.succeeded;
         state.todosList = state.todosList.filter(
           (todo) => todo.id !== JSON.parse(payload)
         );
       })
       .addCase(permanentlyDeleteTodoThnuk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
+        state.status.permanentlyDeleteTodoStatus = LoadingStatus.failed;
       })
       .addCase(toggleTodoCompletedThunk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.toggleCompletedStatus = LoadingStatus.pending;
       })
       .addCase(toggleTodoCompletedThunk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.toggleCompletedStatus = LoadingStatus.succeeded;
         const parsedPayload: CompletedTodoParamsType = JSON.parse(payload);
         state.todosList.map((todo) => {
           if (todo.id === parsedPayload.id) {
@@ -201,7 +212,7 @@ const todoSlice = createSlice({
         });
       })
       .addCase(toggleTodoCompletedThunk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
+        state.status.toggleCompletedStatus = LoadingStatus.failed;
       });
   },
 });
