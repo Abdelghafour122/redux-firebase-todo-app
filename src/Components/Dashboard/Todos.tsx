@@ -7,12 +7,16 @@ import EmptySection from "./Placeholders/EmptySection";
 import Message from "./Todos/Message";
 import LoadingPage from "./LoadingPage";
 import { useAppSelector } from "../../App/hooks";
+import { checkIfLoading } from "../../Utils/types";
 
 const Todos = () => {
   const todoList = useAppSelector((state) => state.todos.todosList);
 
+  const fetchingTodoThunkStatus = useAppSelector(
+    (state) => state.todos.status.fetchTodoStatus
+  );
+
   const [openTodoForm, setOpenTodoForm] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [noOngoingTodos, setNoOngoingTodos] = useState<boolean>();
 
   const handleCloseTodoFormBackdrop = () => {
@@ -24,12 +28,8 @@ const Todos = () => {
   };
 
   useEffect(() => {
-    Object.is(todoList, []) ? setLoading(true) : setLoading(false);
-  }, [todoList]);
-
-  useEffect(() => {
     const checkForOngoingTodos = () => {
-      if (!loading)
+      if (!checkIfLoading(fetchingTodoThunkStatus))
         return todoList.every(
           (todo) =>
             todo.archived === true ||
@@ -38,7 +38,7 @@ const Todos = () => {
         );
     };
     setNoOngoingTodos(() => checkForOngoingTodos());
-  }, [todoList, loading]);
+  }, [todoList]);
 
   return (
     <div className="todos">
@@ -53,15 +53,17 @@ const Todos = () => {
         </div>
       )}
       <div className="route-container">
-        {loading === true ? (
-          <LoadingPage />
-        ) : loading === false && noOngoingTodos === true ? (
+        {checkIfLoading(fetchingTodoThunkStatus) ? (
+          <LoadingPage loadingText={"Fetching todos..."} />
+        ) : !checkIfLoading(fetchingTodoThunkStatus) &&
+          noOngoingTodos === true ? (
           <EmptySection
             Icon={HiLightBulb}
             message={"Your ongoing todos will show up here!"}
           />
         ) : (
-          loading === false && noOngoingTodos === false && <TodosContainer />
+          !checkIfLoading(fetchingTodoThunkStatus) &&
+          noOngoingTodos === false && <TodosContainer />
         )}
       </div>
     </div>

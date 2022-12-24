@@ -23,8 +23,12 @@ type todosInitialStateType = {
 const initialStatus: TodoFuncsLoadingStatus = {
   addTodoStatus: LoadingStatus.idle,
   editTodoStatus: LoadingStatus.idle,
-  archiveTodoStatus: LoadingStatus.idle,
-  deleteTodoStatus: LoadingStatus.idle,
+  archiveTodoStatus: {
+    todoStatus: LoadingStatus.idle,
+  },
+  deleteTodoStatus: {
+    todoStatus: LoadingStatus.idle,
+  },
   fetchTodoStatus: LoadingStatus.idle,
   toggleCompletedStatus: LoadingStatus.idle,
   permanentlyDeleteTodoStatus: LoadingStatus.idle,
@@ -157,11 +161,16 @@ const todoSlice = createSlice({
       .addCase(editTodoThunk.rejected, (state) => {
         state.status.editTodoStatus = LoadingStatus.failed;
       })
-      .addCase(archiveTodoThunk.pending, (state) => {
-        state.status.archiveTodoStatus = LoadingStatus.pending;
+      .addCase(archiveTodoThunk.pending, (state, { meta }) => {
+        state.status.archiveTodoStatus = {
+          todoStatus: LoadingStatus.pending,
+          todoId: meta.arg.id,
+        };
       })
       .addCase(archiveTodoThunk.fulfilled, (state, { payload }) => {
-        state.status.archiveTodoStatus = LoadingStatus.succeeded;
+        state.status.archiveTodoStatus = {
+          todoStatus: LoadingStatus.succeeded,
+        };
         const parsedPayload: ArchivedTodoParamsType = JSON.parse(payload);
         state.todosList.map((todo) => {
           if (todo.id === parsedPayload.id) {
@@ -169,14 +178,17 @@ const todoSlice = createSlice({
           }
         });
       })
-      .addCase(archiveTodoThunk.rejected, (state) => {
-        state.status.archiveTodoStatus = LoadingStatus.failed;
-      })
-      .addCase(deleteTodoThnuk.pending, (state) => {
-        state.status.deleteTodoStatus = LoadingStatus.pending;
+      // .addCase(archiveTodoThunk.rejected, (state) => {
+      //   state.status.archiveTodoStatus = LoadingStatus.failed;
+      // })
+      .addCase(deleteTodoThnuk.pending, (state, { meta }) => {
+        state.status.deleteTodoStatus = {
+          todoStatus: LoadingStatus.pending,
+          todoId: meta.arg.id,
+        };
       })
       .addCase(deleteTodoThnuk.fulfilled, (state, { payload }) => {
-        state.status.deleteTodoStatus = LoadingStatus.succeeded;
+        state.status.deleteTodoStatus = { todoStatus: LoadingStatus.succeeded };
         const parsedPayload: DeletedTodoParamsType = JSON.parse(payload);
         state.todosList.map((todo) => {
           if (todo.id === parsedPayload.id) {
@@ -184,9 +196,9 @@ const todoSlice = createSlice({
           }
         });
       })
-      .addCase(deleteTodoThnuk.rejected, (state) => {
-        state.status.deleteTodoStatus = LoadingStatus.failed;
-      })
+      // .addCase(deleteTodoThnuk.rejected, (state) => {
+      //   state.status.deleteTodoStatus = LoadingStatus.failed;
+      // })
       .addCase(permanentlyDeleteTodoThnuk.pending, (state) => {
         state.status.permanentlyDeleteTodoStatus = LoadingStatus.pending;
       })

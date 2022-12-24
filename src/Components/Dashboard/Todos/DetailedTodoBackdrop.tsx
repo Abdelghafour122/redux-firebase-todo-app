@@ -58,7 +58,9 @@ const DetailedTodoBackdrop = ({
             <li>
               <button
                 className="todo-action-button group relative"
-                disabled={checkIfLoading(currentThunkStatus.deleteTodoStatus)}
+                disabled={checkIfLoading(
+                  currentThunkStatus.deleteTodoStatus.todoStatus
+                )}
                 onClick={async () => {
                   await dispatch(
                     deleteTodoThnuk({
@@ -68,7 +70,9 @@ const DetailedTodoBackdrop = ({
                   );
                 }}
               >
-                {checkIfLoading(currentThunkStatus.deleteTodoStatus) ? (
+                {checkIfLoading(
+                  currentThunkStatus.deleteTodoStatus.todoStatus
+                ) ? (
                   <FaSpinner size={"1.3rem"} className="animate-spin" />
                 ) : (
                   <>
@@ -84,7 +88,7 @@ const DetailedTodoBackdrop = ({
                 <button
                   className="todo-action-button group relative"
                   disabled={checkIfLoading(
-                    currentThunkStatus.archiveTodoStatus
+                    currentThunkStatus.archiveTodoStatus.todoStatus
                   )}
                   onClick={async () => {
                     dispatch(
@@ -95,7 +99,9 @@ const DetailedTodoBackdrop = ({
                     );
                   }}
                 >
-                  {checkIfLoading(currentThunkStatus.archiveTodoStatus) ? (
+                  {checkIfLoading(
+                    currentThunkStatus.archiveTodoStatus.todoStatus
+                  ) ? (
                     <FaSpinner size={"1.3rem"} className="animate-spin" />
                   ) : (
                     <>

@@ -8,14 +8,19 @@ export enum LoadingStatus {
   failed = "Failed",
 }
 
+type TodoStatusType = {
+  todoId?: string;
+  todoStatus: LoadingStatus;
+};
+
 export type TodoFuncsLoadingStatus = {
   addTodoStatus: LoadingStatus;
-  toggleCompletedStatus: LoadingStatus;
   editTodoStatus: LoadingStatus;
-  archiveTodoStatus: LoadingStatus;
-  deleteTodoStatus: LoadingStatus;
-  permanentlyDeleteTodoStatus: LoadingStatus;
+  toggleCompletedStatus: LoadingStatus;
   fetchTodoStatus: LoadingStatus;
+  permanentlyDeleteTodoStatus: LoadingStatus;
+  archiveTodoStatus: TodoStatusType;
+  deleteTodoStatus: TodoStatusType;
 };
 
 export const checkIfLoading = (funcStatus: LoadingStatus) => {

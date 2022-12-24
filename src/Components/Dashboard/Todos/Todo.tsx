@@ -130,7 +130,7 @@ const Todo = (todoInfo: TodoType) => {
                 <button
                   className="todo-action-button group relative"
                   disabled={checkIfLoading(
-                    currentThunkStatus.archiveTodoStatus
+                    currentThunkStatus.archiveTodoStatus.todoStatus
                   )}
                   onClick={async () =>
                     await dispatch(
@@ -141,7 +141,11 @@ const Todo = (todoInfo: TodoType) => {
                     )
                   }
                 >
-                  {checkIfLoading(currentThunkStatus.archiveTodoStatus) ? (
+                  {currentThunkStatus.archiveTodoStatus.todoId ===
+                    todoInfo.id &&
+                  checkIfLoading(
+                    currentThunkStatus.archiveTodoStatus.todoStatus
+                  ) ? (
                     <FaSpinner size={"1.3rem"} className="animate-spin" />
                   ) : (
                     <>
@@ -154,7 +158,7 @@ const Todo = (todoInfo: TodoType) => {
                 <button
                   className="todo-action-button relative group"
                   disabled={checkIfLoading(
-                    currentThunkStatus.archiveTodoStatus
+                    currentThunkStatus.archiveTodoStatus.todoStatus
                   )}
                   onClick={async () =>
                     await dispatch(
@@ -165,7 +169,11 @@ const Todo = (todoInfo: TodoType) => {
                     )
                   }
                 >
-                  {checkIfLoading(currentThunkStatus.archiveTodoStatus) ? (
+                  {currentThunkStatus.archiveTodoStatus.todoId ===
+                    todoInfo.id &&
+                  checkIfLoading(
+                    currentThunkStatus.archiveTodoStatus.todoStatus
+                  ) ? (
                     <FaSpinner size={"1.3rem"} className="animate-spin" />
                   ) : (
                     <>
@@ -178,7 +186,9 @@ const Todo = (todoInfo: TodoType) => {
             </>
             <button
               className="todo-action-button relative group"
-              disabled={checkIfLoading(currentThunkStatus.deleteTodoStatus)}
+              disabled={checkIfLoading(
+                currentThunkStatus.deleteTodoStatus.todoStatus
+              )}
               onClick={async () =>
                 await dispatch(
                   deleteTodoThnuk({
@@ -188,7 +198,8 @@ const Todo = (todoInfo: TodoType) => {
                 )
               }
             >
-              {checkIfLoading(currentThunkStatus.deleteTodoStatus) ? (
+              {currentThunkStatus.deleteTodoStatus.todoId === todoInfo.id &&
+              checkIfLoading(currentThunkStatus.deleteTodoStatus.todoStatus) ? (
                 <FaSpinner size={"1.3rem"} className="animate-spin" />
               ) : (
                 <>
@@ -216,14 +227,17 @@ const Todo = (todoInfo: TodoType) => {
             </button>
             <button
               className="todo-action-button relative group"
-              disabled={checkIfLoading(currentThunkStatus.deleteTodoStatus)}
+              disabled={checkIfLoading(
+                currentThunkStatus.deleteTodoStatus.todoStatus
+              )}
               onClick={async () =>
                 await dispatch(
                   deleteTodoThnuk({ id: todoInfo.id, deleted: false })
                 )
               }
             >
-              {checkIfLoading(currentThunkStatus.deleteTodoStatus) ? (
+              {currentThunkStatus.deleteTodoStatus.todoId === todoInfo.id &&
+              checkIfLoading(currentThunkStatus.deleteTodoStatus.todoStatus) ? (
                 <FaSpinner size={"1.3rem"} className="animate-spin" />
               ) : (
                 <>

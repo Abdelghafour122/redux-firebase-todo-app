@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { EditTodoParamsType, LoadingStatus } from "../../Utils/types";
+import { EditTodoParamsType, checkIfLoading } from "../../Utils/types";
 import { Timestamp } from "firebase/firestore";
 import { FaTimes, FaSpinner } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../../App/hooks";
@@ -12,18 +12,20 @@ type Props = {
 
 const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
   const dispatch = useAppDispatch();
-  const editTodoThunkStatus = useAppSelector((state) => state.todos.status);
+  const editTodoThunkStatus = useAppSelector(
+    (state) => state.todos.status.editTodoStatus
+  );
 
-  const [editingPending, setEditingPending] = useState(false);
+  // const [editingPending, setEditingPending] = useState(false);
 
-  useEffect(() => {
-    setEditingPending(() =>
-      Object.is(editTodoThunkStatus, LoadingStatus.pending)
-    );
-    Object.is(editTodoThunkStatus, LoadingStatus.pending)
-      ? setButtonDisabled(true)
-      : setButtonDisabled(false);
-  }, [editTodoThunkStatus]);
+  // useEffect(() => {
+  //   setEditingPending(() =>
+  //     Object.is(editTodoThunkStatus, LoadingStatus.pending)
+  //   );
+  //   Object.is(editTodoThunkStatus, LoadingStatus.pending)
+  //     ? setButtonDisabled(true)
+  //     : setButtonDisabled(false);
+  // }, [editTodoThunkStatus]);
 
   const [editedTodoTitle, setEditedTodoTitle] = useState<string>(
     todoInfo.title
@@ -35,7 +37,6 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
   useEffect(() => {
-    console.log(editingPending);
     (editedTodoContent !== "" && editedTodoContent !== todoInfo.content) ||
     (editedTodoTitle !== "" && editedTodoTitle !== todoInfo.title)
       ? setButtonDisabled(false)
@@ -105,14 +106,17 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
           />
           <button
             className="button flex align-center justify-center"
-            disabled={buttonDisabled}
+            disabled={buttonDisabled || checkIfLoading(editTodoThunkStatus)}
           >
-            {editingPending ? (
-              <FaSpinner
-                className={`${editingPending ? "animate-spin" : ""}`}
-                color="rgb(38 38 38)"
-                size="1.5rem"
-              />
+            {checkIfLoading(editTodoThunkStatus) ? (
+              <>
+                Updating &nbsp;
+                <FaSpinner
+                  className="animate-spin"
+                  color="rgb(38 38 38)"
+                  size="1.5rem"
+                />
+              </>
             ) : (
               "Update"
             )}

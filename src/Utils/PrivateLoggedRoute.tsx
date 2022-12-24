@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthentication } from "../Contexts/AuthContext";
+import { useAppSelector } from "../App/hooks";
 
 function PrivateLoggedRoute() {
-  const { currentUser } = useAuthentication();
+  const currentUser = useAppSelector((state) => state.authentication.user);
   return currentUser !== null ? <Outlet /> : <Navigate to="/" />;
 }
 

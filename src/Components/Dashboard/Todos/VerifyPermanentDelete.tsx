@@ -1,6 +1,8 @@
 import React from "react";
-import { useAppDispatch } from "../../../App/hooks";
+import { FaSpinner } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import { permanentlyDeleteTodoThnuk } from "../../../Reducerss/todoSlice";
+import { checkIfLoading } from "../../../Utils/types";
 
 type Props = {
   id: string;
@@ -12,13 +14,18 @@ const VerifyPermanentDelete = ({
   id,
 }: Props) => {
   const dispatch = useAppDispatch();
+
+  const permanentlyDeleteTodoThunkStatus = useAppSelector(
+    (state) => state.todos.status.permanentlyDeleteTodoStatus
+  );
+
   return (
     <div className="backdrop">
-      <section className="flex flex-col items-center justify-between gap-10 w-1/3 max-w-md min-h-max p-4 bg-neutral-900 rounded-md shadow-md">
+      <section className="flex flex-col items-center justify-between gap-10  min-h-max p-4 bg-neutral-900 rounded-md shadow-md">
         <h1 className="font-bold text-xl self-start">
           Delete the todo permanently?
         </h1>
-        <div className="btn-holder self-end flex w-1/2 items-center justify-between">
+        <div className="btn-holder self-end flex gap-2 w-min items-center justify-between">
           <button
             className="button"
             onClick={() => handleCloseVerifyDeleteBackdrop()}
@@ -26,13 +33,21 @@ const VerifyPermanentDelete = ({
             Cancel
           </button>
           <button
-            className="button"
+            className="button flex items-center justify-between"
+            disabled={checkIfLoading(permanentlyDeleteTodoThunkStatus)}
             onClick={async () => {
               await dispatch(permanentlyDeleteTodoThnuk(id));
               handleCloseVerifyDeleteBackdrop();
             }}
           >
-            Delete
+            {checkIfLoading(permanentlyDeleteTodoThunkStatus) ? (
+              <>
+                Deleting&nbsp;
+                <FaSpinner size={"1.3rem"} className="animate-spin" />
+              </>
+            ) : (
+              <>Delete</>
+            )}
           </button>
         </div>
       </section>
