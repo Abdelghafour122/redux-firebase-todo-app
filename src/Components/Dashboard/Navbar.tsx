@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MdLabel, MdLabelOutline } from "react-icons/md";
+import { MdLabel } from "react-icons/md";
 import ProfileSettingsPopup from "../../Components/Dashboard/ProfileSettingsPopup";
 
 import { useNavigate } from "react-router-dom";
@@ -14,18 +14,26 @@ import {
   FaCheck,
   FaLightbulb,
   FaSignOutAlt,
+  FaSpinner,
   FaTrashAlt,
 } from "react-icons/fa";
 
-import { useAppSelector } from "../../App/hooks";
-import { selectCurrentUser } from "../../Reducerss/authSlice";
+import { useAppDispatch, useAppSelector } from "../../App/hooks";
+import { userSignOutThunk } from "../../Reducerss/authSlice";
+import { checkIfLoading } from "../../Utils/types";
 
 const Navbar = () => {
-  const { currentUser, userSignOut } = useAuthentication();
+  const { currentUser } = useAuthentication();
   const { fetchLabels } = useTodoContext();
   const navigate = useNavigate();
   const [profilePic, setProfilePic] = useState<string | undefined>();
   const [openProfilePopup, setOpenProfilePopup] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const logoutThunkStatus = useAppSelector(
+    (state) => state.authentication.status
+  );
 
   const [openLabelsBackdrop, setOpenLabelsBackdrop] = useState(false);
 
@@ -38,7 +46,6 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    // console.log("labels list changed", labelsArray);
     fetchLabels();
   }, [fetchLabels]);
 
@@ -60,13 +67,11 @@ const Navbar = () => {
     },
     {
       linkName: "Archived",
-      // icon: BsArchive,
       icon: FaArchive,
       execute: () => navigate("archived"),
     },
     {
       linkName: "Trash",
-      //  icon: BsTrash,
       icon: FaTrashAlt,
 
       execute: () => navigate("trash"),
@@ -79,7 +84,8 @@ const Navbar = () => {
 
   return (
     <nav className="py-2 px-2 h-full bg-neutral-900">
-      <div className="flex flex-col items-center justify-start gap-2 h-full w-max overflow-y-scroll scrollbar-hide">
+      {/* overflow-y-scroll scrollbar-hide */}
+      <div className="flex flex-col items-center justify-start gap-2 h-full w-max">
         <p className="text-2xl text-orange-300 font-sans font-extrabold border-b-2 border-b-stone-500">
           Dooit
         </p>
@@ -115,10 +121,24 @@ const Navbar = () => {
             <li className="relative group mt-6">
               <button
                 className="p-3 bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] hover:bg-stone-600 active:bg-stone-500 bottom-2 group"
-                onClick={userSignOut}
+                disabled={checkIfLoading(logoutThunkStatus)}
+                onClick={async () => {
+                  await dispatch(userSignOutThunk());
+                  navigate("/");
+                }}
               >
-                <FaSignOutAlt size={"1.7rem"} color={"#ff3535"} />
-                <Tooltip tooltipContent={"Sign out"} />
+                {checkIfLoading(logoutThunkStatus) ? (
+                  <FaSpinner
+                    size={"1.3rem"}
+                    className="animate-spin"
+                    color={"#ff3535"}
+                  />
+                ) : (
+                  <>
+                    <FaSignOutAlt size={"1.7rem"} color={"#ff3535"} />
+                    <Tooltip tooltipContent={"Sign out"} />
+                  </>
+                )}
               </button>
             </li>
           </ul>

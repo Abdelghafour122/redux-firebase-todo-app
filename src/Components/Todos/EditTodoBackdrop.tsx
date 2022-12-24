@@ -16,17 +16,6 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
     (state) => state.todos.status.editTodoStatus
   );
 
-  // const [editingPending, setEditingPending] = useState(false);
-
-  // useEffect(() => {
-  //   setEditingPending(() =>
-  //     Object.is(editTodoThunkStatus, LoadingStatus.pending)
-  //   );
-  //   Object.is(editTodoThunkStatus, LoadingStatus.pending)
-  //     ? setButtonDisabled(true)
-  //     : setButtonDisabled(false);
-  // }, [editTodoThunkStatus]);
-
   const [editedTodoTitle, setEditedTodoTitle] = useState<string>(
     todoInfo.title
   );
@@ -45,7 +34,6 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    // use try/catch when firebase backend gets involved
 
     if (
       (editedTodoContent !== "" && editedTodoContent !== todoInfo.content) ||

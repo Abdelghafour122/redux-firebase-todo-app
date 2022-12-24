@@ -83,8 +83,6 @@ const Todo = (todoInfo: TodoType) => {
         completed: !todoInfo.completed,
       })
     );
-    // return setTimeout(() => {
-    // }, 1500);
   };
 
   const syncTodoLabels = useMemo(() => {
@@ -98,9 +96,9 @@ const Todo = (todoInfo: TodoType) => {
   return (
     <div className="todo">
       {/* <button className="button" onClick={handleOpenSnackbar}> */}
-      <h1 className="todo-title">
-        {todoInfo.title?.length === 0 ? "No title" : todoInfo.title}
-      </h1>
+      {todoInfo.title !== "" ? (
+        <h1 className="todo-title">{todoInfo.title}</h1>
+      ) : null}
       <p className="todo-p">{todoInfo.content}</p>
       <div className="todo-checked">
         <input

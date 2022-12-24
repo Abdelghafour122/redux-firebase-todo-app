@@ -52,9 +52,9 @@ const authSlice = createSlice({
         state.status = LoadingStatus.failed;
         state.error = AuthUIMessages.signUpFailed;
       })
-      .addCase(userSignUpThunk.fulfilled, (state, action) => {
+      .addCase(userSignUpThunk.fulfilled, (state, { payload }) => {
         state.status = LoadingStatus.succeeded;
-        state.user = JSON.parse(action.payload);
+        state.user = JSON.parse(payload);
       }) //GOOGLE AUTH
       .addCase(signInWithGoogleThunk.pending, (state) => {
         state.status = LoadingStatus.pending;
@@ -63,9 +63,9 @@ const authSlice = createSlice({
         state.status = LoadingStatus.failed;
         state.error = AuthUIMessages.googleSignInFailed;
       })
-      .addCase(signInWithGoogleThunk.fulfilled, (state, action) => {
+      .addCase(signInWithGoogleThunk.fulfilled, (state, { payload }) => {
         state.status = LoadingStatus.succeeded;
-        state.user = JSON.parse(action.payload);
+        state.user = JSON.parse(payload);
       }) //EMAIL PASSWORD AUTH
       .addCase(userSignInThunk.pending, (state) => {
         state.status = LoadingStatus.pending;
@@ -74,9 +74,16 @@ const authSlice = createSlice({
         state.status = LoadingStatus.failed;
         state.error = AuthUIMessages.signInFailed;
       })
-      .addCase(userSignInThunk.fulfilled, (state, action) => {
+      .addCase(userSignInThunk.fulfilled, (state, { payload }) => {
         state.status = LoadingStatus.succeeded;
-        state.user = JSON.parse(action.payload);
+        state.user = JSON.parse(payload);
+      })
+      .addCase(userSignOutThunk.pending, (state) => {
+        state.status = LoadingStatus.pending;
+      })
+      .addCase(userSignOutThunk.fulfilled, (state) => {
+        state.user = null;
+        state.status = LoadingStatus.succeeded;
       });
   },
 });

@@ -1,9 +1,8 @@
 import React, { useState, SyntheticEvent } from "react";
-import { useTodoContext } from "../../../Contexts/TodoContext";
-import { FaTimes } from "react-icons/fa";
-import { useAppDispatch } from "../../../App/hooks";
+import { FaSpinner, FaTimes } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import { addTodoThunk } from "../../../Reducerss/todoSlice";
-import { Labels } from "../../../Utils/types";
+import { checkIfLoading, Labels } from "../../../Utils/types";
 import { Timestamp } from "firebase/firestore";
 
 type Props = {
@@ -11,9 +10,12 @@ type Props = {
 };
 
 const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
-  const { addTodoItem } = useTodoContext();
   const [todoTitle, setTodoTitle] = useState<string>("");
   const [todoContent, setTodoContent] = useState<string>("");
+
+  const addTodoThunkStatus = useAppSelector(
+    (state) => state.todos.status.addTodoStatus
+  );
 
   const dispatch = useAppDispatch();
 
@@ -22,7 +24,7 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
 
     todoContent !== "" &&
       // addTodoItem({ title: todoTitle, content: todoContent });
-      dispatch(
+      (await dispatch(
         addTodoThunk({
           title: todoTitle,
           content: todoContent,
@@ -33,7 +35,7 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
           labels: [] as Labels,
           date: Timestamp.now(),
         })
-      );
+      ));
 
     setTodoContent("");
     setTodoTitle("");
@@ -80,10 +82,23 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
           <div className="form-buttons flex items-center justify-around">
             <button
               type="submit"
-              className="button w-full self-center"
-              disabled={todoContent === ""}
+              className="button flex align-center justify-center w-full"
+              disabled={
+                todoContent === "" || checkIfLoading(addTodoThunkStatus)
+              }
             >
-              Make todo
+              {checkIfLoading(addTodoThunkStatus) ? (
+                <>
+                  Making &nbsp;
+                  <FaSpinner
+                    className="animate-spin"
+                    color="rgb(38 38 38)"
+                    size="1.5rem"
+                  />
+                </>
+              ) : (
+                "Make todo"
+              )}
             </button>
           </div>
         </form>

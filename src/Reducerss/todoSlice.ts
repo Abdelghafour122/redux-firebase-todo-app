@@ -155,6 +155,7 @@ const todoSlice = createSlice({
             todo.title = parsedPayload.title;
             todo.content = parsedPayload.content;
             todo.date = parsedPayload.date;
+            todo.edited = true;
           }
         });
       })

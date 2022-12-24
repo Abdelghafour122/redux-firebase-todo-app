@@ -6,7 +6,6 @@ import { useAppSelector } from "../App/hooks";
 
 function Homepage() {
   const currentUser = useAppSelector((state) => state.authentication.user);
-  console.log(currentUser);
   const navigate = useNavigate();
   return (
     <div className="homepage h-full flex flex-col items-center justify-center">
