@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Label } from "../Utils/types";
 import LabeledTodos from "../Components/Dashboard/LabeledTodos";
 import { useAppSelector } from "../App/hooks";
@@ -9,11 +9,14 @@ const FilteredTodos = () => {
   const labelsArray = useAppSelector((state) => state.labels.labelsList);
   const [selectedLabel, setSelectedLabel] = useState<Label>();
 
+  const navigate = useNavigate();
   let { labelId } = useParams();
+
   useEffect(() => {
-    labelsArray.forEach(
-      (label) => label.id === labelId && setSelectedLabel(() => label)
-    );
+    const wantedLabel = labelsArray.find((label) => label.id === labelId);
+    wantedLabel === undefined
+      ? navigate("/dashboard")
+      : setSelectedLabel(() => wantedLabel);
   }, [labelId, labelsArray]);
 
   return (
