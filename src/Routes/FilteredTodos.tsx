@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useTodoContext } from "../Contexts/TodoContext";
 import { Label } from "../Utils/types";
 import LabeledTodos from "../Components/Dashboard/LabeledTodos";
+import { useAppSelector } from "../App/hooks";
 
 // USED AS A ROUTE
 const FilteredTodos = () => {
-  const { labelsArray } = useTodoContext();
+  const labelsArray = useAppSelector((state) => state.labels.labelsList);
   const [selectedLabel, setSelectedLabel] = useState<Label>();
 
   let { labelId } = useParams();

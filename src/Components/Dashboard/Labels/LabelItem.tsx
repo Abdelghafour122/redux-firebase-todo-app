@@ -1,11 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaCheck, FaPen, FaTrashAlt } from "react-icons/fa";
-import { MdOutlineDoneOutline } from "react-icons/md";
-import { useTodoContext } from "../../../Contexts/TodoContext";
-import { Label } from "../../../Utils/types";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
+import {
+  deleteLabelThunk,
+  editLabelNameThunk,
+} from "../../../Reducerss/labelSlice";
+import { editTodosLabelsThunk } from "../../../Reducerss/todoSlice";
+import { Label, checkIfLoading } from "../../../Utils/types";
 
 const LabelItem = ({ id, name, count }: Label) => {
-  const { deleteLabel, editLabel } = useTodoContext();
+  const dispatch = useAppDispatch();
+  const handleLabelThunkStatus = useAppSelector(
+    (state) => state.labels.status.handleLabelStatus
+  );
+
+  const todosList = useAppSelector((state) => state.todos.todosList);
+
   const [editable, setEditable] = useState(false);
   const labelNameRef = useRef<HTMLInputElement | null>(null);
 
@@ -13,17 +23,33 @@ const LabelItem = ({ id, name, count }: Label) => {
     editable && labelNameRef.current?.focus();
   }, [editable]);
 
-  const handleEditLabelName = () => {
+  const handleEditLabelName = async () => {
     console.log(labelNameRef.current?.value);
     labelNameRef.current?.value !== undefined &&
     labelNameRef.current?.value !== ""
-      ? editLabel({
-          id: id,
-          name: labelNameRef.current?.value,
-          case: "name",
-        })
+      ? await dispatch(
+          editLabelNameThunk({
+            id: id,
+            name: labelNameRef.current?.value,
+          })
+        )
       : // REPLACE WITH A SNACKBAR
         console.log("cannot update label");
+  };
+
+  const handleDeleteLabel = async () => {
+    if (count > 0) {
+      todosList.forEach(async (todo) => {
+        if (todo.labels.some((label) => label.id === id))
+          await dispatch(
+            editTodosLabelsThunk({
+              todoId: todo.id,
+              labelsList: todo.labels.filter((label) => label.id !== id),
+            })
+          );
+      });
+    }
+    return await dispatch(deleteLabelThunk({ labelId: id, labelCount: count }));
   };
 
   return (
@@ -32,22 +58,18 @@ const LabelItem = ({ id, name, count }: Label) => {
         <input
           className="form-input"
           type="text"
-          // placeholder={label.name}
           placeholder={name}
           ref={labelNameRef}
         />
       ) : (
-        // <p className="label-text">{label.name}</p>
         <p className="label-text">{name}</p>
       )}
       <div className="label-buttons flex gap-2 items-center">
         {count === 0 ? (
-          // {label.count === 0 ? (
           <p className="font-semibold text-base text-yellow-600 p-1 bg-yellow-200 rounded-lg w-max">
             Unused
           </p>
         ) : (
-          // <p className="font-semibold text-base text-stone-300 p-1 bg-stone-600 rounded-lg w-max">{`Count: ${label.count}`}</p>
           <p className="font-semibold text-base text-stone-300 p-1 bg-stone-600 rounded-lg w-max">{`Count: ${count}`}</p>
         )}
         {editable ? (
@@ -61,16 +83,24 @@ const LabelItem = ({ id, name, count }: Label) => {
             <FaCheck size={"1.2rem"} color={"rgb(214 211 209)"} />
           </button>
         ) : (
-          <button className="label-button" onClick={() => setEditable(true)}>
+          <button
+            className="label-button"
+            disabled={
+              checkIfLoading(handleLabelThunkStatus.labelStatus) &&
+              id === handleLabelThunkStatus.labelId
+            }
+            onClick={() => setEditable(true)}
+          >
             <FaPen size={"1.2rem"} color={"rgb(214 211 209)"} />
           </button>
         )}
         <button
           className="label-button"
-          onClick={() =>
-            // deleteLabel({ labelId: label.id, labelCount: label.count })
-            deleteLabel({ labelId: id, labelCount: count })
+          disabled={
+            checkIfLoading(handleLabelThunkStatus.labelStatus) &&
+            id === handleLabelThunkStatus.labelId
           }
+          onClick={handleDeleteLabel}
         >
           <FaTrashAlt size={"1.2rem"} color={"rgb(214 211 209)"} />
         </button>

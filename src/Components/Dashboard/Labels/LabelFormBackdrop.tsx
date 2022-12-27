@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import { FaCheck, FaSpinner, FaTimes } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import { addLabelThunk, fetchLabelsThunk } from "../../../Reducerss/labelSlice";
+import { checkIfLoading } from "../../../Utils/types";
 import LabelContentHolder from "./LabelContentHolder";
 
 type Props = {
@@ -16,13 +17,16 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
 
   const dispatch = useAppDispatch();
   const labelsArray = useAppSelector((state) => state.labels.labelsList);
+  const addLabelThunkStatus = useAppSelector(
+    (state) => state.labels.status.addLabelStatus
+  );
 
-  useEffect(() => {
-    const fetchLabels = async () => {
-      await dispatch(fetchLabelsThunk());
-    };
-    fetchLabels();
-  }, []);
+  // useEffect(() => {
+  //   const fetchLabels = async () => {
+  //     await dispatch(fetchLabelsThunk());
+  //   };
+  //   fetchLabels();
+  // }, []);
 
   useEffect(() => {
     if (labelsArray.length >= 5) setListLimitReached(true);
@@ -61,7 +65,6 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
             className="p-2 rounded-full hover:bg-neutral-600 active:bg-neutral-500"
             onClick={handleCloseLabelsBackdrop}
           >
-            {/* <VscChromeClose color="rgb(231 229 228)" size="1.5rem" /> */}
             <FaTimes color="rgb(231 229 228)" size="1.5rem" />
           </button>
         </div>
@@ -79,17 +82,32 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
                   "text-amber-600 placeholder-amber-600 border-amber-600 focus:border-amber-600 opacity-60 cursor-not-allowed"
                 }`}
                 value={label}
-                disabled={listLimitReached}
+                disabled={
+                  listLimitReached || checkIfLoading(addLabelThunkStatus)
+                }
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setLabel(e.target.value)
                 }
               />
               <button
-                className="rounded-sm hover:bg-neutral-500 active:bg-neutral-400 p-2 disabled:opacity-0 disabled:pointer-events-none transition-opacity duration-300"
+                // className="rounded-sm hover:bg-neutral-500 active:bg-neutral-400 p-2 disabled:opacity-0 disabled:pointer-events-none transition-opacity duration-300"
+                className="rounded-sm hover:bg-neutral-500 active:bg-neutral-400 disabled:bg-neutral-600 disabled:cursor-not-allowed p-2"
                 onClick={handleSubmit}
-                disabled={!labelValid.current || label === ""}
+                disabled={
+                  !labelValid.current ||
+                  label === "" ||
+                  checkIfLoading(addLabelThunkStatus)
+                }
               >
-                <FaCheck size={"1.4rem"} color="rgb(231 229 228)" />
+                {checkIfLoading(addLabelThunkStatus) ? (
+                  <FaSpinner
+                    size={"1.4rem"}
+                    className="animate-spin"
+                    color="rgb(231 229 228)"
+                  />
+                ) : (
+                  <FaCheck size={"1.4rem"} color="rgb(231 229 228)" />
+                )}
               </button>
             </div>
           </form>

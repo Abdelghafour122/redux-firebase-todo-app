@@ -14,11 +14,11 @@
   }
 
   .navbar-tooltip {
-    @apply absolute left-[154%] top-2/4 -translate-y-1/2 p-2 w-max rounded-md bg-zinc-900 text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-md shadow-zinc-900;
+    @apply absolute left-[154%] top-2/4 -translate-y-1/2 p-2 w-max rounded-md bg-zinc-900 text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-md shadow-zinc-900 z-[999999];
   }
 
   .label-tooltip {
-    @apply absolute left-[154%] top-2/4 -translate-y-1/2 px-2 py-1  w-max rounded-md bg-stone-600 text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-sm shadow-zinc-800;
+    @apply absolute left-[154%] top-2/4 -translate-y-1/2 px-2 py-1  w-max rounded-md bg-stone-600 text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-sm shadow-zinc-800 z-[999999];
   }
 
   .todo-actions-tooltip {
@@ -125,6 +125,6 @@
   }
 
   .label-button {
-    @apply rounded-sm hover:bg-neutral-700 active:bg-neutral-400 p-2;
+    @apply rounded-sm hover:bg-neutral-700 active:bg-neutral-400 p-2 disabled:bg-neutral-800 disabled:cursor-not-allowed;
   }
 }

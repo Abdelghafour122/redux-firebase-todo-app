@@ -9,23 +9,31 @@ import {
 import {
   AddLabelParamsType,
   DeleteLabelParamsType,
+  Label,
+  LabelFuncsLoadingStatus,
   Labels,
   LoadingStatus,
   UpdateLabelCountParamsTypeRedux,
   UpdateLabelNameParamsTypeRedux,
 } from "../Utils/types";
 
-// const labelsInitialState: Labels = [];
-
 type labelsInitialStateType = {
   labelsList: Labels;
-  status: LoadingStatus;
+  status: LabelFuncsLoadingStatus;
   error: null | string;
+};
+
+const initialStatus: LabelFuncsLoadingStatus = {
+  fetchLabelStatus: LoadingStatus.idle,
+  addLabelStatus: LoadingStatus.idle,
+  // editLabelStatus: { labelStatus: LoadingStatus.idle },
+  // deleteLabelStatus: { labelStatus: LoadingStatus.idle },
+  handleLabelStatus: { labelStatus: LoadingStatus.idle },
 };
 
 const labelsInitialState: labelsInitialStateType = {
   labelsList: [],
-  status: LoadingStatus.pending,
+  status: initialStatus,
   error: null,
 };
 
@@ -55,16 +63,18 @@ export const editLabelCountThunk = createAsyncThunk(
     await updateDoc(editLabelDocRef, {
       count: editLabelPayload.count,
     });
+    return JSON.stringify(editLabelPayload);
   }
 );
 
 export const editLabelNameThunk = createAsyncThunk(
-  "labels/editLabelCount",
+  "labels/editLabelName",
   async (editLabelPayload: UpdateLabelNameParamsTypeRedux) => {
     const editLabelDocRef = doc(todoDatabase, "labels", editLabelPayload.id);
     await updateDoc(editLabelDocRef, {
       name: editLabelPayload.name,
     });
+    return JSON.stringify(editLabelPayload);
   }
 );
 
@@ -77,7 +87,7 @@ export const deleteLabelThunk = createAsyncThunk(
       deleteLabelPayload.labelId
     );
     await deleteDoc(deleteLabelDocRef);
-    return JSON.stringify(deleteLabelPayload);
+    return JSON.stringify(deleteLabelPayload.labelId);
   }
 );
 
@@ -88,24 +98,86 @@ const labelSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchLabelsThunk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.fetchLabelStatus = LoadingStatus.pending;
       })
       .addCase(fetchLabelsThunk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.fetchLabelStatus = LoadingStatus.succeeded;
         state.labelsList = JSON.parse(payload);
       })
-      .addCase(fetchLabelsThunk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
-      })
+      // .addCase(fetchLabelsThunk.rejected, (state) => {
+      //   state.status.fetchLabelStatus = LoadingStatus.failed;
+      // })
       .addCase(addLabelThunk.pending, (state) => {
-        state.status = LoadingStatus.pending;
+        state.status.addLabelStatus = LoadingStatus.pending;
       })
       .addCase(addLabelThunk.fulfilled, (state, { payload }) => {
-        state.status = LoadingStatus.succeeded;
+        state.status.addLabelStatus = LoadingStatus.succeeded;
         state.labelsList.push(JSON.parse(payload));
       })
-      .addCase(addLabelThunk.rejected, (state) => {
-        state.status = LoadingStatus.failed;
+      // .addCase(addLabelThunk.rejected, (state) => {
+      //   state.status.addLabelStatus = LoadingStatus.failed;
+      // })
+      //EDIT LABEL COUNT
+      .addCase(editLabelCountThunk.pending, (state, { meta }) => {
+        // state.status.editLabelStatus = {
+        //   labelId: meta.arg.id,
+        //   labelStatus: LoadingStatus.pending,
+        // };
+        state.status.handleLabelStatus = {
+          labelId: meta.arg.id,
+          labelStatus: LoadingStatus.pending,
+        };
+      })
+      .addCase(editLabelCountThunk.fulfilled, (state, { payload }) => {
+        // state.status.editLabelStatus.labelStatus = LoadingStatus.succeeded;
+        state.status.handleLabelStatus.labelStatus = LoadingStatus.succeeded;
+        const parsedPayload: UpdateLabelCountParamsTypeRedux =
+          JSON.parse(payload);
+
+        // REPLACE WITH MAP
+        const editedLabel = state.labelsList.find(
+          (label) => label.id === parsedPayload.id
+        );
+        if (editedLabel !== undefined) editedLabel.count = parsedPayload.count;
+      }) //EDIT LABEL NAME
+      .addCase(editLabelNameThunk.pending, (state, { meta }) => {
+        // state.status.editLabelStatus = {
+        //   labelId: meta.arg.id,
+        //   labelStatus: LoadingStatus.pending,
+        // };
+        state.status.handleLabelStatus = {
+          labelId: meta.arg.id,
+          labelStatus: LoadingStatus.pending,
+        };
+      })
+      .addCase(editLabelNameThunk.fulfilled, (state, { payload }) => {
+        // state.status.editLabelStatus.labelStatus = LoadingStatus.succeeded;
+        state.status.handleLabelStatus.labelStatus = LoadingStatus.succeeded;
+        const parsedPayload: UpdateLabelNameParamsTypeRedux =
+          JSON.parse(payload);
+
+        const editedLabel = state.labelsList.find(
+          (label) => label.id === parsedPayload.id
+        );
+        if (editedLabel !== undefined) editedLabel.name = parsedPayload.name;
+      })
+      .addCase(deleteLabelThunk.pending, (state, { meta }) => {
+        // state.status.deleteLabelStatus = {
+        //   labelId: meta.arg.labelId,
+        //   labelStatus: LoadingStatus.pending,
+        // };
+        state.status.handleLabelStatus = {
+          labelId: meta.arg.labelId,
+          labelStatus: LoadingStatus.pending,
+        };
+      })
+      .addCase(deleteLabelThunk.fulfilled, (state, { payload }) => {
+        // state.status.deleteLabelStatus.labelStatus = LoadingStatus.succeeded;
+        state.status.handleLabelStatus.labelStatus = LoadingStatus.succeeded;
+        state.labelsList = state.labelsList.filter(
+          (label) => label.id !== JSON.parse(payload)
+        );
+        // console.log(parsedPayload.labelId);
       });
   },
 });

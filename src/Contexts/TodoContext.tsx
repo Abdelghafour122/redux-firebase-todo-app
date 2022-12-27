@@ -440,11 +440,11 @@ const TodoContext = ({ children }: TodoContextProps) => {
           (label) => label.id !== labelId
         ) === true
       ) {
-        await addLabelToTodo({
-          id: labelId,
-          name: labelsName,
-          todoId: todoItemId,
-        });
+        // await addLabelToTodo({
+        //   id: labelId,
+        //   name: labelsName,
+        //   todoId: todoItemId,
+        // });
         await editLabelInDB({
           id: labelId,
           count: labelCount?.count + 1,

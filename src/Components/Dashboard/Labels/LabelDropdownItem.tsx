@@ -1,6 +1,8 @@
 import React from "react";
-import { useTodoContext } from "../../../Contexts/TodoContext";
-import { Label } from "../../../Utils/types";
+import { useAppDispatch, useAppSelector } from "../../../App/hooks";
+import { editLabelCountThunk } from "../../../Reducerss/labelSlice";
+import { editTodosLabelsThunk } from "../../../Reducerss/todoSlice";
+import { Label, Labels } from "../../../Utils/types";
 
 type Props = {
   label: Label;
@@ -9,7 +11,30 @@ type Props = {
 };
 
 const LabelDropdownItem = ({ label, currTodoId, added }: Props) => {
-  const { addLabelToTodoItem } = useTodoContext();
+  const dispatch = useAppDispatch();
+  const todoLabelList = useAppSelector(
+    (state) =>
+      state.todos.todosList.find((todo) => todo.id === currTodoId)
+        ?.labels as Labels
+  );
+
+  const handleAddLabel = async () => {
+    await dispatch(
+      editLabelCountThunk({
+        id: label.id,
+        count: label.count + 1,
+      })
+    );
+    dispatch(
+      editTodosLabelsThunk({
+        // count: label.count,
+        // name: label.name,
+        todoId: currTodoId,
+        labelsList: todoLabelList.concat(label),
+      })
+    );
+  };
+
   return (
     <li className="w-full">
       {added ? (
@@ -20,12 +45,22 @@ const LabelDropdownItem = ({ label, currTodoId, added }: Props) => {
       ) : (
         <button
           className="p-1 font-semibold rounded-sm w-full text-left text-stone-300 hover:bg-zinc-700 active:bg-zinc-800"
-          onClick={() =>
-            addLabelToTodoItem({
-              id: label.id,
-              name: label.name,
-              todoId: currTodoId,
-            })
+          onClick={
+            // await dispatch(
+            //   addLabelToTodoThunk({
+            //     id: label.id,
+            //     count: label.count,
+            //     name: label.name,
+            //     todoId: currTodoId,
+            //   })
+            // );
+            // dispatch(
+            //   editLabelCountThunk({
+            //     id: label.id,
+            //     count: label.count + 1,
+            //   })
+            // );
+            handleAddLabel
           }
         >
           {label.name}

@@ -13,6 +13,11 @@ type TodoStatusType = {
   todoStatus: LoadingStatus;
 };
 
+type LabelStatusType = {
+  labelId?: string;
+  labelStatus: LoadingStatus;
+};
+
 export type TodoFuncsLoadingStatus = {
   addTodoStatus: LoadingStatus;
   editTodoStatus: LoadingStatus;
@@ -21,6 +26,13 @@ export type TodoFuncsLoadingStatus = {
   permanentlyDeleteTodoStatus: LoadingStatus;
   archiveTodoStatus: TodoStatusType;
   deleteTodoStatus: TodoStatusType;
+  editTodosLabelListStatus: LoadingStatus;
+};
+
+export type LabelFuncsLoadingStatus = {
+  fetchLabelStatus: LoadingStatus;
+  addLabelStatus: LoadingStatus;
+  handleLabelStatus: LabelStatusType;
 };
 
 export const checkIfLoading = (funcStatus: LoadingStatus) => {
@@ -66,16 +78,11 @@ export type TodoContextValueType = {
   deleteLabel: (id: DeleteLabelParamsType) => void;
   // deleteLabel: (id: RemoveLabelFromTodoInput) => void;
   editLabel: (editLabelParams: UpdateLabelContentParamsType) => void;
-  addLabelToTodoItem: (addLabelParams: AddLabelToTodoInput) => void;
+  // addLabelToTodoItem: (addLabelParams: AddLabelToTodoInput) => void;
   removeLabelFromTodoItem: (
     removeLabelParams: RemoveLabelFromTodoInput
   ) => void;
 };
-
-// type ArchiveTodoType = {
-//   id: string;
-//   deleted: boolean;
-// };
 
 export type EditTodoPayloadType = {
   id?: string;
@@ -219,12 +226,16 @@ export type UpdateLabelContentParamsType =
   | UpdateLabelNameParamsType
   | UpdateLabelCountParamsType;
 
-export type AddLabelToTodoInput = {
-  id: string;
-  name: string;
+export type HandleTodosLables = {
   todoId: string;
+  labelsList: Labels;
 };
 export type RemoveLabelFromTodoInput = {
   todoId: string;
   labelId: string;
+};
+
+export type RemoveLabelFromTodoPayload = {
+  todoId: string;
+  todoLabelsList: Labels;
 };

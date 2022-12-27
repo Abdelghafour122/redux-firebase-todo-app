@@ -1,23 +1,47 @@
 import React from "react";
 import { FaSpinner } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../../../App/hooks";
+import { editLabelCountThunk } from "../../../Reducerss/labelSlice";
 import { permanentlyDeleteTodoThnuk } from "../../../Reducerss/todoSlice";
-import { checkIfLoading } from "../../../Utils/types";
+import { getSpecificLabelCount } from "../../../Utils/firestore";
+import { checkIfLoading, Labels } from "../../../Utils/types";
 
 type Props = {
   id: string;
+  labelList: Labels;
   handleCloseVerifyDeleteBackdrop: () => void;
 };
 
 const VerifyPermanentDelete = ({
   handleCloseVerifyDeleteBackdrop,
   id,
+  labelList,
 }: Props) => {
   const dispatch = useAppDispatch();
+  const globalLabelList = useAppSelector((state) => state.labels.labelsList);
 
   const permanentlyDeleteTodoThunkStatus = useAppSelector(
     (state) => state.todos.status.permanentlyDeleteTodoStatus
   );
+
+  const handlePermanentDelete = async () => {
+    globalLabelList.forEach(async (globalLabel) => {
+      const mutualLabel = labelList.find(
+        (localLabel) => localLabel.id === globalLabel.id
+      );
+      if (mutualLabel !== undefined) {
+        const labelCount = await getSpecificLabelCount(mutualLabel.id);
+        await dispatch(
+          editLabelCountThunk({
+            id: mutualLabel.id,
+            count: (labelCount?.count - 1) as number,
+          })
+        );
+      }
+    });
+    await dispatch(permanentlyDeleteTodoThnuk(id));
+    return handleCloseVerifyDeleteBackdrop();
+  };
 
   return (
     <div className="backdrop">
@@ -35,10 +59,16 @@ const VerifyPermanentDelete = ({
           <button
             className="button flex items-center justify-between"
             disabled={checkIfLoading(permanentlyDeleteTodoThunkStatus)}
-            onClick={async () => {
-              await dispatch(permanentlyDeleteTodoThnuk(id));
-              handleCloseVerifyDeleteBackdrop();
-            }}
+            onClick={
+              () => handlePermanentDelete()
+              // const labelCount = await getSpecificLabelCount(labelId);
+              // await dispatch(editLabelCountThunk({
+              //   id: labelId,
+              //   count:
+              // }))
+              // await dispatch(permanentlyDeleteTodoThnuk(id));
+              // handleCloseVerifyDeleteBackdrop();
+            }
           >
             {checkIfLoading(permanentlyDeleteTodoThunkStatus) ? (
               <>

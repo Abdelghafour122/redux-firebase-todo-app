@@ -12,6 +12,7 @@ import {
   DeletedTodoParamsType,
   CompletedTodoParamsType,
   TodoFuncsLoadingStatus,
+  HandleTodosLables,
 } from "../Utils/types";
 
 type todosInitialStateType = {
@@ -32,6 +33,7 @@ const initialStatus: TodoFuncsLoadingStatus = {
   fetchTodoStatus: LoadingStatus.idle,
   toggleCompletedStatus: LoadingStatus.idle,
   permanentlyDeleteTodoStatus: LoadingStatus.idle,
+  editTodosLabelListStatus: LoadingStatus.idle,
 };
 
 const todosInitialState: todosInitialStateType = {
@@ -117,6 +119,21 @@ export const toggleTodoCompletedThunk = createAsyncThunk(
   }
 );
 
+export const editTodosLabelsThunk = createAsyncThunk(
+  "todos/editTodosLabels",
+  async (editTodoLabelsParams: HandleTodosLables) => {
+    const addLabelToTodoDocRef = doc(
+      todoDatabase,
+      "todos",
+      editTodoLabelsParams.todoId
+    );
+    await updateDoc(addLabelToTodoDocRef, {
+      labels: editTodoLabelsParams.labelsList,
+    });
+    return JSON.stringify(editTodoLabelsParams);
+  }
+);
+
 const todoSlice = createSlice({
   name: "todos",
   initialState: todosInitialState,
@@ -169,9 +186,7 @@ const todoSlice = createSlice({
         };
       })
       .addCase(archiveTodoThunk.fulfilled, (state, { payload }) => {
-        state.status.archiveTodoStatus = {
-          todoStatus: LoadingStatus.succeeded,
-        };
+        state.status.archiveTodoStatus.todoStatus = LoadingStatus.succeeded;
         const parsedPayload: ArchivedTodoParamsType = JSON.parse(payload);
         state.todosList.map((todo) => {
           if (todo.id === parsedPayload.id) {
@@ -189,7 +204,7 @@ const todoSlice = createSlice({
         };
       })
       .addCase(deleteTodoThnuk.fulfilled, (state, { payload }) => {
-        state.status.deleteTodoStatus = { todoStatus: LoadingStatus.succeeded };
+        state.status.deleteTodoStatus.todoStatus = LoadingStatus.succeeded;
         const parsedPayload: DeletedTodoParamsType = JSON.parse(payload);
         state.todosList.map((todo) => {
           if (todo.id === parsedPayload.id) {
@@ -226,6 +241,15 @@ const todoSlice = createSlice({
       })
       .addCase(toggleTodoCompletedThunk.rejected, (state) => {
         state.status.toggleCompletedStatus = LoadingStatus.failed;
+      })
+      .addCase(editTodosLabelsThunk.fulfilled, (state, { payload }) => {
+        state.status.editTodosLabelListStatus = LoadingStatus.succeeded;
+        const parsedPayload: HandleTodosLables = JSON.parse(payload);
+        state.todosList.map((todo) =>
+          todo.id === parsedPayload.todoId
+            ? (todo.labels = parsedPayload.labelsList)
+            : todo.labels
+        );
       });
   },
 });

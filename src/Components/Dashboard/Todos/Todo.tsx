@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { FaTrash, FaTrashRestore } from "react-icons/fa";
 import { RiInboxUnarchiveLine } from "react-icons/ri";
 import EditTodoBackdrop from "../../../Components/Todos/EditTodoBackdrop";
-import { useTodoContext } from "../../../Contexts/TodoContext";
 import {
   EditTodoParamsType,
   DetailedTodoType,
@@ -32,7 +31,6 @@ import {
 const Todo = (todoInfo: TodoType) => {
   const dispatch = useAppDispatch();
 
-  const { labelsArray } = useTodoContext();
   const [openEditTodoBackdrop, setOpenEditTodoBackdrop] = useState(false);
   const [openDetailedTodoBackdrop, setOpenDetailedTodoBackdrop] =
     useState(false);
@@ -85,13 +83,13 @@ const Todo = (todoInfo: TodoType) => {
     );
   };
 
-  const syncTodoLabels = useMemo(() => {
-    const todoLabelsIdList = [...todoInfo.labels.map((label) => label.id)];
-    let result = [
-      ...labelsArray.filter((label) => todoLabelsIdList.includes(label.id)),
-    ];
-    return result;
-  }, [labelsArray, todoInfo.labels]);
+  // const syncTodoLabels = useMemo(() => {
+  //   const todoLabelsIdList = [...todoInfo.labels.map((label) => label.id)];
+  //   let result = [
+  //     ...labelsArray.filter((label) => todoLabelsIdList.includes(label.id)),
+  //   ];
+  //   return result;
+  // }, [labelsArray, todoInfo.labels]);
 
   return (
     <div className="todo">
@@ -110,7 +108,7 @@ const Todo = (todoInfo: TodoType) => {
         <label htmlFor={`${todoInfo.id}`}>Completed</label>
       </div>
       {todoInfo.labels.length === 0 ? null : (
-        <TodoLabelsList labelsList={syncTodoLabels} todoId={todoInfo.id} />
+        <TodoLabelsList labelsList={todoInfo.labels} todoId={todoInfo.id} />
       )}
       <div className="button-cont flex items-center justify-around w-full">
         {todoInfo.deleted === undefined || todoInfo.deleted === false ? (
@@ -284,6 +282,7 @@ const Todo = (todoInfo: TodoType) => {
       {openVerifyDeleteBackdrop ? (
         <VerifyPermanentDelete
           id={todoInfo.id}
+          labelList={todoInfo.labels}
           handleCloseVerifyDeleteBackdrop={handleCloseVerifyDeleteBackdrop}
         />
       ) : null}
