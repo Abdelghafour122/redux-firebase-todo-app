@@ -21,13 +21,6 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
     (state) => state.labels.status.addLabelStatus
   );
 
-  // useEffect(() => {
-  //   const fetchLabels = async () => {
-  //     await dispatch(fetchLabelsThunk());
-  //   };
-  //   fetchLabels();
-  // }, []);
-
   useEffect(() => {
     if (labelsArray.length >= 5) setListLimitReached(true);
     else if (labelsArray.length < 5) setListLimitReached(false);

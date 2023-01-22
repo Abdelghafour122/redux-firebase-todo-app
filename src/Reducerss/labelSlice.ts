@@ -26,8 +26,6 @@ type labelsInitialStateType = {
 const initialStatus: LabelFuncsLoadingStatus = {
   fetchLabelStatus: LoadingStatus.idle,
   addLabelStatus: LoadingStatus.idle,
-  // editLabelStatus: { labelStatus: LoadingStatus.idle },
-  // deleteLabelStatus: { labelStatus: LoadingStatus.idle },
   handleLabelStatus: { labelStatus: LoadingStatus.idle },
 };
 
@@ -151,7 +149,6 @@ const labelSlice = createSlice({
         };
       })
       .addCase(editLabelNameThunk.fulfilled, (state, { payload }) => {
-        // state.status.editLabelStatus.labelStatus = LoadingStatus.succeeded;
         state.status.handleLabelStatus.labelStatus = LoadingStatus.succeeded;
         const parsedPayload: UpdateLabelNameParamsTypeRedux =
           JSON.parse(payload);
@@ -162,22 +159,16 @@ const labelSlice = createSlice({
         if (editedLabel !== undefined) editedLabel.name = parsedPayload.name;
       })
       .addCase(deleteLabelThunk.pending, (state, { meta }) => {
-        // state.status.deleteLabelStatus = {
-        //   labelId: meta.arg.labelId,
-        //   labelStatus: LoadingStatus.pending,
-        // };
         state.status.handleLabelStatus = {
           labelId: meta.arg.labelId,
           labelStatus: LoadingStatus.pending,
         };
       })
       .addCase(deleteLabelThunk.fulfilled, (state, { payload }) => {
-        // state.status.deleteLabelStatus.labelStatus = LoadingStatus.succeeded;
         state.status.handleLabelStatus.labelStatus = LoadingStatus.succeeded;
         state.labelsList = state.labelsList.filter(
           (label) => label.id !== JSON.parse(payload)
         );
-        // console.log(parsedPayload.labelId);
       });
   },
 });

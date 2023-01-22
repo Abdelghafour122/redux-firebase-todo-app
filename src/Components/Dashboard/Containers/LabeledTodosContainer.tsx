@@ -20,13 +20,10 @@ const LabeledTodosContainer = ({ id, name }: Props) => {
 
   useEffect(() => {
     if (labelsList.every((label) => label.id !== id)) navigate(-1);
-    // if (labelsList.every((label) => label.id !== id))
-    //   console.log("should work");
   }, [labelsList]);
 
   return (
     <div className="section-global-container">
-      {/* <button onClick={() => redirect("/")}>click</button> */}
       <p className="section-small-header">
         Todos labeled by:{" "}
         <span className="font-semibold text-stone-200 text-lg">{name}</span>{" "}

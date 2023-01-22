@@ -27,8 +27,6 @@ const LabelDropdownItem = ({ label, currTodoId, added }: Props) => {
     );
     dispatch(
       editTodosLabelsThunk({
-        // count: label.count,
-        // name: label.name,
         todoId: currTodoId,
         labelsList: todoLabelList.concat(label),
       })
@@ -45,23 +43,7 @@ const LabelDropdownItem = ({ label, currTodoId, added }: Props) => {
       ) : (
         <button
           className="p-1 font-semibold rounded-sm w-full text-left text-stone-300 hover:bg-zinc-700 active:bg-zinc-800"
-          onClick={
-            // await dispatch(
-            //   addLabelToTodoThunk({
-            //     id: label.id,
-            //     count: label.count,
-            //     name: label.name,
-            //     todoId: currTodoId,
-            //   })
-            // );
-            // dispatch(
-            //   editLabelCountThunk({
-            //     id: label.id,
-            //     count: label.count + 1,
-            //   })
-            // );
-            handleAddLabel
-          }
+          onClick={handleAddLabel}
         >
           {label.name}
         </button>
