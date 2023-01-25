@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../App/hooks";
 import { editLabelCountThunk } from "../../Reducerss/labelSlice";
 import { editTodosLabelsThunk } from "../../Reducerss/todoSlice";
 import { getSpecificLabelCount } from "../../Utils/firestore";
-import { Label, Labels } from "../../Utils/types";
+import { checkIfLoading, Label, Labels } from "../../Utils/types";
 
 type Props = {
   label: Label;
@@ -16,6 +16,9 @@ const LabelChip = ({ label, todoId }: Props) => {
   const todosLabelList = useAppSelector(
     (state) =>
       state.todos.todosList.find((todo) => todo.id === todoId)?.labels as Labels
+  );
+  const addLabelThunkStatus = useAppSelector(
+    (state) => state.todos.status.editTodosLabelListStatus
   );
 
   const handleRemoveLabel = async () => {
@@ -41,8 +44,9 @@ const LabelChip = ({ label, todoId }: Props) => {
     <li className="px-2 py-1 bg-neutral-700 text-stone-300 font-semibold rounded-xl flex items-center justify-between gap-1">
       <p className="text-stone-300 font-semibold">{label.name}</p>
       <button
-        className="p-1 rounded-full hover:bg-neutral-600 active:bg-neutral-500"
+        className="p-1 rounded-full hover:bg-neutral-600 active:bg-neutral-500 disabled:hover:cursor-not-allowed"
         onClick={handleRemoveLabel}
+        disabled={checkIfLoading(addLabelThunkStatus)}
       >
         <VscChromeClose color="rgb(231 229 228)" size="1rem" />
       </button>

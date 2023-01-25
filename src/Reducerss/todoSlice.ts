@@ -250,6 +250,9 @@ const todoSlice = createSlice({
             ? (todo.labels = parsedPayload.labelsList)
             : todo.labels
         );
+      })
+      .addCase(editTodosLabelsThunk.pending, (state) => {
+        state.status.editTodosLabelListStatus = LoadingStatus.pending;
       });
   },
 });
