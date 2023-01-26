@@ -1,10 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LoadingStatus, AuthUIMessages } from "../Utils/types";
 
 import {
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
+  getAuth,
   GoogleAuthProvider,
   sendPasswordResetEmail,
+  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -12,6 +15,7 @@ import {
 } from "firebase/auth";
 import { RootState } from "../App/store";
 import { globalAuth } from "../firebase";
+import { useAppSelector } from "../App/hooks";
 
 type authInitialStateType = {
   status: LoadingStatus;
@@ -24,9 +28,15 @@ type emailPasswordDataType = {
   password: string;
 };
 
+const storedUserId: string | null = localStorage.key(0);
+let storedUser;
+if (storedUserId !== null) {
+  storedUser = localStorage.getItem(storedUserId);
+}
+
 const authInitialState: authInitialStateType = {
   status: LoadingStatus.idle,
-  user: null,
+  user: JSON.parse(storedUser as string) as User | null,
   error: null,
 };
 
@@ -35,12 +45,17 @@ export const PWD_REGEX =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,24}$/;
 const googleProvider = new GoogleAuthProvider();
 
+const persistenceAuth = getAuth();
+setPersistence(persistenceAuth, browserLocalPersistence)
+  .then(() => console.log("persistence is used"))
+  .catch((err) => console.log("some error: ", err));
+
 const authSlice = createSlice({
   name: "authenticationSlice",
   initialState: authInitialState,
   reducers: {
-    setUser: (state, { payload }) => {
-      if (payload.user) state.user = JSON.parse(payload.user);
+    setUser: (state, action: PayloadAction<string>) => {
+      state.user = JSON.parse(action.payload);
     },
   },
   extraReducers(builder) {
