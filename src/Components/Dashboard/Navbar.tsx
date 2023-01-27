@@ -23,9 +23,8 @@ import { userSignOutThunk } from "../../Reducerss/authSlice";
 import { checkIfLoading } from "../../Utils/types";
 
 const Navbar = () => {
-  const { currentUser } = useAuthentication();
-  const { fetchLabels } = useTodoContext();
   const navigate = useNavigate();
+  const currentUser = useAppSelector((state) => state.authentication.user);
   const [profilePic, setProfilePic] = useState<string | undefined>();
   const [openProfilePopup, setOpenProfilePopup] = useState(false);
 
@@ -44,10 +43,6 @@ const Navbar = () => {
   const handleCloseLabelsBackdrop = () => {
     return setOpenLabelsBackdrop(false);
   };
-
-  useEffect(() => {
-    fetchLabels();
-  }, [fetchLabels]);
 
   useEffect(() => {
     if (currentUser?.photoURL !== null) setProfilePic(currentUser?.photoURL);
@@ -78,9 +73,14 @@ const Navbar = () => {
     },
   ];
 
-  const currentUserr = useAppSelector((state) => state.authentication.user);
-
-  console.log(currentUserr);
+  const handleUserLogOut = async () => {
+    await dispatch(userSignOutThunk()).then((res) =>
+      res.meta.requestStatus === "fulfilled"
+        ? // ? console.log("uoouououuooouuooouo")
+          navigate("/")
+        : res.meta.requestStatus === "rejected" && console.log("logout failed")
+    );
+  };
 
   return (
     <nav className="py-2 px-2 h-full bg-neutral-900">
@@ -122,14 +122,11 @@ const Navbar = () => {
               <button
                 className="p-3 bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] hover:bg-stone-600 active:bg-stone-500 bottom-2 group"
                 disabled={checkIfLoading(logoutThunkStatus)}
-                onClick={async () => {
-                  await dispatch(userSignOutThunk());
-                  navigate("/");
-                }}
+                onClick={handleUserLogOut}
               >
                 {checkIfLoading(logoutThunkStatus) ? (
                   <FaSpinner
-                    size={"1.3rem"}
+                    size={"1.7rem"}
                     className="animate-spin"
                     color={"#ff3535"}
                   />

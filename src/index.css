@@ -53,12 +53,20 @@
     @apply disabled:cursor-not-allowed disabled:bg-neutral-600  hover:bg-neutral-400 active:bg-neutral-500;
   }
 
+  .checked-btn {
+    @apply border border-neutral-400 rounded-xl py-1 px-2 hover:bg-neutral-600 active:bg-neutral-700 disabled:cursor-not-allowed;
+  }
+
+  .completed-btn {
+    @apply bg-green-800 rounded-xl py-1 px-2 font-semibold border border-neutral-400 hover:bg-green-600 active:bg-green-700 disabled:cursor-not-allowed text-stone-200;
+  }
+
   .todo-action-button {
     @apply p-2 rounded-full hover:bg-neutral-700 active:bg-neutral-500 disabled:bg-neutral-700 disabled:cursor-not-allowed disabled:hover:bg-transparent;
   }
 
   .form-info-message {
-    @apply bg-amber-200 flex items-start justify-start gap-2 rounded-md my-0 mx-auto p-1 border-2 border-black;
+    @apply bg-amber-200 flex items-center justify-center rounded-md my-0 mx-auto p-1 border-2 border-black font-semibold text-center;
   }
 
   .form-error-message {

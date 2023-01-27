@@ -30,6 +30,9 @@ import {
 
 const Todo = (todoInfo: TodoType) => {
   const dispatch = useAppDispatch();
+  const toggleTodoCompletedThunkStatus = useAppSelector(
+    (state) => state.todos.status.toggleCompletedStatus
+  );
 
   const [openEditTodoBackdrop, setOpenEditTodoBackdrop] = useState(false);
   const [openDetailedTodoBackdrop, setOpenDetailedTodoBackdrop] =
@@ -83,14 +86,6 @@ const Todo = (todoInfo: TodoType) => {
     );
   };
 
-  // const syncTodoLabels = useMemo(() => {
-  //   const todoLabelsIdList = [...todoInfo.labels.map((label) => label.id)];
-  //   let result = [
-  //     ...labelsArray.filter((label) => todoLabelsIdList.includes(label.id)),
-  //   ];
-  //   return result;
-  // }, [labelsArray, todoInfo.labels]);
-
   return (
     <div className="todo">
       {/* <button className="button" onClick={handleOpenSnackbar}> */}
@@ -98,7 +93,7 @@ const Todo = (todoInfo: TodoType) => {
         <h1 className="todo-title">{todoInfo.title}</h1>
       ) : null}
       <p className="todo-p">{todoInfo.content}</p>
-      <div className="todo-checked">
+      {/* <div className="todo-checked">
         <input
           type="checkbox"
           id={`${todoInfo.id}`}
@@ -106,7 +101,14 @@ const Todo = (todoInfo: TodoType) => {
           onChange={markTodoAsCompleted}
         />
         <label htmlFor={`${todoInfo.id}`}>Completed</label>
-      </div>
+      </div> */}
+      <button
+        className={todoInfo.completed ? "completed-btn" : "checked-btn"}
+        disabled={checkIfLoading(toggleTodoCompletedThunkStatus)}
+        onClick={markTodoAsCompleted}
+      >
+        {todoInfo.completed ? "Completed" : "Mark Completed"}
+      </button>
       {todoInfo.labels.length === 0 ? null : (
         <TodoLabelsList labelsList={todoInfo.labels} todoId={todoInfo.id} />
       )}

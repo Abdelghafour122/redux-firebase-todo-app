@@ -41,6 +41,7 @@ export const checkIfLoading = (funcStatus: LoadingStatus) => {
 
 export enum AuthUIMessages {
   signInFailed = "Sign in failed, something went wrong!",
+  signInPending = "Signing you in...",
   signUpFailed = "Sign up failed, something went wrong!",
   passwordsDontMatch = "Passwords don't match!",
   passwordInvalid = "Password invalid",

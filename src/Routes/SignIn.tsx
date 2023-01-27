@@ -14,6 +14,7 @@ import { LoadingStatus, AuthUIMessages } from "../Utils/types";
 import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
+import InfoMessage from "../Components/Dashboard/Authentication/InfoMessage";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -33,11 +34,14 @@ const SignIn = () => {
 
   // setting the loading state based on the thunks status
   useEffect(() => {
-    authStatus === LoadingStatus.pending ? setLoading(true) : setLoading(false);
+    if (authStatus === LoadingStatus.pending) {
+      setLoading(true);
+      setErrorMessage(AuthUIMessages.signInPending);
+    } else setLoading(false);
     authStatus === LoadingStatus.failed
       ? setErrorMessage(authError as string)
       : setErrorMessage("");
-  }, [authStatus]);
+  }, [authStatus, authError]);
 
   useEffect(() => {
     setErrorMessage("");
@@ -66,6 +70,7 @@ const SignIn = () => {
       <section className="container">
         <PageTitle titleContent={"Sign In"} />
         {errormessage !== "" && <ErrorMessage messageContent={errormessage} />}
+        {loading ? <InfoMessage text={AuthUIMessages.signInPending} /> : null}
         <form
           className="flex flex-col items-center justify-center my-3 mx-auto gap-3 w-max md:w-80 lg:w-96"
           action=""

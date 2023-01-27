@@ -15,7 +15,6 @@ import {
 } from "firebase/auth";
 import { RootState } from "../App/store";
 import { globalAuth } from "../firebase";
-import { useAppSelector } from "../App/hooks";
 
 type authInitialStateType = {
   status: LoadingStatus;
@@ -29,7 +28,7 @@ type emailPasswordDataType = {
 };
 
 const storedUserId: string | null = localStorage.key(0);
-let storedUser;
+let storedUser = null;
 if (storedUserId !== null) {
   storedUser = localStorage.getItem(storedUserId);
 }
@@ -62,6 +61,7 @@ const authSlice = createSlice({
     builder //SIGN UP EMAIL PASSWORD
       .addCase(userSignUpThunk.pending, (state) => {
         state.status = LoadingStatus.pending;
+        state.error = "";
       })
       .addCase(userSignUpThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
@@ -70,9 +70,11 @@ const authSlice = createSlice({
       .addCase(userSignUpThunk.fulfilled, (state, { payload }) => {
         state.status = LoadingStatus.succeeded;
         state.user = JSON.parse(payload);
+        state.error = "";
       }) //GOOGLE AUTH
       .addCase(signInWithGoogleThunk.pending, (state) => {
         state.status = LoadingStatus.pending;
+        state.error = "";
       })
       .addCase(signInWithGoogleThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
@@ -81,9 +83,11 @@ const authSlice = createSlice({
       .addCase(signInWithGoogleThunk.fulfilled, (state, { payload }) => {
         state.status = LoadingStatus.succeeded;
         state.user = JSON.parse(payload);
+        state.error = "";
       }) //EMAIL PASSWORD AUTH
       .addCase(userSignInThunk.pending, (state) => {
         state.status = LoadingStatus.pending;
+        state.error = "";
       })
       .addCase(userSignInThunk.rejected, (state) => {
         state.status = LoadingStatus.failed;
@@ -92,9 +96,11 @@ const authSlice = createSlice({
       .addCase(userSignInThunk.fulfilled, (state, { payload }) => {
         state.status = LoadingStatus.succeeded;
         state.user = JSON.parse(payload);
+        state.error = "";
       })
       .addCase(userSignOutThunk.pending, (state) => {
         state.status = LoadingStatus.pending;
+        state.error = "";
       })
       .addCase(userSignOutThunk.fulfilled, (state) => {
         state.user = null;
