@@ -7,6 +7,7 @@ import {
 } from "../../../Reducerss/labelSlice";
 import { editTodosLabelsThunk } from "../../../Reducerss/todoSlice";
 import { Label, checkIfLoading } from "../../../Utils/types";
+import LabelHelperText from "./LabelHelperText";
 
 const LabelItem = ({ id, name, count }: Label) => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,10 @@ const LabelItem = ({ id, name, count }: Label) => {
   const todosList = useAppSelector((state) => state.todos.todosList);
 
   const [editable, setEditable] = useState(false);
+  const [labelName, setLabelName] = useState(name);
+  const [labelNameTooShort, setLabelNameTooShort] = useState(false);
+  const [labelNameTooLong, setLabelNameTooLong] = useState(false);
+
   const labelNameRef = useRef<HTMLInputElement | null>(null);
 
   //  make a validation for the edited label
@@ -26,19 +31,32 @@ const LabelItem = ({ id, name, count }: Label) => {
   }, [editable]);
 
   const handleEditLabelName = async () => {
-    console.log(labelNameRef.current?.value);
-    labelNameRef.current?.value !== undefined &&
-    labelNameRef.current?.value.length !== 0 &&
-    labelNameRef.current?.value.length <= 20
+    labelName.length !== 0 && labelName.length <= 20 && labelName !== name
       ? await dispatch(
           editLabelNameThunk({
             id: id,
-            name: labelNameRef.current?.value,
+            name: labelName,
           })
         )
       : // REPLACE WITH A SNACKBAR
         console.log("cannot update label");
   };
+
+  useEffect(() => {
+    const checkLabelLength = () => {
+      if (labelName.length === 0) {
+        setLabelNameTooShort(true);
+        labelNameTooLong && setLabelNameTooLong(false);
+      } else if (labelName.length > 20) {
+        setLabelNameTooLong(true);
+        labelNameTooShort && setLabelNameTooShort(false);
+      } else {
+        setLabelNameTooLong(false);
+        setLabelNameTooShort(false);
+      }
+    };
+    checkLabelLength();
+  }, [labelName]);
 
   const handleDeleteLabel = async () => {
     if (count > 0) {
@@ -62,8 +80,11 @@ const LabelItem = ({ id, name, count }: Label) => {
           <input
             className="form-input"
             type="text"
-            placeholder={name}
+            value={labelName}
             ref={labelNameRef}
+            onChange={(e) => {
+              setLabelName(e.target.value.trim());
+            }}
           />
         ) : (
           <p className="label-text">{name}</p>
@@ -81,6 +102,7 @@ const LabelItem = ({ id, name, count }: Label) => {
               className="label-button"
               onClick={() => {
                 setEditable(false);
+                setLabelName(name);
                 handleEditLabelName();
               }}
             >
@@ -110,10 +132,23 @@ const LabelItem = ({ id, name, count }: Label) => {
           </button>
         </div>
       </div>
-      {editable ? (
-        <p className="text-stone-400 font-medium text-xs w-full">
-          Keep label length below 20
-        </p>
+      {editable && !labelNameTooShort && !labelNameTooLong ? (
+        <LabelHelperText
+          helperText={"Keep label length below 20"}
+          error={false}
+        />
+      ) : null}
+      {editable && labelNameTooLong ? (
+        <LabelHelperText
+          helperText={"Label can't be longer than 20!"}
+          error={true}
+        />
+      ) : null}
+      {editable && labelNameTooShort ? (
+        <LabelHelperText
+          helperText={"Label can't be left empty"}
+          error={true}
+        />
       ) : null}
     </li>
   );
