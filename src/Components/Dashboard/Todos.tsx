@@ -42,7 +42,7 @@ const Todos = () => {
 
   return (
     <div className="todos">
-      {openTodoForm ? (
+      {/* {openTodoForm ? (
         <TodoForm handleCloseTodoFormBackdrop={handleCloseTodoFormBackdrop} />
       ) : (
         <div className="form-note flex items-center justify-center gap-2">
@@ -51,7 +51,11 @@ const Todos = () => {
             Open
           </button>
         </div>
-      )}
+      )} */}
+
+      {/* {openTodoForm ? (
+        <TodoForm handleCloseTodoFormBackdrop={handleCloseTodoFormBackdrop} />
+      ) : null} */}
       <div className="route-container">
         {checkIfLoading(fetchingTodoThunkStatus) ? (
           <LoadingPage loadingText={"Fetching todos..."} />

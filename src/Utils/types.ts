@@ -8,6 +8,11 @@ export enum LoadingStatus {
   failed = "Failed",
 }
 
+export enum ColorThemes {
+  light = "Light",
+  dark = "Dark",
+}
+
 type TodoStatusType = {
   todoId?: string;
   todoStatus: LoadingStatus;

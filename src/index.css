@@ -9,6 +9,10 @@
     padding-inline: 2rem;
   }
 
+  .toolbar {
+    @apply w-full flex items-center justify-between px-3 py-2 bg-neutral-800 shadow;
+  }
+
   .big-button {
     @apply flex items-center gap-1 p-2 rounded-sm text-lg font-medium text-stone-100 bg-orange-400;
   }

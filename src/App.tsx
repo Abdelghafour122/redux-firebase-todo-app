@@ -19,37 +19,30 @@ import FilteredTodos from "./Routes/FilteredTodos";
 
 function App() {
   return (
-    <AuthContext>
-      <TodoContext>
-        <main className="App h-full">
-          <Routes>
-            <Route element={<PrivateLoggedRoute />}>
-              <Route element={<Dashboard />} path="dashboard/*">
-                <Route index element={<Todos />} />
-                <Route element={<Finished />} path="finished" />
-                <Route element={<Trash />} path="trash" />
-                <Route element={<Archived />} path="archived" />
-                <Route element={<FilteredTodos />} path="filtered/:labelId" />
-              </Route>
-            </Route>
-            <Route element={<PrivateUnloggedRoute />}>
-              <Route element={<SignIn />} path="/signin" />
-            </Route>
-            <Route element={<PrivateUnloggedRoute />}>
-              <Route element={<SignUp />} path="/signup" />
-            </Route>
-            <Route element={<PrivateUnloggedRoute />}>
-              <Route
-                element={<ForgottenPassword />}
-                path="/forgottenpassword"
-              />
-            </Route>
-            <Route element={<Homepage />} path="/" />
-            <Route element={<ErrorPage />} path="*" />
-          </Routes>
-        </main>
-      </TodoContext>
-    </AuthContext>
+    <main className="App h-full">
+      <Routes>
+        <Route element={<PrivateLoggedRoute />}>
+          <Route element={<Dashboard />} path="dashboard/*">
+            <Route index element={<Todos />} />
+            <Route element={<Finished />} path="finished" />
+            <Route element={<Trash />} path="trash" />
+            <Route element={<Archived />} path="archived" />
+            <Route element={<FilteredTodos />} path="filtered/:labelId" />
+          </Route>
+        </Route>
+        <Route element={<PrivateUnloggedRoute />}>
+          <Route element={<SignIn />} path="/signin" />
+        </Route>
+        <Route element={<PrivateUnloggedRoute />}>
+          <Route element={<SignUp />} path="/signup" />
+        </Route>
+        <Route element={<PrivateUnloggedRoute />}>
+          <Route element={<ForgottenPassword />} path="/forgottenpassword" />
+        </Route>
+        <Route element={<Homepage />} path="/" />
+        <Route element={<ErrorPage />} path="*" />
+      </Routes>
+    </main>
   );
 }
 

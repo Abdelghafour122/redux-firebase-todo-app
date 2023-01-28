@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch } from "../App/hooks";
 import Navbar from "../Components/Dashboard/Navbar";
+import ToolBar from "../Components/Dashboard/ToolBar";
 import { globalAuth } from "../firebase";
 import { setUser } from "../Reducerss/authSlice";
 import { fetchLabelsThunk } from "../Reducerss/labelSlice";
@@ -24,8 +25,11 @@ function Dashboard() {
   return (
     <div className="dashboard h-full w-full flex items-start justify-start">
       <Navbar />
-      <div className="dashboard-body flex-1 min-h-full py-2 overflow-auto">
-        <Outlet />
+      <div className="flex flex-col w-full">
+        <ToolBar />
+        <div className="dashboard-body flex-1 min-h-full py-2">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
