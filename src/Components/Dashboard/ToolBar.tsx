@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ColorThemes } from "../../Utils/types";
+import ProfilePopup from "./ProfilePopup";
 import TodoForm from "./Todos/TodoForm";
 
 type Props = {};
@@ -11,6 +12,8 @@ const ToolBar = (props: Props) => {
       ? ColorThemes.dark
       : ColorThemes.light
   );
+
+  const [openProfilePopup, setOpenProfilePopup] = useState(false);
 
   useEffect(() => {
     const storedTheme: String | null = localStorage.getItem("color-theme");
@@ -45,6 +48,14 @@ const ToolBar = (props: Props) => {
     }
   };
 
+  const handleCloseProfilePopup = () => {
+    return setOpenProfilePopup(false);
+  };
+
+  const handleOpenProfilePopup = () => {
+    return setOpenProfilePopup(true);
+  };
+
   const tempImgUrl = new URL("/assets/images.jpeg", import.meta.url).href;
   return (
     <div className="toolbar">
@@ -65,13 +76,20 @@ const ToolBar = (props: Props) => {
         >
           {colorTheme === ColorThemes.dark ? "🌛" : "🌞"}
         </button>
-        <button className="rounded-lg overflow-hidden h-9">
+        <button
+          className="rounded-lg overflow-hidden h-9"
+          onClick={handleOpenProfilePopup}
+        >
           <img src={tempImgUrl} alt="pic" className="h-full" />
         </button>
       </div>
       {openTodoForm ? (
         <TodoForm handleCloseTodoFormBackdrop={handleCloseTodoFormBackdrop} />
       ) : null}
+      {openProfilePopup ? (
+        <ProfilePopup onClosePopup={handleCloseProfilePopup} />
+      ) : null}
+      {/* <ProfilePopup onClosePopup={handleCloseProfilePopup} /> */}
     </div>
   );
 };
