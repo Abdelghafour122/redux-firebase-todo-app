@@ -35,7 +35,8 @@ if (storedUserId !== null) {
 
 const authInitialState: authInitialStateType = {
   status: LoadingStatus.idle,
-  user: JSON.parse(storedUser as string) as User | null,
+  user: null || (JSON.parse(storedUser as string) as User),
+  // user: null,
   error: null,
 };
 
@@ -55,6 +56,9 @@ const authSlice = createSlice({
   reducers: {
     setUser: (state, action: PayloadAction<string>) => {
       state.user = JSON.parse(action.payload);
+    },
+    setUserProfileImage: (state, action: PayloadAction<string>) => {
+      if (state.user) state.user.photoURL = action.payload;
     },
   },
   extraReducers(builder) {
@@ -151,6 +155,6 @@ export const userSignOutThunk = createAsyncThunk("userSignOut", async () => {
   return await signOut(globalAuth);
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, setUserProfileImage } = authSlice.actions;
 export const selectCurrentUser = (state: RootState) => state.authentication;
 export default authSlice.reducer;
