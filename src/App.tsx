@@ -5,8 +5,6 @@ import Homepage from "./Routes/Homepage";
 import SignIn from "./Routes/SignIn";
 import SignUp from "./Routes/SignUp";
 
-import AuthContext from "./Contexts/AuthContext";
-import TodoContext from "./Contexts/TodoContext";
 import PrivateLoggedRoute from "./Utils/PrivateLoggedRoute";
 import ForgottenPassword from "./Routes/ForgottenPassword";
 import PrivateUnloggedRoute from "./Utils/PrivateUnloggedRoute";
