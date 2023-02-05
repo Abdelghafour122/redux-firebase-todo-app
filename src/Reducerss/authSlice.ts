@@ -27,16 +27,14 @@ type emailPasswordDataType = {
   password: string;
 };
 
-const storedUserId: string | null = localStorage.key(0);
+const storedUserId: string | null = localStorage.key(1);
 let storedUser = null;
-if (storedUserId !== null) {
+if (storedUserId !== null && storedUserId !== "color-theme") {
   storedUser = localStorage.getItem(storedUserId);
 }
-
 const authInitialState: authInitialStateType = {
   status: LoadingStatus.idle,
-  user: null || (JSON.parse(storedUser as string) as User),
-  // user: null,
+  user: storedUser === null ? null : (JSON.parse(storedUser as string) as User),
   error: null,
 };
 
