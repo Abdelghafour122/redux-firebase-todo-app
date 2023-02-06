@@ -9,8 +9,8 @@ export enum LoadingStatus {
 }
 
 export enum ColorThemes {
-  light = "Light",
-  dark = "Dark",
+  light = "light",
+  dark = "dark",
 }
 
 type TodoStatusType = {

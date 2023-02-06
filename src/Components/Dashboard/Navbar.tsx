@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { MdLabel } from "react-icons/md";
-import ProfileSettingsPopup from "../../Components/Dashboard/ProfileSettingsPopup";
 
 import { useNavigate } from "react-router-dom";
 
-import { useAuthentication } from "../../Contexts/AuthContext";
 import Tooltip from "./Navbar/Tooltip";
 import LabelFormBackdrop from "./Labels/LabelFormBackdrop";
-import { useTodoContext } from "../../Contexts/TodoContext";
 import LabelsNavList from "./Labels/LabelsNavList";
 import {
   FaArchive,
@@ -25,8 +22,6 @@ import { checkIfLoading } from "../../Utils/types";
 const Navbar = () => {
   const navigate = useNavigate();
   const currentUser = useAppSelector((state) => state.authentication.user);
-  const [profilePic, setProfilePic] = useState<string | undefined>();
-  const [openProfilePopup, setOpenProfilePopup] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -43,11 +38,6 @@ const Navbar = () => {
   const handleCloseLabelsBackdrop = () => {
     return setOpenLabelsBackdrop(false);
   };
-
-  useEffect(() => {
-    if (currentUser?.photoURL !== null) setProfilePic(currentUser?.photoURL);
-    else setProfilePic(import.meta.env + "/Assets/defaultProfilePic.webp");
-  }, [currentUser]);
 
   const NAV_LINKS = [
     {
@@ -83,10 +73,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="py-2 px-2 min-h-full bg-neutral-900">
+    <nav className="py-2 px-2 min-h-full bg-neutral-400 dark:bg-neutral-900 shadow-sm">
       {/* overflow-y-scroll scrollbar-hide */}
       <div className="flex flex-col items-center justify-start gap-2 h-full w-max">
-        <p className="text-2xl text-orange-300 font-sans font-extrabold border-b-2 border-b-stone-500">
+        <p className="text-2xl text-orange-600  dark:text-orange-300 font-sans font-extrabold border-b-2 border-b-stone-200 dark:border-b-stone-500">
           Dooit
         </p>
         <div className="funcs h-full ">
@@ -98,10 +88,13 @@ const Navbar = () => {
               return (
                 <li key={ind} className="relative group">
                   <button
-                    className="p-3 bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] hover:bg-stone-600 active:bg-stone-500 focus:bg-stone-400 focus:rounded-[10px]"
+                    className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px]"
                     onClick={link.execute}
                   >
-                    <link.icon color="rgb(253 186 116)" size={"1.7rem"} />
+                    <link.icon
+                      className="text-orange-600 dark:text-orange-300"
+                      size={"1.7rem"}
+                    />
                   </button>
                   <Tooltip tooltipContent={link.linkName} />
                 </li>
@@ -109,10 +102,13 @@ const Navbar = () => {
             })}
             <li className="relative group">
               <button
-                className="p-3 bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] hover:bg-stone-600 active:bg-stone-500 focus:bg-stone-400 focus:rounded-[10px]"
+                className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px]"
                 onClick={handleOpenLabelsBackdrop}
               >
-                <MdLabel color="rgb(253 186 116)" size={"1.7rem"} />
+                <MdLabel
+                  className="text-orange-600 dark:text-orange-300"
+                  size={"1.7rem"}
+                />
               </button>
               <Tooltip tooltipContent={"Labels"} />
             </li>
@@ -120,7 +116,7 @@ const Navbar = () => {
             {/* LOGOUT BUTTON */}
             <li className="relative group mt-6">
               <button
-                className="p-3 bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] hover:bg-stone-600 active:bg-stone-500 bottom-2 group"
+                className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 bottom-2 group"
                 disabled={checkIfLoading(logoutThunkStatus)}
                 onClick={handleUserLogOut}
               >
@@ -140,25 +136,6 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        {/* JUST REMOVED THE PROFILE POPUP, MAY RECONSIDER UNDOING */}
-        {/* <div className="profile relative mt-2">
-          <button
-            className="transition-all rounded-[50%] duration-200 ease-linear hover:rounded-[10px] overflow-hidden"
-            onClick={() => setOpenProfilePopup(!openProfilePopup)}
-          >
-            <img className="h-12 " src={profilePic} alt="profile-img" />
-          </button>
-          {openProfilePopup === true && <ProfileSettingsPopup />}
-        </div> */}
-
-        {/* MOVING THE LOGOUT BUTTON TO THE NAV LINKS UL */}
-        {/* <button
-          className="p-3 bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] hover:bg-stone-600 active:bg-stone-500 absolute bottom-2 group"
-          onClick={userSignOut}
-        >
-          <BiLogOut size={"1.7rem"} color={"#ff3535"} />
-          <Tooltip tooltipContent={"Sign out"} />
-        </button> */}
       </div>
       {openLabelsBackdrop === true ? (
         <LabelFormBackdrop

@@ -8,7 +8,10 @@ const FinishedTodosContainer = () => {
   return (
     <div className="section-global-container">
       <LittleSectionHeader header={"Finished Todos"} />
-      <div className="finished-todos-container todo-container">
+      <div
+        className="finished-todos-container todo-container"
+        // style={{ width: "100%" }}
+      >
         {todoList.map(
           (todo) =>
             todo.completed === true &&

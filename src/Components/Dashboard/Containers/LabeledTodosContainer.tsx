@@ -26,7 +26,9 @@ const LabeledTodosContainer = ({ id, name }: Props) => {
     <div className="section-global-container">
       <p className="section-small-header">
         Todos labeled by:{" "}
-        <span className="font-semibold text-stone-200 text-lg">{name}</span>{" "}
+        <span className="font-semibold text-stone-900 dark:text-stone-200 text-lg">
+          {name}
+        </span>{" "}
       </p>
       <div className="todo-container">
         {todoList.map((todo) =>

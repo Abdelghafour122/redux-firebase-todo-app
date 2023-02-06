@@ -74,7 +74,7 @@ const LabelItem = ({ id, name, count }: Label) => {
   };
 
   return (
-    <li className="label-item flex flex-col items-center justify-between">
+    <li className="label-item flex flex-col items-center justify-between bg-neutral-300 dark:bg-transparent">
       <div className="flex items-center justify-between gap-3 w-full">
         {editable ? (
           <input
@@ -106,7 +106,10 @@ const LabelItem = ({ id, name, count }: Label) => {
                 handleEditLabelName();
               }}
             >
-              <FaCheck size={"1.2rem"} color={"rgb(214 211 209)"} />
+              <FaCheck
+                size={"1.2rem"}
+                className="text-stone-800 dark:text-stone-200"
+              />
             </button>
           ) : (
             <button
@@ -117,7 +120,10 @@ const LabelItem = ({ id, name, count }: Label) => {
               }
               onClick={() => setEditable(true)}
             >
-              <FaPen size={"1.2rem"} color={"rgb(214 211 209)"} />
+              <FaPen
+                size={"1.2rem"}
+                className="text-stone-800 dark:text-stone-200"
+              />
             </button>
           )}
           <button
@@ -128,7 +134,10 @@ const LabelItem = ({ id, name, count }: Label) => {
             }
             onClick={handleDeleteLabel}
           >
-            <FaTrashAlt size={"1.2rem"} color={"rgb(214 211 209)"} />
+            <FaTrashAlt
+              size={"1.2rem"}
+              className="text-stone-800 dark:text-stone-200"
+            />
           </button>
         </div>
       </div>

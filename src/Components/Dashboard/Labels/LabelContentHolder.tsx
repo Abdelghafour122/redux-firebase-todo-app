@@ -9,7 +9,7 @@ const LabelContentHolder = () => {
   return (
     <>
       {labelsArray.length !== 0 ? (
-        <ul className="w-full flex flex-col gap-1 items-center justify-start p-2 bg-neutral-900 rounded-md h-[290px] overflow-y-scroll scrollbar-none">
+        <ul className="w-full flex flex-col gap-1 items-center justify-start p-2 bg-neutral-400 dark:bg-neutral-900 rounded-md h-[290px] overflow-y-scroll scrollbar-none">
           {labelsArray.map((label) => {
             return (
               <LabelItem

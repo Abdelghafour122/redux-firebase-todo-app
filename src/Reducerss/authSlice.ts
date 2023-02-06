@@ -27,7 +27,7 @@ type emailPasswordDataType = {
   password: string;
 };
 
-const storedUserId: string | null = localStorage.key(1);
+const storedUserId: string | null = localStorage.key(0);
 let storedUser = null;
 if (storedUserId !== null && storedUserId !== "color-theme") {
   storedUser = localStorage.getItem(storedUserId);

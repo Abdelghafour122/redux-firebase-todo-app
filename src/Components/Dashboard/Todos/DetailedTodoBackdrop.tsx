@@ -31,11 +31,11 @@ const DetailedTodoBackdrop = ({
   const [openLabelsDrpdown, setOpenLabelsDropdown] = useState(false);
   return (
     <div className="detailed-todo backdrop">
-      <section className="details flex flex-col items-start justify-start gap-3 max-w-3xl min-w-2xl bg-neutral-900 p-3 rounded-md shadow-xl">
+      <section className="details flex flex-col items-start justify-start gap-3 max-w-3xl min-w-2xl bg-neutral-300 dark:bg-neutral-900 p-3 rounded-md shadow-xl">
         <div className="todo-info flex flex-col items-start justify-start w-full gap-3">
           {/* <h1 className="text-2xl leading-normal text-stone-100 font-bold rounded-md mb-0 w-[560px] break-all text-ellipsis overflow-hidden whitespace-nowrap"> */}
           <h1
-            className={`text-2xl leading-normal text-stone-100 font-bold rounded-md mb-0 min-w-min w-[560px] max-h-[60px] break-all overflow-scroll scrollbar-none ${
+            className={`text-2xl leading-normal text-stone-900 dark:text-stone-100 font-bold rounded-md mb-0 min-w-min w-[560px] max-h-[60px] break-all overflow-scroll scrollbar-none ${
               detailedTodoInfo.title === "" && "text-stone-500"
             }`}
           >

@@ -9,9 +9,9 @@ type Props = {
 
 const EmptySection = ({ Icon, message }: Props) => {
   return (
-    <div className="h-full w-full flex flex-col text-zinc-500 items-center justify-start gap-10">
+    <div className="h-full w-full flex flex-col items-center justify-start gap-10">
       <Message message={message} />
-      <Icon color="rgb(168 162 158)" size={"15rem"} />
+      <Icon color="rgb(87 83 78)" size={"15rem"} />
     </div>
   );
 };

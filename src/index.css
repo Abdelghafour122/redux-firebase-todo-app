@@ -10,15 +10,15 @@
   }
 
   .toolbar {
-    @apply w-full flex items-center justify-between px-3 py-2 bg-neutral-800 shadow;
+    @apply w-full flex items-center justify-between px-3 py-2 bg-neutral-400 dark:bg-neutral-800 shadow;
   }
 
   .big-button {
-    @apply flex items-center gap-1 p-2 rounded-sm text-lg font-medium text-stone-100 bg-orange-400;
+    @apply flex items-center gap-1 p-2 rounded-sm text-lg font-medium text-stone-100 bg-orange-600 dark:bg-orange-400;
   }
 
   .navbar-tooltip {
-    @apply absolute left-[154%] top-2/4 -translate-y-1/2 p-2 w-max rounded-md bg-zinc-900 text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-md shadow-zinc-900 z-[999999];
+    @apply absolute left-[154%] top-2/4 -translate-y-1/2 p-2 w-max rounded-md bg-neutral-400 dark:bg-neutral-900 text-stone-900 dark:text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-md dark:shadow-zinc-900 z-[999999];
   }
 
   .label-tooltip {
@@ -31,30 +31,30 @@
 
   .form-title {
     padding: 1rem 1.5rem;
-    @apply text-stone-100 text-6xl font-bold text-center;
+    @apply text-stone-800 dark:text-stone-100 text-6xl font-bold text-center;
   }
 
   .form-label {
-    @apply text-lg font-medium text-stone-100 self-start;
-    @apply after:content-['*'] after:ml-0.5 after:text-red-500;
+    @apply text-lg font-medium text-stone-800 dark:text-stone-100 self-start;
+    @apply after:content-['*'] after:ml-0.5 after:text-red-700 dark:after:text-red-500;
   }
 
   .form-input {
     border: 2px solid theme("colors.stone.900");
-    @apply outline-none bg-stone-800 caret-stone-100 text-stone-200 w-full rounded px-2 py-1;
-    @apply focus:border-blue-500;
+    @apply outline-none bg-stone-400 dark:bg-stone-800 caret-stone-900 dark:caret-stone-100 text-stone-800 dark:text-stone-200 w-full rounded px-2 py-1;
+    @apply focus:border-blue-600 dark:focus:border-blue-500;
   }
 
   .link {
-    @apply text-lg text-stone-200 underline font-bold;
-    @apply hover:hover:text-stone-400;
+    @apply text-lg text-blue-600 dark:text-stone-200 underline font-bold;
+    @apply hover:hover:text-blue-500 dark:hover:hover:text-stone-400;
   }
 
   .button {
-    border: 2px solid theme("colors.slate.900");
+    border: 2px solid;
     padding: 0.25rem 0.5rem;
-    @apply bg-neutral-200 font-semibold rounded-md border-slate-900 text-slate-900 cursor-pointer;
-    @apply disabled:cursor-not-allowed disabled:bg-neutral-600  hover:bg-neutral-400 active:bg-neutral-500;
+    @apply bg-neutral-600 dark:bg-neutral-200 font-semibold rounded-md border-slate-900 text-slate-50 dark:text-slate-900 cursor-pointer;
+    @apply disabled:cursor-not-allowed disabled:bg-neutral-400 dark:disabled:bg-neutral-600  hover:bg-neutral-400 active:bg-neutral-500;
   }
 
   .checked-btn {
@@ -66,7 +66,7 @@
   }
 
   .todo-action-button {
-    @apply p-2 rounded-full hover:bg-neutral-700 active:bg-neutral-500 disabled:bg-neutral-700 disabled:cursor-not-allowed disabled:hover:bg-transparent;
+    @apply p-2 rounded-full hover:bg-neutral-400 dark:hover:bg-neutral-700 active:bg-neutral-200 dark:active:bg-neutral-500 disabled:bg-neutral-300 dark:disabled:bg-neutral-700 disabled:cursor-not-allowed disabled:hover:bg-transparent;
   }
 
   .form-info-message {
@@ -84,15 +84,15 @@
   .todo-form-input {
     border: 2px solid theme("colors.stone.900");
     @apply py-1 px-3 rounded-md outline-none;
-    @apply focus:border-blue-500 placeholder:text-stone-400 text-stone-100 bg-neutral-900 caret-stone-100;
+    @apply focus:border-blue-600 dark:focus:border-blue-500 placeholder:text-stone-200 text-stone-900 dark:text-stone-100 bg-neutral-400 dark:bg-neutral-900 border-neutral-900 caret-stone-900 dark:caret-stone-100;
   }
 
   .todo {
-    @apply bg-neutral-800 text-stone-300 border border-neutral-400 rounded-md flex flex-col items-start justify-between p-3 basis-1/5 gap-4;
+    @apply bg-neutral-300 dark:bg-neutral-800 text-stone-800 dark:text-stone-300 border border-neutral-900 dark:border-neutral-400 rounded-md flex flex-col items-start justify-between p-3 basis-1/5 gap-4;
   }
 
   .todo-title {
-    @apply text-xl font-bold text-stone-100 break-all text-ellipsis overflow-hidden w-[150px] whitespace-nowrap;
+    @apply text-xl font-bold text-stone-900 dark:text-stone-100 break-all text-ellipsis overflow-hidden w-[150px] whitespace-nowrap;
   }
 
   .todo-p {
@@ -117,7 +117,7 @@
   }
 
   .section-small-header {
-    @apply text-sm font-semibold text-stone-400 ml-2 mb-2;
+    @apply text-sm font-semibold text-stone-700 dark:text-stone-400 ml-2 mb-2;
   }
 
   .section-global-container {
@@ -129,7 +129,7 @@
   }
 
   .label-text {
-    @apply font-bold text-xl text-stone-300 flex-1;
+    @apply font-bold text-xl text-stone-900 dark:text-stone-300 flex-1;
   }
 
   .label-item {
@@ -137,6 +137,6 @@
   }
 
   .label-button {
-    @apply rounded-sm hover:bg-neutral-700 active:bg-neutral-400 p-2 disabled:bg-neutral-800 disabled:cursor-not-allowed;
+    @apply rounded-sm hover:bg-neutral-400 dark:hover:bg-neutral-700 active:bg-neutral-200 dark:active:bg-neutral-400 p-2 disabled:bg-neutral-400 dark:disabled:bg-neutral-800 disabled:cursor-not-allowed;
   }
 }

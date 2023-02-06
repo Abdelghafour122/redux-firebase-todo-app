@@ -10,8 +10,10 @@ function Homepage() {
   return (
     <div className="homepage h-full flex flex-col items-center justify-center">
       <section className="text flex flex-col gap-5 items-center justify-between mb-12">
-        <h2 className="text-7xl font-bold text-stone-200">Dooit</h2>
-        <p className="text-lg font-semibold text-stone-400">
+        <h2 className="text-7xl font-bold text-stone-800 dark:text-stone-200">
+          Dooit
+        </h2>
+        <p className="text-lg font-semibold text-stone-600 dark:text-stone-400">
           Track your work - Stay organized
         </p>
       </section>

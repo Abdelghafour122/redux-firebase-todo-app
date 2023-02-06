@@ -57,10 +57,10 @@ const ToolBar = () => {
       </div>
       <div className="right flex items-center justify-between gap-3">
         <button
-          className="h-9 w-9 rounded-lg bg-neutral-600"
+          className="h-9 w-9 rounded-lg bg-neutral-300 dark:bg-neutral-600"
           onClick={handleChangeColorTheme}
         >
-          {colorTheme === ColorThemes.dark ? "🌛" : "🌞"}
+          {colorTheme === ColorThemes.light ? "🌛" : "🌞"}
         </button>
       </div>
       {openTodoForm ? (
