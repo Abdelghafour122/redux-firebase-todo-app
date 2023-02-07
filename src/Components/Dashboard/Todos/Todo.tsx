@@ -88,20 +88,10 @@ const Todo = (todoInfo: TodoType) => {
 
   return (
     <div className="todo">
-      {/* <button className="button" onClick={handleOpenSnackbar}> */}
       {todoInfo.title !== "" ? (
         <h1 className="todo-title">{todoInfo.title}</h1>
       ) : null}
       <p className="todo-p">{todoInfo.content}</p>
-      {/* <div className="todo-checked">
-        <input
-          type="checkbox"
-          id={`${todoInfo.id}`}
-          checked={todoIsDone}
-          onChange={markTodoAsCompleted}
-        />
-        <label htmlFor={`${todoInfo.id}`}>Completed</label>
-      </div> */}
       <button
         className={todoInfo.completed ? "completed-btn" : "checked-btn"}
         disabled={checkIfLoading(toggleTodoCompletedThunkStatus)}

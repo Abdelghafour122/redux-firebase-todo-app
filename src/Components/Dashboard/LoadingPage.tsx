@@ -11,10 +11,9 @@ const LoadingPage = ({ loadingText }: Props) => {
       <div className="flex flex-col items-center justify-center gap-6 ">
         <FaSpinner
           size={"7rem"}
-          className="duration-1000 animate-spin"
-          color="rgb(250 250 249)"
+          className="duration-1000 animate-spin text-stone-600 dark:text-stone-300"
         />
-        <p className="font-semibold text-2xl text-stone-50 mt-10">
+        <p className="font-semibold text-2xl text-stone-600 dark:text-stone-300 mt-10">
           {loadingText !== "" ? loadingText : "Loading..."}
         </p>
       </div>

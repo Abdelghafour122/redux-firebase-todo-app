@@ -35,8 +35,10 @@ const DetailedTodoBackdrop = ({
         <div className="todo-info flex flex-col items-start justify-start w-full gap-3">
           {/* <h1 className="text-2xl leading-normal text-stone-100 font-bold rounded-md mb-0 w-[560px] break-all text-ellipsis overflow-hidden whitespace-nowrap"> */}
           <h1
-            className={`text-2xl leading-normal text-stone-900 dark:text-stone-100 font-bold rounded-md mb-0 min-w-min w-[560px] max-h-[60px] break-all overflow-scroll scrollbar-none ${
-              detailedTodoInfo.title === "" && "text-stone-500"
+            className={`text-2xl leading-normal font-bold rounded-md mb-0 min-w-min w-[560px] max-h-[60px] break-all overflow-scroll scrollbar-none ${
+              detailedTodoInfo.title === ""
+                ? "text-stone-400 dark:text-stone-600 "
+                : "text-stone-900 dark:text-stone-100"
             }`}
           >
             {detailedTodoInfo.title !== ""

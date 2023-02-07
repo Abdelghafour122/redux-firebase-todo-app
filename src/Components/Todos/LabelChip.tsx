@@ -17,8 +17,11 @@ const LabelChip = ({ label, todoId }: Props) => {
     (state) =>
       state.todos.todosList.find((todo) => todo.id === todoId)?.labels as Labels
   );
-  const addLabelThunkStatus = useAppSelector(
+  const editTodosLabelsThunkStatus = useAppSelector(
     (state) => state.todos.status.editTodosLabelListStatus
+  );
+  const editLabelCountThunkStatus = useAppSelector(
+    (state) => state.labels.status.handleLabelStatus.labelStatus
   );
 
   const handleRemoveLabel = async () => {
@@ -29,8 +32,7 @@ const LabelChip = ({ label, todoId }: Props) => {
         count: (labelCount?.count - 1) as number,
       })
     );
-
-    dispatch(
+    await dispatch(
       editTodosLabelsThunk({
         todoId: todoId,
         labelsList: todosLabelList.filter(
@@ -41,14 +43,22 @@ const LabelChip = ({ label, todoId }: Props) => {
   };
 
   return (
-    <li className="px-2 py-1 bg-neutral-700 text-stone-300 font-semibold rounded-xl flex items-center justify-between gap-1">
-      <p className="text-stone-300 font-semibold">{label.name}</p>
+    <li className="px-2 py-1 bg-neutral-400 dark:bg-neutral-700 font-semibold rounded-xl flex items-center justify-between gap-1">
+      <p className="text-stone-800 dark:text-stone-300 font-semibold">
+        {label.name}
+      </p>
       <button
-        className="p-1 rounded-full hover:bg-neutral-600 active:bg-neutral-500 disabled:hover:cursor-not-allowed"
+        className="p-1 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-600 active:bg-neutral-300 dark:active:bg-neutral-500 disabled:hover:cursor-not-allowed"
         onClick={handleRemoveLabel}
-        disabled={checkIfLoading(addLabelThunkStatus)}
+        disabled={
+          checkIfLoading(editTodosLabelsThunkStatus) ||
+          checkIfLoading(editLabelCountThunkStatus)
+        }
       >
-        <VscChromeClose color="rgb(231 229 228)" size="1rem" />
+        <VscChromeClose
+          className="text-stone-800 dark:text-stone-300"
+          size="1rem"
+        />
       </button>
     </li>
   );

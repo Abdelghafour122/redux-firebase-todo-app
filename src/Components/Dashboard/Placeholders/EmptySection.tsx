@@ -11,7 +11,7 @@ const EmptySection = ({ Icon, message }: Props) => {
   return (
     <div className="h-full w-full flex flex-col items-center justify-start gap-10">
       <Message message={message} />
-      <Icon color="rgb(87 83 78)" size={"15rem"} />
+      <Icon className="text-stone-600 dark:text-stone-400" size={"15rem"} />
     </div>
   );
 };

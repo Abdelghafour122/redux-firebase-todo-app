@@ -9,7 +9,9 @@ const LabelHelperText = ({ helperText, error }: Props) => {
   return (
     <div
       className={`${
-        error ? "text-red-600 font-semibold" : "text-stone-700"
+        error
+          ? "text-red-600 font-semibold"
+          : "text-stone-700 dark:text-stone-400"
       } font-medium text-xs w-full`}
     >
       {helperText}

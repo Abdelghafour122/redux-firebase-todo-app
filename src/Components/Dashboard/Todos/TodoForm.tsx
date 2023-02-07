@@ -23,7 +23,6 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
     e.preventDefault();
 
     todoContent !== "" &&
-      // addTodoItem({ title: todoTitle, content: todoContent });
       (await dispatch(
         addTodoThunk({
           title: todoTitle,
@@ -47,7 +46,7 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
     <div className="add-todo backdrop">
       <div className="flex flex-col items-center justify-center basis-2/4">
         <div className="w-full py-3 flex items-center justify-between">
-          <p className="text-2xl font-semibold text-stone-50 ">Add a todo</p>
+          <p className="text-2xl font-semibold text-stone-50">Add a todo</p>
           <button
             className="p-2 rounded-full hover:bg-neutral-600 active:bg-neutral-500"
             onClick={handleCloseTodoFormBackdrop}
@@ -57,7 +56,7 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
         </div>
         <form
           action=""
-          className="make-todo w-full flex flex-col p-3 bg-neutral-700 rounded-xl gap-5 border-2 border-neutral-900"
+          className="make-todo w-full flex flex-col p-3 bg-neutral-300 dark:bg-neutral-700 rounded-xl gap-5 border-2 border-neutral-900"
           onSubmit={handleSubmit}
         >
           <input
@@ -91,8 +90,7 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
                 <>
                   Making &nbsp;
                   <FaSpinner
-                    className="animate-spin"
-                    color="rgb(38 38 38)"
+                    className="animate-spin text-stone-100 dark:text-stone-900"
                     size="1.5rem"
                   />
                 </>

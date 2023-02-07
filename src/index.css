@@ -58,11 +58,11 @@
   }
 
   .checked-btn {
-    @apply border border-neutral-400 rounded-xl py-1 px-2 hover:bg-neutral-600 active:bg-neutral-700 disabled:cursor-not-allowed;
+    @apply border border-neutral-400 rounded-xl py-1 px-2 hover:bg-neutral-200 dark:hover:bg-neutral-600 active:bg-neutral-300 dark:active:bg-neutral-700 disabled:cursor-not-allowed;
   }
 
   .completed-btn {
-    @apply bg-green-800 rounded-xl py-1 px-2 font-semibold border border-neutral-400 hover:bg-green-600 active:bg-green-700 disabled:cursor-not-allowed text-stone-200;
+    @apply bg-green-700 dark:bg-green-800 rounded-xl py-1 px-2 font-semibold border border-neutral-400 hover:bg-green-600 active:bg-green-800 dark:active:bg-green-700 disabled:cursor-not-allowed text-stone-200;
   }
 
   .todo-action-button {
@@ -84,7 +84,7 @@
   .todo-form-input {
     border: 2px solid theme("colors.stone.900");
     @apply py-1 px-3 rounded-md outline-none;
-    @apply focus:border-blue-600 dark:focus:border-blue-500 placeholder:text-stone-200 text-stone-900 dark:text-stone-100 bg-neutral-400 dark:bg-neutral-900 border-neutral-900 caret-stone-900 dark:caret-stone-100;
+    @apply focus:border-blue-600 dark:focus:border-blue-500 placeholder:text-stone-200 dark:placeholder:text-stone-600 text-stone-900 dark:text-stone-100 bg-neutral-400 dark:bg-neutral-900 border-neutral-900 caret-stone-900 dark:caret-stone-100;
   }
 
   .todo {

@@ -71,7 +71,7 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
         </div>
         <form
           action=""
-          className="flex flex-col gap-4 p-2 border-2 border-neutral-900 rounded-lg bg-neutral-700 w-full"
+          className="flex flex-col gap-4 p-2 border-2 border-neutral-900 rounded-lg bg-neutral-300 dark:bg-neutral-700 w-full"
           onSubmit={handleSubmit}
         >
           <input
@@ -100,8 +100,7 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
               <>
                 Updating &nbsp;
                 <FaSpinner
-                  className="animate-spin"
-                  color="rgb(38 38 38)"
+                  className="animate-spin text-stone-100 dark:text-stone-900"
                   size="1.5rem"
                 />
               </>
