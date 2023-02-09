@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { BsArrowLeftSquareFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../App/hooks";
-import { LoadingStatus, AuthUIMessages } from "../Utils/types";
+import { LoadingStatus, AuthUIMessages, checkIfLoading } from "../Utils/types";
 import { resetPasswordThunk } from "../Reducerss/authSlice";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InfoMessage from "../Components/Dashboard/Authentication/InfoMessage";
 import SuccessMessage from "../Components/Dashboard/Authentication/SuccessMessage";
+import ColorThemeButton from "../Components/Dashboard/ColorThemeButton";
+import { FaSpinner } from "react-icons/fa";
 
 function ForgottenPassword() {
   const navigate = useNavigate();
@@ -15,17 +17,14 @@ function ForgottenPassword() {
   const authError = useAppSelector((state) => state.authentication.error);
   const authStatus = useAppSelector((state) => state.authentication.status);
 
-  const emailRef = useRef<HTMLInputElement | null>(null);
+  const [email, setEmail] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    if (emailRef.current?.value.trim() !== "")
-      return await dispatch(
-        resetPasswordThunk(emailRef.current?.value.trim() as string)
-      ).then((res) =>
+    if (email !== "")
+      return await dispatch(resetPasswordThunk(email as string)).then((res) =>
         res.meta.requestStatus === "fulfilled"
           ? setErrorMessage(AuthUIMessages.resetPasswordSucceeded)
           : res.meta.requestStatus === "rejected" &&
@@ -34,7 +33,6 @@ function ForgottenPassword() {
   }
 
   useEffect(() => {
-    authStatus === LoadingStatus.pending ? setLoading(true) : setLoading(false);
     authStatus === LoadingStatus.failed
       ? setErrorMessage(authError as string)
       : setErrorMessage("");
@@ -45,7 +43,10 @@ function ForgottenPassword() {
   }, []);
 
   return (
-    <div className="forgotten-password h-full flex flex-col items-center justify-center">
+    <div className="forgotten-password h-full flex flex-col items-center justify-center relative">
+      <div className="btn-holder absolute top-2 right-2">
+        <ColorThemeButton />
+      </div>
       <section className="container">
         <h2 className="form-title">Reset your password</h2>
         <InfoMessage />
@@ -70,19 +71,37 @@ function ForgottenPassword() {
               type="email"
               id="email-address"
               className="form-input"
-              ref={emailRef}
+              value={email}
               required
+              onChange={(e) => setEmail(e.target.value.trim())}
             />
           </div>
-          <button type="submit" className="button" disabled={loading}>
-            Reset password
+          <button
+            type="submit"
+            className="button flex align-center justify-center"
+            disabled={checkIfLoading(authStatus)}
+          >
+            {checkIfLoading(authStatus) ? (
+              <>
+                Please wait &nbsp;
+                <FaSpinner
+                  className="animate-spin text-stone-100 dark:text-stone-900"
+                  size="1.5rem"
+                />
+              </>
+            ) : (
+              "Reset password"
+            )}
           </button>
         </form>
         <button
-          className="flex items-center justify-center gap-2 w-max mt-3 mb-0 mx-auto text-lg font-semibold underline text-stone-300"
+          className="flex items-center justify-center gap-2 w-max mt-3 mb-0 mx-auto text-lg font-semibold underline text-stone-800 dark:text-stone-300"
           onClick={() => navigate(-1)}
         >
-          <BsArrowLeftSquareFill size="1.5em" color="#e7e5e4" />
+          <BsArrowLeftSquareFill
+            size="1.5em"
+            className="dark:text-stone-300 text-stone-800"
+          />
           Go Back
         </button>
       </section>

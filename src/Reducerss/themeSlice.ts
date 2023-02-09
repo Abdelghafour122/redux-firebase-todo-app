@@ -11,6 +11,13 @@ const initialThemeState: string =
     ? ColorThemes.dark
     : ColorThemes.light;
 
+if (storedTheme !== null) {
+  if (storedTheme === ColorThemes.dark)
+    document.documentElement.classList.add(ColorThemes.dark);
+  else if (storedTheme === ColorThemes.light)
+    document.documentElement.classList.remove(ColorThemes.dark);
+}
+
 const themeSlice = createSlice({
   name: "themeSlice",
   initialState: initialThemeState,
@@ -19,11 +26,11 @@ const themeSlice = createSlice({
       const parsedPayload = JSON.parse(action.payload);
       state = parsedPayload;
       if (state === ColorThemes.dark) {
-        document.documentElement.classList.remove(ColorThemes.dark);
-        localStorage.setItem("color-theme", ColorThemes.light);
-      } else {
         document.documentElement.classList.add(ColorThemes.dark);
         localStorage.setItem("color-theme", ColorThemes.dark);
+      } else {
+        document.documentElement.classList.remove(ColorThemes.dark);
+        localStorage.setItem("color-theme", ColorThemes.light);
       }
       return state;
     },

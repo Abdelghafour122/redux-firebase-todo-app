@@ -11,10 +11,10 @@ function Homepage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const storedTheme: String | null = localStorage.getItem("color-theme");
-    dispatch(setColorTheme(JSON.stringify(storedTheme)));
-  }, []);
+  // useEffect(() => {
+  //   const storedTheme: String | null = localStorage.getItem("color-theme");
+  //   dispatch(setColorTheme(JSON.stringify(storedTheme)));
+  // }, []);
 
   return (
     <div className="homepage h-full flex flex-col items-center justify-center relative">

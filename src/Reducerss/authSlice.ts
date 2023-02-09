@@ -104,6 +104,15 @@ const authSlice = createSlice({
       .addCase(userSignOutThunk.fulfilled, (state) => {
         state.user = null;
         state.status = LoadingStatus.succeeded;
+      })
+      .addCase(resetPasswordThunk.pending, (state) => {
+        state.status = LoadingStatus.pending;
+      })
+      .addCase(resetPasswordThunk.rejected, (state) => {
+        state.status = LoadingStatus.failed;
+      })
+      .addCase(resetPasswordThunk.fulfilled, (state) => {
+        state.status = LoadingStatus.succeeded;
       });
   },
 });

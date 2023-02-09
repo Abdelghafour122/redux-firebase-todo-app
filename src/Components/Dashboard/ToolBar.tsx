@@ -17,7 +17,9 @@ const ToolBar = () => {
   return (
     <div className="toolbar">
       <div className="left flex items-center justify-between gap-3">
-        <p className="text-stone-300 text-lg font-semibold">Welcome, friend!</p>
+        <p className="dark:text-stone-300 text-stone-800 text-lg font-semibold">
+          Click to make a new task
+        </p>
         <button
           className="button"
           onClick={handleOpenTodoFormBackdrop}
