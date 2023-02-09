@@ -55,9 +55,6 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<string>) => {
       state.user = JSON.parse(action.payload);
     },
-    setUserProfileImage: (state, action: PayloadAction<string>) => {
-      if (state.user) state.user.photoURL = action.payload;
-    },
   },
   extraReducers(builder) {
     builder //SIGN UP EMAIL PASSWORD
@@ -153,6 +150,6 @@ export const userSignOutThunk = createAsyncThunk("userSignOut", async () => {
   return await signOut(globalAuth);
 });
 
-export const { setUser, setUserProfileImage } = authSlice.actions;
+export const { setUser } = authSlice.actions;
 export const selectCurrentUser = (state: RootState) => state.authentication;
 export default authSlice.reducer;

@@ -20,7 +20,7 @@ function App() {
     <main className="App h-full">
       <Routes>
         <Route element={<PrivateLoggedRoute />}>
-          <Route element={<Dashboard />} path="dashboard/*">
+          <Route element={<Dashboard />} path="dashboard/">
             <Route index element={<Todos />} />
             <Route element={<Finished />} path="finished" />
             <Route element={<Trash />} path="trash" />

@@ -1,14 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Attribution from "../Components/Dashboard/Attribution";
 import { FaHandPointRight, FaHome } from "react-icons/fa";
-import { useAppSelector } from "../App/hooks";
+import { useAppDispatch, useAppSelector } from "../App/hooks";
+import ColorThemeButton from "../Components/Dashboard/ColorThemeButton";
+import { setColorTheme } from "../Reducerss/themeSlice";
 
 function Homepage() {
   const currentUser = useAppSelector((state) => state.authentication.user);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const storedTheme: String | null = localStorage.getItem("color-theme");
+    dispatch(setColorTheme(JSON.stringify(storedTheme)));
+  }, []);
+
   return (
-    <div className="homepage h-full flex flex-col items-center justify-center">
+    <div className="homepage h-full flex flex-col items-center justify-center relative">
+      <div className="btn-holder absolute top-2 right-2">
+        <ColorThemeButton />
+      </div>
       <section className="text flex flex-col gap-5 items-center justify-between mb-12">
         <h2 className="text-7xl font-bold text-stone-800 dark:text-stone-200">
           Dooit

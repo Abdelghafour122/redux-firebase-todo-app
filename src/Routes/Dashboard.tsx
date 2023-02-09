@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../App/hooks";
 import Navbar from "../Components/Dashboard/Navbar";
 import ToolBar from "../Components/Dashboard/ToolBar";
@@ -11,6 +11,13 @@ import { fetchTodosThunk } from "../Reducerss/todoSlice";
 
 function Dashboard() {
   const dispatch = useAppDispatch();
+  let { route } = useParams();
+  console.log(route);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    route !== undefined && navigate(`/dashboard/${route}`);
+  }, [route]);
 
   useEffect(() => {
     dispatch(fetchTodosThunk());

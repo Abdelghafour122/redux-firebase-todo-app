@@ -15,6 +15,7 @@ import { FaInfoCircle } from "react-icons/fa";
 import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import { LoadingStatus, AuthUIMessages } from "../Utils/types";
+import ColorThemeButton from "../Components/Dashboard/ColorThemeButton";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
@@ -68,7 +69,10 @@ const SignUp = () => {
   }
 
   return (
-    <div className="sign-up h-full flex flex-col items-center justify-center">
+    <div className="sign-up h-full flex flex-col items-center justify-center relative">
+      <div className="btn-holder absolute top-2 right-2">
+        <ColorThemeButton />
+      </div>
       <section className="container">
         <PageTitle titleContent={"Sign Up"} />
         {errormessage !== "" && <ErrorMessage messageContent={errormessage} />}

@@ -15,6 +15,8 @@ import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
 import InfoMessage from "../Components/Dashboard/Authentication/InfoMessage";
+import ColorThemeButton from "../Components/Dashboard/ColorThemeButton";
+import { setColorTheme } from "../Reducerss/themeSlice";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -31,6 +33,8 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(authStatus === LoadingStatus.pending);
+
+  const currentColorTheme = useAppSelector((state) => state.colorTheme);
 
   // setting the loading state based on the thunks status
   useEffect(() => {
@@ -66,7 +70,10 @@ const SignIn = () => {
   }
 
   return (
-    <div className="sign-in h-full flex flex-col items-center justify-center">
+    <div className="sign-in h-full flex flex-col items-center justify-center relative">
+      <div className="btn-holder absolute top-2 right-2">
+        <ColorThemeButton />
+      </div>
       <section className="container">
         <PageTitle titleContent={"Sign In"} />
         {errormessage !== "" && <ErrorMessage messageContent={errormessage} />}
