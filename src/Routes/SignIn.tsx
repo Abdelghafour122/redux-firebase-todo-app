@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { FcGoogle } from "react-icons/fc";
@@ -10,13 +10,12 @@ import {
   EMAIL_REGEX,
 } from "../Reducerss/authSlice";
 import { useAppDispatch, useAppSelector } from "../App/hooks";
-import { LoadingStatus, AuthUIMessages } from "../Utils/types";
+import { LoadingStatus, AuthUIMessages, checkIfLoading } from "../Utils/types";
 import PageTitle from "../Components/Dashboard/Authentication/PageTitle";
 import ErrorMessage from "../Components/Dashboard/Authentication/ErrorMessage";
 import InputHelperText from "../Components/Dashboard/Authentication/InputHelperText";
 import InfoMessage from "../Components/Dashboard/Authentication/InfoMessage";
 import ColorThemeButton from "../Components/Dashboard/ColorThemeButton";
-import { setColorTheme } from "../Reducerss/themeSlice";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -26,22 +25,18 @@ const SignIn = () => {
   const authStatus = useAppSelector((state) => state.authentication.status);
 
   const [errormessage, setErrorMessage] = useState("");
-
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(true);
-
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(authStatus === LoadingStatus.pending);
-
-  const currentColorTheme = useAppSelector((state) => state.colorTheme);
 
   // setting the loading state based on the thunks status
   useEffect(() => {
-    if (authStatus === LoadingStatus.pending) {
-      setLoading(true);
+    setLoading(() => checkIfLoading(authStatus));
+
+    if (authStatus === LoadingStatus.pending)
       setErrorMessage(AuthUIMessages.signInPending);
-    } else setLoading(false);
+
     authStatus === LoadingStatus.failed
       ? setErrorMessage(authError as string)
       : setErrorMessage("");
@@ -124,7 +119,14 @@ const SignIn = () => {
             />
           </div>
           <div className="forgot-password">
-            <Link className="link" to={"/forgottenpassword"}>
+            <Link
+              className={`link hover:text-stone-400 ${
+                checkIfLoading(authStatus)
+                  ? "pointer-events-none"
+                  : "pointer-events-auto"
+              }`}
+              to={"/forgottenpassword"}
+            >
               Forgot your password?
             </Link>
           </div>
@@ -139,7 +141,14 @@ const SignIn = () => {
         </form>
         <div className="note flex gap-5 text-lg font-medium items-center justify-center">
           <p>Don't have an account?</p>
-          <Link to="/signup" className="link hover:text-stone-400">
+          <Link
+            to="/signup"
+            className={`link hover:text-stone-400 ${
+              checkIfLoading(authStatus)
+                ? "pointer-events-none"
+                : "pointer-events-auto"
+            }`}
+          >
             Sign Up
           </Link>
         </div>

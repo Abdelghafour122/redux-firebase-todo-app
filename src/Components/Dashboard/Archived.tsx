@@ -4,13 +4,14 @@ import EmptySection from "./Placeholders/EmptySection";
 import { BsArchiveFill } from "react-icons/bs";
 import LoadingPage from "./LoadingPage";
 import { useAppSelector } from "../../App/hooks";
+import { checkIfLoading } from "../../Utils/types";
 
-type Props = {};
-
-const Archived = (props: Props) => {
+const Archived = () => {
   const todoList = useAppSelector((state) => state.todos.todosList);
+  const fetchingTodoThunkStatus = useAppSelector(
+    (state) => state.todos.status.fetchTodoStatus
+  );
 
-  const [loading, setLoading] = useState(true);
   const [unArchivedTodos, setUnArchivedTodos] = useState<boolean>();
 
   useEffect(() => {
@@ -24,14 +25,11 @@ const Archived = (props: Props) => {
     setUnArchivedTodos(() => checkForUnArchivedTodos());
   }, [todoList]);
 
-  useEffect(() => {
-    unArchivedTodos === undefined ? setLoading(true) : setLoading(false);
-  }, [unArchivedTodos]);
-
   return (
     <div className="archived-todos route-container">
-      {loading ? (
-        <LoadingPage />
+      {checkIfLoading(fetchingTodoThunkStatus) ||
+      unArchivedTodos === undefined ? (
+        <LoadingPage loadingText={"Please wait"} />
       ) : unArchivedTodos === true ? (
         <EmptySection Icon={BsArchiveFill} message={"No archived Todos!"} />
       ) : (

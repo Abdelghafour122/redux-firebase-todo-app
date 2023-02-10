@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { ColorThemes } from "../../Utils/types";
+import React, { useState } from "react";
 import ColorThemeButton from "./ColorThemeButton";
 import TodoForm from "./Todos/TodoForm";
 
@@ -18,7 +17,7 @@ const ToolBar = () => {
     <div className="toolbar">
       <div className="left flex items-center justify-between gap-3">
         <p className="dark:text-stone-300 text-stone-800 text-lg font-semibold">
-          Click to make a new task
+          Click to make a new todo
         </p>
         <button
           className="button"

@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import {
   FaArchive,
   FaCheck,
@@ -34,6 +34,10 @@ linkList === null &&
   sessionStorage.setItem("link-list", JSON.stringify(NAV_LINK_SELECTED_STATE));
 
 const NavLinksUL = () => {
+  const fetchLabelsThunkStatus = useAppSelector(
+    (state) => state.labels.status.fetchLabelStatus
+  );
+
   const NAV_LINKS = [
     {
       linkName: "Todos",
@@ -95,7 +99,8 @@ const NavLinksUL = () => {
   };
 
   return (
-    <ul className="flex flex-col items-center justify-start gap-3 h-max left-2 ">
+    // h-max
+    <ul className="flex flex-col items-center justify-start gap-3 h-full">
       {/* NAV LINKS */}
       {NAV_LINKS.map((link, ind) => {
         return (
@@ -117,17 +122,28 @@ const NavLinksUL = () => {
           className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px]"
           onClick={handleOpenLabelsBackdrop}
         >
-          <MdLabel
-            className="text-orange-600 dark:text-orange-300"
-            size={"1.7rem"}
-          />
+          {checkIfLoading(fetchLabelsThunkStatus) ? (
+            <FaSpinner
+              className="text-orange-600 dark:text-orange-300 animate-spin"
+              size={"1.7rem"}
+            />
+          ) : (
+            <MdLabel
+              className="text-orange-600 dark:text-orange-300"
+              size={"1.7rem"}
+            />
+          )}
         </button>
-        <Tooltip tooltipContent={"Labels"} />
+        {checkIfLoading(fetchLabelsThunkStatus) ? (
+          <Tooltip tooltipContent={"Please wait"} />
+        ) : (
+          <Tooltip tooltipContent={"Labels"} />
+        )}
       </li>
       <LabelsNavList />
 
       {/* LOGOUT BUTTON */}
-      <li className="relative group mt-6">
+      <li className="relative group mt-6 bottom-2">
         <button
           className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 bottom-2 group"
           disabled={checkIfLoading(logoutThunkStatus)}

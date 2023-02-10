@@ -32,9 +32,9 @@ function Dashboard() {
   return (
     <div className="dashboard h-full w-full flex items-start justify-start">
       <Navbar />
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full h-full">
         <ToolBar />
-        <div className="dashboard-body flex-1 min-h-full py-2">
+        <div className="dashboard-body flex-1 py-2">
           <Outlet />
         </div>
       </div>

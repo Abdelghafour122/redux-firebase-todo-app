@@ -4,15 +4,14 @@ import EmptySection from "./Placeholders/EmptySection";
 import DeletedTodosContainer from "./Containers/DeletedTodosContainer";
 import LoadingPage from "./LoadingPage";
 import { useAppSelector } from "../../App/hooks";
+import { checkIfLoading } from "../../Utils/types";
 
 const Trash = () => {
   const todoList = useAppSelector((state) => state.todos.todosList);
+  const fetchingTodoThunkStatus = useAppSelector(
+    (state) => state.todos.status.fetchTodoStatus
+  );
   const [undeletedTodos, setUndeletedTodos] = useState<boolean>();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    undeletedTodos === undefined ? setLoading(true) : setLoading(false);
-  }, [undeletedTodos]);
 
   useEffect(() => {
     const checkForUndeletedTodos = () => {
@@ -23,8 +22,9 @@ const Trash = () => {
 
   return (
     <div className="trashed-todos route-container">
-      {loading ? (
-        <LoadingPage />
+      {checkIfLoading(fetchingTodoThunkStatus) ||
+      undeletedTodos === undefined ? (
+        <LoadingPage loadingText={"Please wait"} />
       ) : undeletedTodos === true ? (
         <EmptySection message={"No todos in Trash!"} Icon={BsTrashFill} />
       ) : (

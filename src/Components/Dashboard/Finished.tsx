@@ -4,15 +4,14 @@ import FinishedTodosContainer from "./Containers/FinishedTodosContainer";
 import { MdOutlineDone } from "react-icons/md";
 import LoadingPage from "./LoadingPage";
 import { useAppSelector } from "../../App/hooks";
+import { checkIfLoading } from "../../Utils/types";
 
 const Finished = () => {
   const todoList = useAppSelector((state) => state.todos.todosList);
+  const fetchingTodoThunkStatus = useAppSelector(
+    (state) => state.todos.status.fetchTodoStatus
+  );
   const [noFinishedTodos, setNoFinishedTodos] = useState<boolean>();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    noFinishedTodos === undefined ? setLoading(true) : setLoading(false);
-  }, [noFinishedTodos]);
 
   useEffect(() => {
     const checkForUnfinishedTodos = () => {
@@ -25,7 +24,8 @@ const Finished = () => {
 
   return (
     <div className="finished-todos route-container">
-      {loading ? (
+      {checkIfLoading(fetchingTodoThunkStatus) ||
+      noFinishedTodos === undefined ? (
         <LoadingPage />
       ) : noFinishedTodos === true || todoList.length === 0 ? (
         <EmptySection
