@@ -26,7 +26,7 @@ const Finished = () => {
     <div className="finished-todos route-container">
       {checkIfLoading(fetchingTodoThunkStatus) ||
       noFinishedTodos === undefined ? (
-        <LoadingPage />
+        <LoadingPage loadingText="Please wait" />
       ) : noFinishedTodos === true || todoList.length === 0 ? (
         <EmptySection
           Icon={MdOutlineDone}

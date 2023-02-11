@@ -13,7 +13,6 @@ import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import { userSignOutThunk } from "../../../Reducerss/authSlice";
 import { checkIfLoading } from "../../../Utils/types";
 import LabelFormBackdrop from "../Labels/LabelFormBackdrop";
-import LabelsNavList from "../Labels/LabelsNavList";
 import NavLinkButton from "./NavLinkButton";
 import Tooltip from "./Tooltip";
 
@@ -100,50 +99,53 @@ const NavLinksUL = () => {
 
   return (
     // h-max
-    <ul className="flex flex-col items-center justify-start gap-3 h-full">
+    <ul className="flex flex-col items-center justify-between gap-3 h-full">
       {/* NAV LINKS */}
-      {NAV_LINKS.map((link, ind) => {
-        return (
-          <li key={ind} className="relative group">
-            <NavLinkButton
-              Icon={link.icon}
-              handleSelectNavButtons={handleSelectNavButtons}
-              index={ind}
-              selected={buttonSelected[ind].selected}
-              onNavigate={link.execute}
-            />
-            <Tooltip tooltipContent={link.linkName} />
+      <li>
+        <ul className="flex flex-col items-center justify-start gap-2">
+          {NAV_LINKS.map((link, ind) => {
+            return (
+              <li key={ind} className="relative group">
+                <NavLinkButton
+                  Icon={link.icon}
+                  handleSelectNavButtons={handleSelectNavButtons}
+                  index={ind}
+                  selected={buttonSelected[ind].selected}
+                  onNavigate={link.execute}
+                />
+                <Tooltip tooltipContent={link.linkName} />
+              </li>
+            );
+          })}
+          {/* LABEL MENU BUTTON */}
+          <li className="relative group">
+            <button
+              className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px]"
+              onClick={handleOpenLabelsBackdrop}
+            >
+              {checkIfLoading(fetchLabelsThunkStatus) ? (
+                <FaSpinner
+                  className="text-orange-600 dark:text-orange-300 animate-spin"
+                  size={"1.7rem"}
+                />
+              ) : (
+                <MdLabel
+                  className="text-orange-600 dark:text-orange-300"
+                  size={"1.7rem"}
+                />
+              )}
+            </button>
+            {checkIfLoading(fetchLabelsThunkStatus) ? (
+              <Tooltip tooltipContent={"Please wait"} />
+            ) : (
+              <Tooltip tooltipContent={"Labels"} />
+            )}
           </li>
-        );
-      })}
-      {/* LABEL MENU BUTTON */}
-      <li className="relative group">
-        <button
-          className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px]"
-          onClick={handleOpenLabelsBackdrop}
-        >
-          {checkIfLoading(fetchLabelsThunkStatus) ? (
-            <FaSpinner
-              className="text-orange-600 dark:text-orange-300 animate-spin"
-              size={"1.7rem"}
-            />
-          ) : (
-            <MdLabel
-              className="text-orange-600 dark:text-orange-300"
-              size={"1.7rem"}
-            />
-          )}
-        </button>
-        {checkIfLoading(fetchLabelsThunkStatus) ? (
-          <Tooltip tooltipContent={"Please wait"} />
-        ) : (
-          <Tooltip tooltipContent={"Labels"} />
-        )}
+        </ul>
       </li>
-      <LabelsNavList />
 
       {/* LOGOUT BUTTON */}
-      <li className="relative group mt-6 bottom-2">
+      <li className="relative group">
         <button
           className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 bottom-2 group"
           disabled={checkIfLoading(logoutThunkStatus)}

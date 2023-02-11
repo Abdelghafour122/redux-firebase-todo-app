@@ -34,7 +34,7 @@ function Dashboard() {
       <Navbar />
       <div className="flex flex-col w-full h-full">
         <ToolBar />
-        <div className="dashboard-body flex-1 py-2">
+        <div className="dashboard-body flex-1 py-2 h-screen overflow-y-scroll scrollbar-none">
           <Outlet />
         </div>
       </div>

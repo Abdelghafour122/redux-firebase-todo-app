@@ -11,12 +11,12 @@ const initialThemeState: string =
     ? ColorThemes.dark
     : ColorThemes.light;
 
-if (storedTheme !== null) {
-  if (storedTheme === ColorThemes.dark)
-    document.documentElement.classList.add(ColorThemes.dark);
-  else if (storedTheme === ColorThemes.light)
-    document.documentElement.classList.remove(ColorThemes.dark);
-}
+localStorage.setItem("color-theme", initialThemeState);
+
+if (initialThemeState === ColorThemes.dark)
+  document.documentElement.classList.add(ColorThemes.dark);
+else if (initialThemeState === ColorThemes.light)
+  document.documentElement.classList.remove(ColorThemes.dark);
 
 const themeSlice = createSlice({
   name: "themeSlice",

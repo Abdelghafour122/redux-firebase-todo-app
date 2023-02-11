@@ -17,7 +17,7 @@ import FilteredTodos from "./Routes/FilteredTodos";
 
 function App() {
   return (
-    <main className="App h-full">
+    <main className="App h-screen">
       <Routes>
         <Route element={<PrivateLoggedRoute />}>
           <Route element={<Dashboard />} path="dashboard/">

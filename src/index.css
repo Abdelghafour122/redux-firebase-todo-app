@@ -10,7 +10,7 @@
   }
 
   .toolbar {
-    @apply w-full flex items-center justify-between px-3 py-2 bg-neutral-400 dark:bg-neutral-800 shadow;
+    @apply w-full flex items-center justify-between px-3 py-2 bg-neutral-400 dark:bg-neutral-800 shadow-lg static z-30;
   }
 
   .big-button {
@@ -19,10 +19,6 @@
 
   .navbar-tooltip {
     @apply absolute left-[154%] top-2/4 -translate-y-1/2 p-2 w-max rounded-md bg-neutral-400 dark:bg-neutral-900 text-stone-900 dark:text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-md dark:shadow-zinc-900 z-[999999];
-  }
-
-  .label-tooltip {
-    @apply absolute left-[154%] top-2/4 -translate-y-1/2 px-2 py-1  w-max rounded-md bg-stone-600 text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-sm shadow-zinc-800 z-[999999];
   }
 
   .todo-actions-tooltip {
@@ -88,7 +84,7 @@
   }
 
   .todo {
-    @apply bg-neutral-300 dark:bg-neutral-800 text-stone-800 dark:text-stone-300 border border-neutral-900 dark:border-neutral-400 rounded-md flex flex-col items-start justify-between p-3 basis-1/5 gap-4;
+    @apply bg-neutral-300 dark:bg-neutral-800 text-stone-800 dark:text-stone-300 border border-neutral-900 dark:border-neutral-400 rounded-md flex flex-col items-start justify-between p-3 basis-1/5 gap-4 shadow;
   }
 
   .todo-title {

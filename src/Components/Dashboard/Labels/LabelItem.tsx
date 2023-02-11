@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaCheck, FaPen, FaTrashAlt } from "react-icons/fa";
+import {
+  FaCheck,
+  FaExternalLinkSquareAlt,
+  FaPen,
+  FaTrashAlt,
+} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../App/hooks";
 import {
   deleteLabelThunk,
@@ -10,6 +16,7 @@ import { Label, checkIfLoading } from "../../../Utils/types";
 import LabelHelperText from "./LabelHelperText";
 
 const LabelItem = ({ id, name, count }: Label) => {
+  let navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handleLabelThunkStatus = useAppSelector(
     (state) => state.labels.status.handleLabelStatus
@@ -135,6 +142,19 @@ const LabelItem = ({ id, name, count }: Label) => {
             onClick={handleDeleteLabel}
           >
             <FaTrashAlt
+              size={"1.2rem"}
+              className="text-stone-800 dark:text-stone-200"
+            />
+          </button>
+          <button
+            className="label-button"
+            disabled={
+              checkIfLoading(handleLabelThunkStatus.labelStatus) &&
+              id === handleLabelThunkStatus.labelId
+            }
+            onClick={() => navigate(`filtered/${id}`)}
+          >
+            <FaExternalLinkSquareAlt
               size={"1.2rem"}
               className="text-stone-800 dark:text-stone-200"
             />
