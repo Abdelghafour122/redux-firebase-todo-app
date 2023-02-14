@@ -40,7 +40,6 @@ const Todo = (todoInfo: TodoType) => {
   const [todoIsDone, setTodoIsDone] = useState(todoInfo.completed);
   const [openVerifyDeleteBackdrop, setOpenVerifyDeleteBackdrop] =
     useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const currentThunkStatus = useAppSelector((state) => state.todos.status);
 
@@ -66,14 +65,6 @@ const Todo = (todoInfo: TodoType) => {
 
   const handleCloseDetailedTodoBackdrop = () => {
     return setOpenDetailedTodoBackdrop(false);
-  };
-
-  const handleOpenSnackbar = () => {
-    return setOpenSnackbar(true);
-  };
-
-  const handleCloseSnackbar = () => {
-    return setOpenSnackbar(false);
   };
 
   const markTodoAsCompleted = () => {
@@ -109,7 +100,7 @@ const Todo = (todoInfo: TodoType) => {
               className="todo-action-button relative group"
               onClick={handleOpenEditTodoBackdrop}
             >
-              <FaPen size={"1.3rem"} />
+              <FaPen className="text-[1.3rem]" />
               <TodoActionsTooltip text={"Edit"} />
             </button>
             <>
@@ -134,10 +125,10 @@ const Todo = (todoInfo: TodoType) => {
                   checkIfLoading(
                     currentThunkStatus.archiveTodoStatus.todoStatus
                   ) ? (
-                    <FaSpinner size={"1.3rem"} className="animate-spin" />
+                    <FaSpinner className="animate-spin text-[1.3rem] " />
                   ) : (
                     <>
-                      <FaArchive size={"1.3rem"} />
+                      <FaArchive className="text-[1.3rem]" />
                       <TodoActionsTooltip text={"Archive"} />
                     </>
                   )}
@@ -162,10 +153,10 @@ const Todo = (todoInfo: TodoType) => {
                   checkIfLoading(
                     currentThunkStatus.archiveTodoStatus.todoStatus
                   ) ? (
-                    <FaSpinner size={"1.3rem"} className="animate-spin" />
+                    <FaSpinner className="animate-spin text-[1.3rem]" />
                   ) : (
                     <>
-                      <RiInboxUnarchiveLine size={"1.3rem"} />
+                      <RiInboxUnarchiveLine className="text-[1.3rem]" />
                       <TodoActionsTooltip text={"Unarchive"} />
                     </>
                   )}
@@ -188,10 +179,10 @@ const Todo = (todoInfo: TodoType) => {
             >
               {currentThunkStatus.deleteTodoStatus.todoId === todoInfo.id &&
               checkIfLoading(currentThunkStatus.deleteTodoStatus.todoStatus) ? (
-                <FaSpinner size={"1.3rem"} className="animate-spin" />
+                <FaSpinner className="animate-spin text-[1.3rem]" />
               ) : (
                 <>
-                  <FaTrashAlt size={"1.3rem"} />
+                  <FaTrashAlt className="text-[1.3rem]" />
                   <TodoActionsTooltip text={"Delete"} />
                 </>
               )}
@@ -200,7 +191,7 @@ const Todo = (todoInfo: TodoType) => {
               className="todo-action-button relative group"
               onClick={handleOpenDetailedTodoBackdrop}
             >
-              <FaExpandAlt size={"1.3rem"} />
+              <FaExpandAlt className="text-[1.3rem]" />
               <TodoActionsTooltip text={"Enlarge"} />
             </button>
           </>
@@ -210,7 +201,7 @@ const Todo = (todoInfo: TodoType) => {
               className="todo-action-button relative group"
               onClick={() => handleOpenVerifyDeleteBackdrop()}
             >
-              <FaTrash size={"1.5rem"} color={"rgb(220 38 38)"} />
+              <FaTrash className="text-[1.3rem]" color={"rgb(220 38 38)"} />
               <TodoActionsTooltip text={"Delete forever"} />
             </button>
             <button
@@ -226,10 +217,13 @@ const Todo = (todoInfo: TodoType) => {
             >
               {currentThunkStatus.deleteTodoStatus.todoId === todoInfo.id &&
               checkIfLoading(currentThunkStatus.deleteTodoStatus.todoStatus) ? (
-                <FaSpinner size={"1.3rem"} className="animate-spin" />
+                <FaSpinner className="animate-spin text-[1.3rem]" />
               ) : (
                 <>
-                  <FaTrashRestore size={"1.5rem"} color={"rgb(22 163 74)"} />
+                  <FaTrashRestore
+                    className="text-[1.3rem]"
+                    color={"rgb(22 163 74)"}
+                  />
                   <TodoActionsTooltip text={"Restore"} />
                 </>
               )}

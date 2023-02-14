@@ -16,7 +16,7 @@ const ToolBar = () => {
   return (
     <div className="toolbar">
       <div className="left flex items-center justify-between gap-3">
-        <p className="dark:text-stone-300 text-stone-800 text-lg font-semibold">
+        <p className="dark:text-stone-300 text-stone-800 text-lg font-semibold hidden md:block">
           Click to make a new todo
         </p>
         <button

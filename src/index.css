@@ -9,8 +9,25 @@
     padding-inline: 2rem;
   }
 
+  .navbar {
+    @apply p-1 min-h-screen h-screen bg-neutral-400 dark:bg-neutral-900 shadow-sm flex flex-col items-center justify-start gap-2 w-max;
+    @apply md:p-2;
+  }
+
+  .navbar-title {
+    @apply text-xl md:text-2xl text-orange-600  dark:text-orange-300 font-sans font-extrabold border-b-2 border-b-stone-200 dark:border-b-stone-500;
+  }
+
+  .navbar-select-link {
+    @apply p-2 md:p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500;
+  }
+
+  .navbar-link-button {
+    @apply p-2 md:p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px];
+  }
+
   .toolbar {
-    @apply w-full flex items-center justify-between px-3 py-2 bg-neutral-400 dark:bg-neutral-800 shadow-lg static z-30;
+    @apply w-full flex items-center justify-between px-2 md:px-3 py-1 md:py-2 bg-neutral-400 dark:bg-neutral-800 shadow-lg static z-30;
   }
 
   .big-button {
@@ -18,7 +35,7 @@
   }
 
   .navbar-tooltip {
-    @apply absolute left-[154%] top-2/4 -translate-y-1/2 p-2 w-max rounded-md bg-neutral-400 dark:bg-neutral-900 text-stone-900 dark:text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-md dark:shadow-zinc-900 z-[999999];
+    @apply absolute left-[134%] md:left-[154%] top-2/4 -translate-y-1/2 p-2 w-max rounded-md bg-neutral-400 dark:bg-neutral-900 text-stone-900 dark:text-stone-200 font-semibold scale-0 group-hover:scale-100 shadow-md dark:shadow-zinc-900 z-[999999];
   }
 
   .todo-actions-tooltip {
@@ -54,7 +71,7 @@
   }
 
   .checked-btn {
-    @apply border border-neutral-400 rounded-xl py-1 px-2 hover:bg-neutral-200 dark:hover:bg-neutral-600 active:bg-neutral-300 dark:active:bg-neutral-700 disabled:cursor-not-allowed;
+    @apply border border-neutral-400 rounded-xl py-1 px-2 hover:bg-neutral-200 dark:hover:bg-neutral-600 active:bg-neutral-300 dark:active:bg-neutral-700 disabled:cursor-not-allowed text-sm md:text-base;
   }
 
   .completed-btn {
@@ -84,20 +101,19 @@
   }
 
   .todo {
-    @apply bg-neutral-300 dark:bg-neutral-800 text-stone-800 dark:text-stone-300 border border-neutral-900 dark:border-neutral-400 rounded-md flex flex-col items-start justify-between p-3 basis-1/5 gap-4 shadow;
+    @apply bg-neutral-300 dark:bg-neutral-800 text-stone-800 dark:text-stone-300 border border-neutral-900 dark:border-neutral-400 rounded-md flex w-full md:w-auto flex-col items-start justify-between p-3 basis-1/5 gap-3 md:gap-4 shadow;
   }
 
   .todo-title {
-    @apply text-xl font-bold text-stone-900 dark:text-stone-100 break-all text-ellipsis overflow-hidden w-[150px] whitespace-nowrap;
+    @apply text-xl font-bold text-stone-900 dark:text-stone-100 break-all text-ellipsis overflow-hidden w-[250px] md:w-[150px] whitespace-nowrap;
   }
 
   .todo-p {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    max-width: 160px;
 
-    @apply overflow-hidden text-lg break-words mb-1;
+    @apply overflow-hidden text-lg break-words mb-1 max-w-[250px] md:max-w-[160px];
   }
 
   .backdrop {
@@ -109,7 +125,7 @@
   }
 
   .todo-container {
-    @apply w-full flex flex-wrap items-start justify-start gap-2;
+    @apply w-full flex flex-col md:flex-row flex-wrap items-start justify-start gap-2;
   }
 
   .section-small-header {
@@ -117,11 +133,11 @@
   }
 
   .section-global-container {
-    @apply flex flex-col w-full h-full items-start justify-start ml-5;
+    @apply flex flex-col w-full h-full items-start justify-start;
   }
 
   .route-container {
-    @apply w-full h-full flex flex-wrap gap-2 justify-start mt-8;
+    @apply flex flex-wrap gap-2 justify-start mx-3 mt-4 md:mt-8 md:ml-5;
   }
 
   .label-text {

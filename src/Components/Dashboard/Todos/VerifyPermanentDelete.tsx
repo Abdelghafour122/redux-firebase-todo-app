@@ -45,30 +45,22 @@ const VerifyPermanentDelete = ({
 
   return (
     <div className="backdrop">
-      <section className="flex flex-col items-center justify-between gap-10  min-h-max p-4 bg-neutral-900 rounded-md shadow-md">
-        <h1 className="font-bold text-xl self-start">
+      <section className="flex flex-col items-center justify-between gap-10  min-h-max p-4 dark:bg-neutral-900 bg-neutral-400 rounded-md shadow-md">
+        <h1 className="font-bold text-xl self-start text-stone-800 dark:text-stone-200">
           Delete the todo permanently?
         </h1>
         <div className="btn-holder self-end flex gap-2 w-min items-center justify-between">
           <button
             className="button"
             onClick={() => handleCloseVerifyDeleteBackdrop()}
+            disabled={checkIfLoading(permanentlyDeleteTodoThunkStatus)}
           >
             Cancel
           </button>
           <button
             className="button flex items-center justify-between"
             disabled={checkIfLoading(permanentlyDeleteTodoThunkStatus)}
-            onClick={
-              () => handlePermanentDelete()
-              // const labelCount = await getSpecificLabelCount(labelId);
-              // await dispatch(editLabelCountThunk({
-              //   id: labelId,
-              //   count:
-              // }))
-              // await dispatch(permanentlyDeleteTodoThnuk(id));
-              // handleCloseVerifyDeleteBackdrop();
-            }
+            onClick={handlePermanentDelete}
           >
             {checkIfLoading(permanentlyDeleteTodoThunkStatus) ? (
               <>

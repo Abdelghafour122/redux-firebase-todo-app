@@ -28,9 +28,11 @@ const NAV_LINK_SELECTED_STATE = [
   { index: 3, selected: false },
 ];
 
-const linkList = sessionStorage.getItem("link-list");
-linkList === null &&
+let linkList = sessionStorage.getItem("link-list");
+if (linkList === null) {
   sessionStorage.setItem("link-list", JSON.stringify(NAV_LINK_SELECTED_STATE));
+  linkList = JSON.stringify(NAV_LINK_SELECTED_STATE);
+}
 
 const NavLinksUL = () => {
   const fetchLabelsThunkStatus = useAppSelector(
@@ -87,7 +89,7 @@ const NavLinksUL = () => {
 
   const handleSelectNavButtons = (index: number) => {
     const result: LinkType[] = [
-      ...NAV_LINK_SELECTED_STATE.map((link) =>
+      ...buttonSelected.map((link) =>
         link.index === index
           ? { ...link, selected: true }
           : { ...link, selected: false }
@@ -120,7 +122,8 @@ const NavLinksUL = () => {
           {/* LABEL MENU BUTTON */}
           <li className="relative group">
             <button
-              className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px]"
+              // className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px]"
+              className="navbar-link-button"
               onClick={handleOpenLabelsBackdrop}
             >
               {checkIfLoading(fetchLabelsThunkStatus) ? (
@@ -147,7 +150,7 @@ const NavLinksUL = () => {
       {/* LOGOUT BUTTON */}
       <li className="relative group">
         <button
-          className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 bottom-2 group"
+          className="navbar-link-button"
           disabled={checkIfLoading(logoutThunkStatus)}
           onClick={handleUserLogOut}
         >
