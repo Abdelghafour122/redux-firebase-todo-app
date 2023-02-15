@@ -20,7 +20,7 @@ const FilteredTodos = () => {
   }, [labelId, labelsArray]);
 
   return (
-    <div className="filtered-todos h-full w-full flex items-start justify-start">
+    <div className="filtered-todos w-full flex items-start justify-start">
       {selectedLabel === undefined ? (
         <p>No label has been set yet!</p>
       ) : (

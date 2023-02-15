@@ -38,15 +38,38 @@ const LabelItem = ({ id, name, count }: Label) => {
   }, [editable]);
 
   const handleEditLabelName = async () => {
-    labelName.length !== 0 && labelName.length <= 20 && labelName !== name
-      ? await dispatch(
-          editLabelNameThunk({
-            id: id,
-            name: labelName,
+    if (
+      labelName.length !== 0 &&
+      labelName.length <= 20 &&
+      labelName !== name
+    ) {
+      const todosData = todosList.filter((todo) =>
+        todo.labels.some((label) => label.id === id)
+      );
+
+      await dispatch(
+        editLabelNameThunk({
+          id: id,
+          name: labelName,
+        })
+      );
+
+      todosData.forEach((todo) => {
+        dispatch(
+          editTodosLabelsThunk({
+            todoId: todo.id,
+            labelsList: [
+              ...todo.labels.map((label) =>
+                label.id === id ? { ...label, name: labelName } : label
+              ),
+            ],
           })
-        )
-      : // REPLACE WITH A SNACKBAR
-        console.log("cannot update label");
+        );
+      });
+
+      console.log(todosData);
+    } // REPLACE WITH A SNACKBAR
+    else console.log("cannot update label");
   };
 
   useEffect(() => {
@@ -69,7 +92,7 @@ const LabelItem = ({ id, name, count }: Label) => {
     if (count > 0) {
       todosList.forEach(async (todo) => {
         if (todo.labels.some((label) => label.id === id))
-          await dispatch(
+          dispatch(
             editTodosLabelsThunk({
               todoId: todo.id,
               labelsList: todo.labels.filter((label) => label.id !== id),

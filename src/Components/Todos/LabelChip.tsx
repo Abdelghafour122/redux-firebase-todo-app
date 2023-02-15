@@ -44,7 +44,7 @@ const LabelChip = ({ label, todoId }: Props) => {
 
   return (
     <li className="px-2 py-1 bg-neutral-400 dark:bg-neutral-700 font-semibold rounded-xl flex items-center justify-between gap-1">
-      <p className="text-stone-800 dark:text-stone-300 font-semibold">
+      <p className="text-stone-800 dark:text-stone-300 font-semibold md:text-base">
         {label.name}
       </p>
       <button
@@ -55,10 +55,7 @@ const LabelChip = ({ label, todoId }: Props) => {
           checkIfLoading(editLabelCountThunkStatus)
         }
       >
-        <VscChromeClose
-          className="text-stone-800 dark:text-stone-300"
-          size="1rem"
-        />
+        <VscChromeClose className="text-stone-800 dark:text-stone-300 text-[0.9rem] md:text-[1.1rem]" />
       </button>
     </li>
   );

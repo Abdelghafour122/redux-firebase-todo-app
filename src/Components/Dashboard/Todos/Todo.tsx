@@ -261,10 +261,6 @@ const Todo = (todoInfo: TodoType) => {
           }
         />
       )}
-      {/* <Snackbar
-        text="Success message"
-        handleCloseSnackbar={handleCloseSnackbar}
-      /> */}
       {openVerifyDeleteBackdrop ? (
         <VerifyPermanentDelete
           id={todoInfo.id}
