@@ -44,7 +44,7 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
 
   return (
     <div className="add-todo backdrop">
-      <div className="flex flex-col items-center justify-center basis-2/4">
+      <div className="flex flex-col items-center justify-center w-10/12 sm:w-2/3 md:w-2/5">
         <div className="w-full py-3 flex items-center justify-between">
           <p className="text-2xl font-semibold text-stone-50">Add a todo</p>
           <button

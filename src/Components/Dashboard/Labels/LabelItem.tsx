@@ -66,8 +66,6 @@ const LabelItem = ({ id, name, count }: Label) => {
           })
         );
       });
-
-      console.log(todosData);
     } // REPLACE WITH A SNACKBAR
     else console.log("cannot update label");
   };
@@ -104,8 +102,8 @@ const LabelItem = ({ id, name, count }: Label) => {
   };
 
   return (
-    <li className="label-item flex flex-col items-center justify-between bg-neutral-300 dark:bg-transparent">
-      <div className="flex items-center justify-between gap-3 w-full">
+    <li className="label-item flex flex-col items-center justify-between">
+      <div className="flex items-center justify-between gap-3 w-full flex-col sm:flex-row order-2 sm:order-1">
         {editable ? (
           <input
             className="form-input"
@@ -119,13 +117,13 @@ const LabelItem = ({ id, name, count }: Label) => {
         ) : (
           <p className="label-text">{name}</p>
         )}
-        <div className="label-buttons flex gap-2 items-center">
+        <div className="label-buttons flex gap-1 md:gap-2 items-center w-full justify-center sm:justify-end">
           {count === 0 ? (
-            <p className="font-semibold text-base text-yellow-600 p-1 bg-yellow-200 rounded-lg w-max">
+            <p className="font-semibold text-sm sm:text-base text-yellow-600 p-1 bg-yellow-200 rounded-lg w-max">
               Unused
             </p>
           ) : (
-            <p className="font-semibold text-base text-stone-300 p-1 bg-stone-600 rounded-lg w-max">{`Count: ${count}`}</p>
+            <p className="font-semibold text-sm sm:text-base text-stone-300 p-1 bg-stone-600 rounded-lg w-max">{`Count: ${count}`}</p>
           )}
           {editable ? (
             <button

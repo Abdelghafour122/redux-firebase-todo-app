@@ -51,7 +51,7 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
 
   return (
     <div className="backdrop">
-      <div className="flex flex-col items-center justify-center basis-2/4">
+      <div className="flex flex-col items-center justify-center w-10/12 sm:w-2/3 md:w-2/3 lg:w-2/5">
         <div className="w-full py-3 flex items-center justify-between">
           <p className="text-2xl font-semibold text-stone-50">Labels</p>
           <button
@@ -66,16 +66,18 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
         </div>
         <div className="flex flex-col gap-2 p-2 border-2 border-neutral-900 rounded-lg bg-neutral-300 dark:bg-neutral-700 w-full">
           <form action="" className="w-full" onSubmit={handleSubmit}>
-            <div className="flex gap-2 w-full">
+            <div className="flex justify-between gap-2 w-full">
               <input
                 type="text"
                 placeholder="Add label"
-                className={`placeholder:text-stone-200 dark:placeholder:text-stone-400 todo-form-input flex-1 text-xl font-semibold ${
-                  !labelValid.current &&
-                  "text-red-700 dark:text-red-600 caret-red-700 dark:caret-red-600 border-red-700 dark:border-red-600 focus:border-red-600"
+                className={`placeholder:text-stone-200 dark:placeholder:text-stone-400 todo-form-input w-full flex-1 text-xl font-semibold ${
+                  !labelValid.current
+                    ? "text-red-700 dark:text-red-600 caret-red-700 dark:caret-red-600 border-red-700 dark:border-red-600 focus:border-red-600"
+                    : ""
                 } ${
-                  listLimitReached &&
-                  "text-amber-600 dark:text-amber-400 placeholder-amber-800 dark:placeholder-amber-600 border-amber-600 focus:border-amber-600 opacity-60 cursor-not-allowed"
+                  listLimitReached
+                    ? "text-amber-600 dark:text-amber-400 placeholder-amber-800 dark:placeholder-amber-600 border-amber-600 focus:border-amber-600 opacity-60 cursor-not-allowed"
+                    : ""
                 }`}
                 value={label}
                 disabled={
