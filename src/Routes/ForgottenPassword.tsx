@@ -9,6 +9,7 @@ import InfoMessage from "../Components/Dashboard/Authentication/InfoMessage";
 import SuccessMessage from "../Components/Dashboard/Authentication/SuccessMessage";
 import ColorThemeButton from "../Components/Dashboard/ColorThemeButton";
 import { FaSpinner } from "react-icons/fa";
+import Attribution from "../Components/Dashboard/Attribution";
 
 function ForgottenPassword() {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ function ForgottenPassword() {
         <ColorThemeButton />
       </div>
       <section className="container">
-        <h2 className="form-title">Reset your password</h2>
+        <h2 className="form-title text-5xl">Reset your password</h2>
         <InfoMessage />
         <form
           className="flex flex-col items-center justify-center my-7 mx-auto gap-3 w-max md:w-80 lg:w-96"
@@ -105,6 +106,7 @@ function ForgottenPassword() {
           Go Back
         </button>
       </section>
+      <Attribution />
     </div>
   );
 }

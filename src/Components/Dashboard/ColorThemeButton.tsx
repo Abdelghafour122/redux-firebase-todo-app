@@ -8,7 +8,7 @@ const ColorThemeButton = () => {
   const dispatch = useAppDispatch();
   return (
     <button
-      className="h-9 w-9 rounded-lg bg-neutral-300 dark:bg-neutral-600"
+      className="h-9 w-9 rounded-lg bg-neutral-50 dark:bg-neutral-600"
       onClick={() =>
         dispatch(
           setColorTheme(

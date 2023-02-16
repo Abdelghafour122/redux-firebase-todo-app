@@ -139,7 +139,7 @@ const SignIn = () => {
             Sign In
           </button>
         </form>
-        <div className="note flex gap-5 text-lg font-medium items-center justify-center">
+        <div className="note mt-7 flex gap-5 text-lg font-medium items-center justify-center">
           <p>Don't have an account?</p>
           <Link
             to="/signup"
