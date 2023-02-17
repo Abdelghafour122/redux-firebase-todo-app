@@ -23,7 +23,14 @@ The user should be able to:
 1. Clone the repo and run `npm install` to install all dependencies
 2. Make a Firebase project
 3. Make an `.env.local` file and paste this with your project's data:
-   `VITE_FB_API_KEY= VITE_FB_AUTHDOMAIN= VITE_FB_PROJECTID= VITE_FB_STORAGEBUCKET= VITE_FB_MESSAGINGSENDERID= VITE_FB_APPID=`
+   ```
+   VITE_FB_API_KEY=
+   VITE_FB_AUTHDOMAIN=
+   VITE_FB_PROJECTID=
+   VITE_FB_STORAGEBUCKET=
+   VITE_FB_MESSAGINGSENDERID=
+   VITE_FB_APPID=
+   ```
 
 #Resources:
 
