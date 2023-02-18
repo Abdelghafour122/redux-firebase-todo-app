@@ -18,11 +18,12 @@ The user should be able to:
 - Filter todos by labels
 - Switch between light and dark themes
 
-#Usage:
+## Usage:
 
 1. Clone the repo and run `npm install` to install all dependencies
 2. Make a Firebase project
 3. Make an `.env.local` file and paste this with your project's data:
+
    ```
    VITE_FB_API_KEY=
    VITE_FB_AUTHDOMAIN=
@@ -32,7 +33,7 @@ The user should be able to:
    VITE_FB_APPID=
    ```
 
-#Resources:
+## Resources:
 
 - [React.js](https://beta.reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
