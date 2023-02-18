@@ -160,7 +160,7 @@ const SignIn = () => {
           disabled={loading}
           className="button flex justify-center items-center mt-3 mb-0 mx-auto"
         >
-          <FcGoogle size="2rem" />
+          <FcGoogle className="text-[2rem]" />
           Continue with Google
         </button>
       </section>

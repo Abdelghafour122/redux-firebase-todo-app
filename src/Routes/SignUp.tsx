@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-// import { useAuthentication } from "../Contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import Attribution from "../Components/Dashboard/Attribution";
 
@@ -51,7 +50,6 @@ const SignUp = () => {
 
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    console.log(email, password, confirmPassword);
     if (password !== confirmPassword)
       return setErrorMessage(AuthUIMessages.passwordsDontMatch);
     if (validEmail && validPassword && passwordsMatch)
@@ -133,7 +131,7 @@ const SignUp = () => {
                       setOpenPasswordGuide((prev) => !prev);
                     }}
                   >
-                    <FaInfoCircle size="1.5rem" color="rgb(245 158 11)" />
+                    <FaInfoCircle className="text-[1.5rem] text-amber-400" />
                   </button>
                 </div>
                 {openPasswordGuide ? <PasswordGuide /> : null}

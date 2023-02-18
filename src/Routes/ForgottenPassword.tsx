@@ -85,10 +85,7 @@ function ForgottenPassword() {
             {checkIfLoading(authStatus) ? (
               <>
                 Please wait &nbsp;
-                <FaSpinner
-                  className="animate-spin text-stone-100 dark:text-stone-900"
-                  size="1.5rem"
-                />
+                <FaSpinner className="animate-spin text-stone-100 dark:text-stone-900 text-[1.5rem]" />
               </>
             ) : (
               "Reset password"
@@ -99,10 +96,7 @@ function ForgottenPassword() {
           className="flex items-center justify-center gap-2 w-max mt-3 mb-0 mx-auto text-lg font-semibold underline text-stone-800 dark:text-stone-300"
           onClick={() => navigate(-1)}
         >
-          <BsArrowLeftSquareFill
-            size="1.5em"
-            className="dark:text-stone-300 text-stone-800"
-          />
+          <BsArrowLeftSquareFill className="dark:text-stone-300 text-stone-800 text-[1.5rem]" />
           Go Back
         </button>
       </section>

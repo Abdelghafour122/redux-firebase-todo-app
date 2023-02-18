@@ -58,10 +58,7 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
             className="p-2 rounded-full hover:bg-neutral-600 active:bg-neutral-500"
             onClick={handleCloseLabelsBackdrop}
           >
-            <FaTimes
-              className="text-stone-50 dark:text-stone-50"
-              size="1.5rem"
-            />
+            <FaTimes className="text-stone-50 dark:text-stone-50 text-[1.5rem]" />
           </button>
         </div>
         <div className="flex flex-col gap-2 p-2 border-2 border-neutral-900 rounded-lg bg-neutral-300 dark:bg-neutral-700 w-full">
@@ -87,10 +84,7 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
                   setLabel(e.target.value)
                 }
               />
-              {/* MAYBE JUST CHANGE THE PLACEHOLDER INSTEAD OF SHOWING THE HELPER TEXT */}
-              {/* IF LABELS LIMIT IS REACHED */}
               <button
-                // className="rounded-sm hover:bg-neutral-500 active:bg-neutral-400 p-2 disabled:opacity-0 disabled:pointer-events-none transition-opacity duration-300"
                 className="rounded-sm hover:bg-neutral-500 active:bg-neutral-400 disabled:bg-neutral-400 dark:disabled:bg-neutral-600 disabled:cursor-not-allowed p-2"
                 onClick={handleSubmit}
                 disabled={
@@ -100,15 +94,9 @@ const LabelFormBackdrop = ({ handleCloseLabelsBackdrop }: Props) => {
                 }
               >
                 {checkIfLoading(addLabelThunkStatus) ? (
-                  <FaSpinner
-                    size={"1.4rem"}
-                    className="animate-spin text-stone-50 dark:text-stone-200"
-                  />
+                  <FaSpinner className="animate-spin text-stone-50 dark:text-stone-200 text-[1.4rem]" />
                 ) : (
-                  <FaCheck
-                    size={"1.4rem"}
-                    className="text-stone-50 dark:text-stone-200"
-                  />
+                  <FaCheck className="text-stone-50 dark:text-stone-200 text-[1.4rem]" />
                 )}
               </button>
             </div>

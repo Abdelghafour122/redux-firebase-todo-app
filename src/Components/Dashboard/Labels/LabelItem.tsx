@@ -134,10 +134,7 @@ const LabelItem = ({ id, name, count }: Label) => {
                 handleEditLabelName();
               }}
             >
-              <FaCheck
-                size={"1.2rem"}
-                className="text-stone-800 dark:text-stone-200"
-              />
+              <FaCheck className="text-stone-800 dark:text-stone-200 text-[1.2rem]" />
             </button>
           ) : (
             <button
@@ -148,10 +145,7 @@ const LabelItem = ({ id, name, count }: Label) => {
               }
               onClick={() => setEditable(true)}
             >
-              <FaPen
-                size={"1.2rem"}
-                className="text-stone-800 dark:text-stone-200"
-              />
+              <FaPen className="text-stone-800 dark:text-stone-200 text-[1.2rem]" />
             </button>
           )}
           <button
@@ -162,10 +156,7 @@ const LabelItem = ({ id, name, count }: Label) => {
             }
             onClick={handleDeleteLabel}
           >
-            <FaTrashAlt
-              size={"1.2rem"}
-              className="text-stone-800 dark:text-stone-200"
-            />
+            <FaTrashAlt className="text-stone-800 dark:text-stone-200 text-[1.2rem]" />
           </button>
           <button
             className="label-button"
@@ -175,10 +166,7 @@ const LabelItem = ({ id, name, count }: Label) => {
             }
             onClick={() => navigate(`filtered/${id}`)}
           >
-            <FaExternalLinkSquareAlt
-              size={"1.2rem"}
-              className="text-stone-800 dark:text-stone-200"
-            />
+            <FaExternalLinkSquareAlt className="text-stone-800 dark:text-stone-200 text-[1.2rem]" />
           </button>
         </div>
       </div>

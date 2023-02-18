@@ -66,7 +66,7 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
             className="p-2 rounded-full hover:bg-neutral-600 active:bg-neutral-500"
             onClick={handleCloseEditTodoBackdrop}
           >
-            <FaTimes color="rgb(231 229 228)" size="1.5rem" />
+            <FaTimes color="rgb(231 229 228)" className="text-[1.5rem]" />
           </button>
         </div>
         <form
@@ -99,10 +99,7 @@ const EditTodoBackdrop = ({ handleCloseEditTodoBackdrop, todoInfo }: Props) => {
             {checkIfLoading(editTodoThunkStatus) ? (
               <>
                 Updating &nbsp;
-                <FaSpinner
-                  className="animate-spin text-stone-100 dark:text-stone-900"
-                  size="1.5rem"
-                />
+                <FaSpinner className="animate-spin text-stone-100 dark:text-stone-900 text-[1.5rem]" />
               </>
             ) : (
               "Update"

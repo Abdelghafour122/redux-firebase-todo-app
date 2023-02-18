@@ -11,10 +11,7 @@ const Attribution = () => {
     <div className="attribution py-2 w-full absolute left-0 bottom-0 flex items-center justify-center gap-2">
       <p className="flex items-center gap-1 text-stone-700 dark:text-stone-200 text-lg font-semibold ">
         Coded with
-        <AiFillHeart
-          className="text-red-700 dark:text-red-600"
-          size={"1.2rem"}
-        />
+        <AiFillHeart className="text-red-700 dark:text-red-600 text-[1.2rem]" />
         By
       </p>
       <a

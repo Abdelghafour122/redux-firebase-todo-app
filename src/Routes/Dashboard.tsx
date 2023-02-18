@@ -12,7 +12,6 @@ import { fetchTodosThunk } from "../Reducerss/todoSlice";
 function Dashboard() {
   const dispatch = useAppDispatch();
   let { route } = useParams();
-  console.log(route);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,9 +22,7 @@ function Dashboard() {
     dispatch(fetchTodosThunk());
     dispatch(fetchLabelsThunk());
     globalAuth.onAuthStateChanged((user) => {
-      if (user) {
-        dispatch(setUser(JSON.stringify(user)));
-      } else console.log("user is null", user);
+      if (user) dispatch(setUser(JSON.stringify(user)));
     });
   }, []);
 

@@ -1,4 +1,3 @@
-import { User, UserCredential } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
 
 export enum LoadingStatus {
@@ -56,26 +55,6 @@ export enum AuthUIMessages {
   resetPasswordSucceeded = "Check your inbox!",
 }
 
-export type EditTodoPayloadType = {
-  id?: string;
-  title?: string | undefined;
-  content?: string | undefined;
-  deleted?: boolean;
-  archived?: boolean;
-  fetchedData?: Todos;
-  date?: Timestamp;
-  labels?: Labels;
-};
-
-export type LabelsReducerPayloadType = {
-  id?: string;
-  name?: string;
-  count?: number;
-  fetchLabels?: Labels;
-  // MAYBE MAKE AN ENUM HERE
-  case?: "name" | "count";
-};
-
 export type PermanentlyDeleteTodoParamsType = {
   id: string;
 };
@@ -96,15 +75,6 @@ export type CompletedTodoParamsType = {
   completed: boolean;
 };
 
-// REMOVE THIS LATER
-export type UpdateTodoContentParamsType = {
-  id: string;
-  title: string;
-  content: string;
-  edited: boolean;
-};
-
-// export type DeletedTodoParamsType = ArchiveTodoType;
 export type DeletedTodoParamsType = {
   id: string;
   deleted: boolean;
@@ -124,16 +94,6 @@ export type EditTodoParamsType = {
 
 export type DetailedTodoType = AddTodoParamsType & {
   id: string;
-};
-
-export type Actions = {
-  type: string;
-  payload: EditTodoPayloadType;
-};
-
-export type LabelsActions = {
-  type: string;
-  payload: LabelsReducerPayloadType;
 };
 
 export type InitialReducerStateType = {
@@ -172,18 +132,6 @@ export type DeleteLabelParamsType = {
   labelCount: number;
 };
 
-export type UpdateLabelCountParamsType = {
-  case: "count";
-  id: string;
-  count: number;
-};
-
-export type UpdateLabelNameParamsType = {
-  case: "name";
-  id: string;
-  name: string;
-};
-
 export type UpdateLabelCountParamsTypeRedux = {
   id: string;
   count: number;
@@ -194,20 +142,7 @@ export type UpdateLabelNameParamsTypeRedux = {
   name: string;
 };
 
-export type UpdateLabelContentParamsType =
-  | UpdateLabelNameParamsType
-  | UpdateLabelCountParamsType;
-
 export type HandleTodosLables = {
   todoId: string;
   labelsList: Labels;
-};
-export type RemoveLabelFromTodoInput = {
-  todoId: string;
-  labelId: string;
-};
-
-export type RemoveLabelFromTodoPayload = {
-  todoId: string;
-  todoLabelsList: Labels;
 };

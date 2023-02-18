@@ -122,20 +122,13 @@ const NavLinksUL = () => {
           {/* LABEL MENU BUTTON */}
           <li className="relative group">
             <button
-              // className="p-3 bg-stone-300 dark:bg-stone-700 transition-all rounded-[50%] duration-150 ease-linear hover:rounded-[10px] dark:hover:bg-stone-600 active:bg-stone-200 dark:active:bg-stone-500 focus:bg-stone-50 dark:focus:bg-stone-400 focus:rounded-[10px]"
               className="navbar-link-button"
               onClick={handleOpenLabelsBackdrop}
             >
               {checkIfLoading(fetchLabelsThunkStatus) ? (
-                <FaSpinner
-                  className="text-orange-600 dark:text-orange-300 animate-spin"
-                  size={"1.7rem"}
-                />
+                <FaSpinner className="text-orange-600 dark:text-orange-300 animate-spin text-[1.7rem]" />
               ) : (
-                <MdLabel
-                  className="text-orange-600 dark:text-orange-300"
-                  size={"1.7rem"}
-                />
+                <MdLabel className="text-orange-600 dark:text-orange-300 text-[1.7rem]" />
               )}
             </button>
             {checkIfLoading(fetchLabelsThunkStatus) ? (
@@ -155,14 +148,10 @@ const NavLinksUL = () => {
           onClick={handleUserLogOut}
         >
           {checkIfLoading(logoutThunkStatus) ? (
-            <FaSpinner
-              size={"1.7rem"}
-              className="animate-spin"
-              color={"#ff3535"}
-            />
+            <FaSpinner className="animate-spin text-[1.7rem] text-[#ff3535]" />
           ) : (
             <>
-              <FaSignOutAlt size={"1.7rem"} color={"#ff3535"} />
+              <FaSignOutAlt className="text-[1.7rem] text-[#ff3535]" />
               <Tooltip tooltipContent={"Sign out"} />
             </>
           )}

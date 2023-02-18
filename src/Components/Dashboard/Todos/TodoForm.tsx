@@ -51,7 +51,7 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
             className="p-2 rounded-full hover:bg-neutral-600 active:bg-neutral-500"
             onClick={handleCloseTodoFormBackdrop}
           >
-            <FaTimes color="rgb(250 250 249)" size="1.5rem" />
+            <FaTimes color="rgb(250 250 249)" className="text-[1.5rem]" />
           </button>
         </div>
         <form
@@ -89,10 +89,7 @@ const TodoForm = ({ handleCloseTodoFormBackdrop }: Props) => {
               {checkIfLoading(addTodoThunkStatus) ? (
                 <>
                   Making &nbsp;
-                  <FaSpinner
-                    className="animate-spin text-stone-100 dark:text-stone-900"
-                    size="1.5rem"
-                  />
+                  <FaSpinner className="animate-spin text-stone-100 dark:text-stone-900 text-[1.5rem]" />
                 </>
               ) : (
                 "Make todo"

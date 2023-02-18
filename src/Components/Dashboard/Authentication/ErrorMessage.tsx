@@ -8,7 +8,7 @@ type Props = {
 const ErrorMessage = ({ messageContent }: Props) => {
   return (
     <div className="form-error-message w-60 md:w-80 lg:w-96">
-      <FaRegTimesCircle size="1.5rem" />
+      <FaRegTimesCircle className="text-[1.5rem]" />
       <p>{messageContent}</p>
     </div>
   );

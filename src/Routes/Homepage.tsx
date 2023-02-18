@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Attribution from "../Components/Dashboard/Attribution";
 import { FaHandPointRight, FaHome } from "react-icons/fa";
-import { useAppDispatch, useAppSelector } from "../App/hooks";
+import { useAppSelector } from "../App/hooks";
 import ColorThemeButton from "../Components/Dashboard/ColorThemeButton";
-import { setColorTheme } from "../Reducerss/themeSlice";
 
 function Homepage() {
   const currentUser = useAppSelector((state) => state.authentication.user);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   const storedTheme: String | null = localStorage.getItem("color-theme");
-  //   dispatch(setColorTheme(JSON.stringify(storedTheme)));
-  // }, []);
 
   return (
     <div className="homepage h-full flex flex-col items-center justify-center relative">
@@ -34,13 +26,13 @@ function Homepage() {
           <>
             <button className="big-button" onClick={() => navigate("/signin")}>
               Get Started
-              <FaHandPointRight size={"1.3rem"} />
+              <FaHandPointRight className="text-[1.3rem]" />
             </button>
           </>
         ) : (
           <button className="big-button" onClick={() => navigate("/dashboard")}>
             Go to dashboard
-            <FaHome size={"1.3rem"} />
+            <FaHome className="text-[1.3rem]" />
           </button>
         )}
       </div>

@@ -8,7 +8,7 @@ type Props = {
 const SuccessMessage = ({ messageContent }: Props) => {
   return (
     <div className="form-success-message w-60 md:w-80 lg:w-96">
-      <FaCheckCircle size="1.5rem" />
+      <FaCheckCircle className="text-[1.5rem]" />
       <p>{messageContent}</p>
     </div>
   );

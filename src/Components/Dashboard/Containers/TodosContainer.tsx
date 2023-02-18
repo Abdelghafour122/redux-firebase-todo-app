@@ -5,7 +5,6 @@ import Todo from "../Todos/Todo";
 
 const TodosContainer = () => {
   const todoList = useAppSelector((state) => state.todos.todosList);
-  console.log(todoList);
   return (
     <div className="section-global-container">
       <LittleSectionHeader header={"Ongoing Todos"} />

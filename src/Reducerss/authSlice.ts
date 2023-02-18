@@ -44,9 +44,9 @@ export const PWD_REGEX =
 const googleProvider = new GoogleAuthProvider();
 
 const persistenceAuth = getAuth();
-setPersistence(persistenceAuth, browserLocalPersistence)
-  .then(() => console.log("persistence is used"))
-  .catch((err) => console.log("some error: ", err));
+setPersistence(persistenceAuth, browserLocalPersistence).catch((err) =>
+  console.log("some error when persisting the user: ", err)
+);
 
 const authSlice = createSlice({
   name: "authenticationSlice",

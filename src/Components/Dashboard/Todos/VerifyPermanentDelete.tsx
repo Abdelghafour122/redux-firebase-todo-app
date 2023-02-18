@@ -65,7 +65,7 @@ const VerifyPermanentDelete = ({
             {checkIfLoading(permanentlyDeleteTodoThunkStatus) ? (
               <>
                 Deleting&nbsp;
-                <FaSpinner size={"1.3rem"} className="animate-spin" />
+                <FaSpinner className="animate-spin text-[1.3rem]" />
               </>
             ) : (
               <>Delete</>

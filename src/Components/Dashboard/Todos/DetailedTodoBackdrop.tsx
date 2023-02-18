@@ -79,10 +79,10 @@ const DetailedTodoBackdrop = ({
                 {checkIfLoading(
                   currentThunkStatus.deleteTodoStatus.todoStatus
                 ) ? (
-                  <FaSpinner size={"1.3rem"} className="animate-spin" />
+                  <FaSpinner className="animate-spin text-[1.3rem]" />
                 ) : (
                   <>
-                    <FaTrashAlt size={"1.3rem"} />
+                    <FaTrashAlt className="text-[1.3rem]" />
                     <TodoActionsTooltip text={"Delete"} />
                   </>
                 )}
@@ -108,10 +108,10 @@ const DetailedTodoBackdrop = ({
                   {checkIfLoading(
                     currentThunkStatus.archiveTodoStatus.todoStatus
                   ) ? (
-                    <FaSpinner size={"1.3rem"} className="animate-spin" />
+                    <FaSpinner className="animate-spin text-[1.3rem]" />
                   ) : (
                     <>
-                      <FaArchive size={"1.3rem"} />
+                      <FaArchive className="text-[1.3rem]" />
                       <TodoActionsTooltip text={"Archive"} />
                     </>
                   )}
@@ -128,7 +128,7 @@ const DetailedTodoBackdrop = ({
                     )
                   }
                 >
-                  <RiInboxUnarchiveLine size={"1.3rem"} />
+                  <RiInboxUnarchiveLine className="text-[1.3rem]" />
                   <TodoActionsTooltip text={"Unarchive"} />
                 </button>
               )}
@@ -138,7 +138,7 @@ const DetailedTodoBackdrop = ({
                 className="todo-action-button group relative"
                 onClick={() => setOpenLabelsDropdown((prev) => !prev)}
               >
-                <FaTags size={"1.3rem"} />
+                <FaTags className="text-[1.3rem]" />
                 <TodoActionsTooltip text={"Add Label"} />
               </button>
               {openLabelsDrpdown ? (
