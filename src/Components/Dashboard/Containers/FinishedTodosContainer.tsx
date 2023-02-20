@@ -8,15 +8,11 @@ const FinishedTodosContainer = () => {
   return (
     <div className="section-global-container">
       <LittleSectionHeader header={"Finished Todos"} />
-      <div
-        className="finished-todos-container todo-container"
-        // style={{ width: "100%" }}
-      >
-        {todoList.map(
-          (todo) =>
-            todo.completed === true &&
-            todo.deleted === false &&
-            todo.archived === false && <Todo key={todo.id} {...todo} />
+      <div className="finished-todos-container todo-container">
+        {todoList.map((todo) =>
+          todo.completed === true && todo.deleted === false ? (
+            <Todo key={todo.id} {...todo} />
+          ) : null
         )}
       </div>
     </div>

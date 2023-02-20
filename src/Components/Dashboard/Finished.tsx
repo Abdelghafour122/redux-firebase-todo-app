@@ -16,7 +16,10 @@ const Finished = () => {
   useEffect(() => {
     const checkForUnfinishedTodos = () => {
       return todoList.every(
-        (todo) => todo.completed === false || todo.deleted === true
+        (todo) =>
+          todo.completed === false ||
+          todo.deleted === true ||
+          todo.archived === true
       );
     };
     setNoFinishedTodos(() => checkForUnfinishedTodos());
