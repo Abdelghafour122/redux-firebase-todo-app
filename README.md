@@ -33,7 +33,7 @@ The user should be able to:
    VITE_FB_APPID=
    ```
 
-**Make sure you add 127.0.0.1 to your authorized domains**
+**Make sure you add 127.0.0.1 to your authorized domains in the firebase console under authentication/settings**
 
 ## Resources:
 
