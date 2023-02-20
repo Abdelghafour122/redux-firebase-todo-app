@@ -45,4 +45,9 @@ The user should be able to:
 
 ## Some screenshots:
 
-![]("./src/Screenshots/signIn.jpg" Sign in page)
+![](./src/Screenshots/signIn.jpg "Sign in page")
+![](./src/Screenshots/empty.jpg "Empty todos section")
+![](./src/Screenshots/dark.jpg "Dark todos section")
+![](./src/Screenshots/light.jpg "Light todos section")
+![](./src/Screenshots/labels.jpg "Labels list")
+![](./src/Screenshots/detailed.jpg "Detailed todo")
