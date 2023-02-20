@@ -42,3 +42,7 @@ The user should be able to:
 - [TailwindCSS](https://tailwindcss.com/)
 - [Redux-toolkit](https://redux-toolkit.js.org/)
 - [Firebase](https://firebase.google.com/)
+
+## Some screenshots:
+
+![]("./src/Screenshots/signIn.jpg" Sign in page)
