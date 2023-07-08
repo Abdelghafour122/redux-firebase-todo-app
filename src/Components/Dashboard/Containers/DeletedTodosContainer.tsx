@@ -10,7 +10,7 @@ const DeletedTodosContainer = () => {
       <LittleSectionHeader header={"Deleted Todos"} />
       <div className="finished-todos-container todo-container">
         {todoList.map(
-          (todo) => todo.deleted === true && <Todo key={todo.id} {...todo} />
+          (todo) => todo.deleted === true ? <Todo key={todo.id} {...todo} /> : null
         )}
       </div>
     </div>
